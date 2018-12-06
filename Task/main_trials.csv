@@ -1,0 +1,10 @@
+reward_type,cue,target,correct_response
+1,A,X,1
+2,A,X,1
+1,A,Y,2
+1,A,Y,2
+2,B,Y,2
+2,B,X,2
+1,A,X,1
+2,B,X,2
+1,A,Y,1
