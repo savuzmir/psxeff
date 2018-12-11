@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 """
 This experiment was created using PsychoPy2 Experiment Builder (v1.84.1),
-    on Thu 06 Dec 2018 09:40:48 GMT
+    on December 11, 2018, at 11:32
 If you publish work using this script please cite the PsychoPy publications:
     Peirce, JW (2007) PsychoPy - Psychophysics software in Python.
         Journal of Neuroscience Methods, 162(1-2), 8-13.
@@ -11,7 +11,7 @@ If you publish work using this script please cite the PsychoPy publications:
 """
 
 from __future__ import absolute_import, division
-from psychopy import locale_setup, sound, gui, visual, core, data, event, logging
+from psychopy import locale_setup, gui, visual, core, data, event, logging, sound
 from psychopy.constants import (NOT_STARTED, STARTED, PLAYING, PAUSED,
                                 STOPPED, FINISHED, PRESSED, RELEASED, FOREVER)
 import numpy as np  # whole numpy lib is available, prepend 'np.'
@@ -40,7 +40,7 @@ filename = _thisDir + os.sep + u'data/%s_%s_%s' % (expInfo['participant'], expNa
 # An ExperimentHandler isn't essential but helps with data saving
 thisExp = data.ExperimentHandler(name=expName, version='',
     extraInfo=expInfo, runtimeInfo=None,
-    originPath=u'/home/sebastijan/sebastijan.veselic@gmail.com/Work/Studies/2018/PrimarySecondaryReward/Notes/Experiment/psreff.psyexp',
+    originPath=u'E:\\Experiments\\UCL\\Sebastijan\\PrimarySecondaryReward\\Experiment\\psreff.psyexp',
     savePickle=True, saveWideText=True,
     dataFileName=filename)
 logging.console.setLevel(logging.WARNING)  # this outputs to the screen, not a file
@@ -64,7 +64,7 @@ else:
 
 # Initialize components for Routine "instr1"
 instr1Clock = core.Clock()
-import random
+import random, os, serial
 
 # we add + 1 just to make key type be either 1 or 2 
 # If axcpt_key_type == 1 then:
@@ -96,12 +96,42 @@ abs_trial = 1
 run_prac = 1
 run_real = 0
 
+# set up gustaf connection 
+
+timeout = 0
+params = {
+    'timeout'  : timeout,
+    'baudrate' : 19200,
+    'bytesize' : serial.EIGHTBITS,
+    'parity'   : serial.PARITY_NONE,
+    'stopbits' : serial.STOPBITS_ONE,
+}
+
+dev = serial.Serial('COM3', **params)
+
+# Keep in mind there should be at least a 10ms difference
+# between changing amount of juice and the actual squirting
+# sequence itself. 
+
+# safety feature to make sure port is open 
+if(dev.isOpen() == False):
+    dev.open()
+
 
 
 # needs to be stored 
 # - ev response and RT
 # - stroop response and RT
-# - 
+# - squeeze data, will be added later 
+
+
+
+# storage containers
+stor_ev = {}
+stor_eff = {}
+stor_main = {}
+
+
 
 
 
@@ -326,6 +356,15 @@ text_23 = visual.TextStim(win=win, name='text_23',
     color='white', colorSpace='rgb', opacity=1,
     depth=0.0);
 
+# Initialize components for Routine "effort_instr"
+effort_instrClock = core.Clock()
+text_25 = visual.TextStim(win=win, name='text_25',
+    text=u'Depending on how strongly you will squeeze,\nthis will impact how much reward you will get!',
+    font=u'Arial',
+    pos=(0, 0), height=0.1, wrapWidth=None, ori=0, 
+    color=u'white', colorSpace='rgb', opacity=1,
+    depth=0.0);
+
 # Initialize components for Routine "cross_iti"
 cross_itiClock = core.Clock()
 
@@ -369,9 +408,9 @@ text = visual.TextStim(win=win, name='text',
 stroop_cueClock = core.Clock()
 text_24 = visual.TextStim(win=win, name='text_24',
     text='default text',
-    font=u'Arial',
+    font='Arial',
     pos=(0, 0), height=0.5, wrapWidth=None, ori=0, 
-    color=u'white', colorSpace='rgb', opacity=1,
+    color='white', colorSpace='rgb', opacity=1,
     depth=0.0);
 
 # Initialize components for Routine "var_time"
@@ -427,11 +466,10 @@ continueRoutine = True
 instr1_resp = event.BuilderKeyResponse()
 
 # Depending on 'type' that's put in, we manually construct the 
-# experimental design matrix that's used to determine
-# the flow of tasks after each task. The ugliness of the 
-# basic psychopy outcome that would have been obtained will
-# be mitigated by a custom saving script. 
-# it isn't necessary to have the complete matrix layout
+# experimental design matrix such that counterbalancing is achieved 
+# the ugly psychopy output file that would be obtained through this
+# will then be discarded and a custom saving script will be used 
+# it isn't necessary to have the complete matrix layout written out
 # in all cases, but I am doing it here for sake of completeness
 
 type = int(expInfo['type'])
@@ -455,8 +493,36 @@ elif type == 5:
     run_stroop, run_ev, run_effort, run_rew  = 1, 0, 0, 1
 elif type == 6:
     run_stroop, run_effort, run_ev, run_rew  = 1, 0, 0, 1
-        
-    
+
+# open datafile in the beginning
+exp_name = str(expName)
+sub_id = str(expInfo['participant']) 
+dat = str(expInfo['date'])
+out_type = str(type) # we do this to avoid issues with reconverting type over and over 
+
+# get current working directory 
+cwd = os.getcwd()
+
+# filename
+fname = exp_name + '_' + sub_id + '_' + out_type  + '.txt'
+
+# open a text file 
+data = open(cwd + '\\data', fname, 'w')
+
+# In the first row we save header columns | add the others later
+fname.write('trial\tquestion\tresponse\trt\t\n')
+
+
+# - ev response and RT
+# - stroop response and RT
+# - squeeze data, will be added later 
+
+
+
+
+
+
+
 # keep track of which components have finished
 instr1Components = [instr1_resp, text_7, text_9]
 for thisComponent in instr1Components:
@@ -1029,7 +1095,13 @@ for thisMain_loop in main_loop:
             continueRoutine = True
             # update component parameters for each repeat
             ev_resp = event.BuilderKeyResponse()
+            # this is the question it randomly pulls from the .csv file
             curr_q = current_question
+            
+            # this is added because by having an id of the question
+            # where the questions are randomised, we can simply store it
+            # later
+            q_id = sav_mapping
             text_5.setText(current_question)
             # keep track of which components have finished
             ev_promptComponents = [ev_resp, text_5, first, second, third, fourth, fifth, text_12, text_13, text_14, text_15, text_16]
@@ -1183,23 +1255,37 @@ for thisMain_loop in main_loop:
             # update component parameters for each repeat
             if ev_resp.keys == '1':
                 opt_1 = [1, 0.84, 0.0]
-                opt_2, opt_3, opt_4, opt_5 = [0.2, 0.2, 0.2], [0.2, 0.2, 0.2], [0.2, 0.2, 0.2], [0.2, 0.2, 0.2]
+                opt_2, opt_3, opt_4, opt_5 = [0.2, 0.2, 0.2], \
+                                              [0.2, 0.2, 0.2], \
+                                              [0.2, 0.2, 0.2], \
+                                              [0.2, 0.2, 0.2]
             elif ev_resp.keys == '2':
                 opt_2 = [1, 0.84, 0.0]
-                opt_1, opt_3, opt_4, opt_5 = [0.2, 0.2, 0.2], [0.2, 0.2, 0.2], [0.2, 0.2, 0.2], [0.2, 0.2, 0.2]
+                opt_1, opt_3, opt_4, opt_5 = [0.2, 0.2, 0.2], \
+                                              [0.2, 0.2, 0.2], \
+                                              [0.2, 0.2, 0.2], \
+                                              [0.2, 0.2, 0.2]
             elif ev_resp.keys == '3':
                 opt_3 = [1, 0.84, 0.0]
-                opt_1, opt_2, opt_4, opt_5 = [0.2, 0.2, 0.2], [0.2, 0.2, 0.2], [0.2, 0.2, 0.2], [0.2, 0.2, 0.2]
+                opt_1, opt_2, opt_4, opt_5 = [0.2, 0.2, 0.2], \
+                                              [0.2, 0.2, 0.2], \
+                                              [0.2, 0.2, 0.2], \
+                                              [0.2, 0.2, 0.2]
             elif ev_resp.keys == '4':
                 opt_4 = [1, 0.84, 0.0]
-                opt_1, opt_2, opt_3, opt_5 = [0.2, 0.2, 0.2], [0.2, 0.2, 0.2], [0.2, 0.2, 0.2], [0.2, 0.2, 0.2]
+                opt_1, opt_2, opt_3, opt_5 = [0.2, 0.2, 0.2], \
+                                              [0.2, 0.2, 0.2], \
+                                              [0.2, 0.2, 0.2], \
+                                              [0.2, 0.2, 0.2]
             elif ev_resp.keys == '5':
                 opt_5 = [1, 0.84, 0.0]
-                opt_1, opt_2, opt_3, opt_4 = [0.2, 0.2, 0.2], [0.2, 0.2, 0.2], [0.2, 0.2, 0.2], [0.2, 0.2, 0.2]
+                opt_1, opt_2, opt_3, opt_4 = [0.2, 0.2, 0.2], \
+                                              [0.2, 0.2, 0.2], \
+                                              [0.2, 0.2, 0.2], \
+                                              [0.2, 0.2, 0.2]
             
             
-            
-            
+            stor_ev[str(abs_trial)] = [q_id, int(ev_resp.keys), ev_resp.rt]
             
             
             
@@ -1352,12 +1438,43 @@ for thisMain_loop in main_loop:
             elif type == 4:
                 abs_trial += 1
                 run_effort, run_stroop, run_ev, run_rew = 0, 0, 0, 1
+            
+            
             elif type == 5:
                 run_stroop, run_ev, run_effort, run_rew = 0, 0, 1, 0
             elif type == 6:
                 abs_trial += 1
                 run_stroop, run_effort, run_ev, run_rew = 0, 0, 0, 1
-                    
+            
+            # for EV our data structure looks like this:
+            # 'trial':[question_id, response, rt]
+            
+            # we sort and order the keys because they correspond to the trials 
+            trial_l = sorted([int(el) for el in stor_ev.keys()])
+            
+            
+            str_t, str_abs_t = str(t), str(abs_trial)
+             
+            
+            
+            if type == 4 or type == 6:
+                
+                for t in trial_l:
+                    fname.write("{}\t{}\t{}\t{}\n".format( t,                              # abs_trial
+                                                           curr_reward                      # current reward type
+                                                           stor_ev[str_t][0],    # question
+                                                           stor_ev[str_t][1],     # response
+                                                           stor_ev[str_t][2],  # reaction time
+                                                           stor_eff[str_abs_t],     # trial contraction
+                                                           stor_eff[str_abs_t],     # reward multiplier | actual reward to be paid
+                                                           stor_main[str_abs_t][0],  # first 
+                                                           stor_main[str_abs_t][1],  # second
+                                                           stor_main[str_abs_t][2],  # go or no go
+                                                           stor_main[str_abs_t][3],  # response
+                                                           stor_main[str_bas_t][4])  # response rt 
+            
+            
+            
             thisExp.nextEntry()
             
         # completed 1 repeats of 'cb_loop2'
@@ -1462,6 +1579,58 @@ for thisMain_loop in main_loop:
             if hasattr(thisComponent, "setAutoDraw"):
                 thisComponent.setAutoDraw(False)
         
+        # ------Prepare to start Routine "effort_instr"-------
+        t = 0
+        effort_instrClock.reset()  # clock
+        frameN = -1
+        continueRoutine = True
+        routineTimer.add(1.000000)
+        # update component parameters for each repeat
+        # keep track of which components have finished
+        effort_instrComponents = [text_25]
+        for thisComponent in effort_instrComponents:
+            if hasattr(thisComponent, 'status'):
+                thisComponent.status = NOT_STARTED
+        
+        # -------Start Routine "effort_instr"-------
+        while continueRoutine and routineTimer.getTime() > 0:
+            # get current time
+            t = effort_instrClock.getTime()
+            frameN = frameN + 1  # number of completed frames (so 0 is the first frame)
+            # update/draw components on each frame
+            
+            # *text_25* updates
+            if t >= 0.0 and text_25.status == NOT_STARTED:
+                # keep track of start time/frame for later
+                text_25.tStart = t
+                text_25.frameNStart = frameN  # exact frame index
+                text_25.setAutoDraw(True)
+            frameRemains = 0.0 + 1.0- win.monitorFramePeriod * 0.75  # most of one frame period left
+            if text_25.status == STARTED and t >= frameRemains:
+                text_25.setAutoDraw(False)
+            
+            # check if all components have finished
+            if not continueRoutine:  # a component has requested a forced-end of Routine
+                break
+            continueRoutine = False  # will revert to True if at least one component still running
+            for thisComponent in effort_instrComponents:
+                if hasattr(thisComponent, "status") and thisComponent.status != FINISHED:
+                    continueRoutine = True
+                    break  # at least one component has not yet finished
+            
+            # check for quit (the Esc key)
+            if endExpNow or event.getKeys(keyList=["escape"]):
+                core.quit()
+            
+            # refresh the screen
+            if continueRoutine:  # don't flip if this routine is over or we'll get a blank screen
+                win.flip()
+        
+        # -------Ending Routine "effort_instr"-------
+        for thisComponent in effort_instrComponents:
+            if hasattr(thisComponent, "setAutoDraw"):
+                thisComponent.setAutoDraw(False)
+        
         # ------Prepare to start Routine "cross_iti"-------
         t = 0
         cross_itiClock.reset()  # clock
@@ -1545,6 +1714,13 @@ for thisMain_loop in main_loop:
             routineTimer.add(1.000000)
             # update component parameters for each repeat
             
+            
+            # let's say we store participant data here. 
+            
+            curr_contr = 0
+            
+            
+            stor_eff[str(abs_trial)] = [curr_contr]
             # keep track of which components have finished
             effort_taskComponents = [text_11]
             for thisComponent in effort_taskComponents:
@@ -1605,7 +1781,21 @@ for thisMain_loop in main_loop:
                 abs_trial += 1
             elif type == 6:
                 run_stroop, run_effort, run_ev, run_rew = 0, 0, 1, 0
-                    
+            
+            # here we would get the response from an individual in terms of 
+            # the exerted effort. the question is now if this will be 
+            # dynamic or just a static value in the end 
+            
+            # we will make it such that the data on the ev will be automatically repeated
+            # the good thing about that is that it will be very easy to analyse in both python and r
+            
+            if type == 1 or type == 5:
+                
+                for t in trial_l:
+                    fname.write("{}\t{}\t{}\t{}\n".format( t,                 \ # abs_trial
+                                                           stor_ev[str(t)[0], \ # question
+                                                           stor_ev[str(t)[1], \ # response
+                                                           stor_ev[str(t)[2]]   # reaction time
             thisExp.nextEntry()
             
         # completed 5 repeats of 'cb_loop3'
@@ -1994,7 +2184,7 @@ for thisMain_loop in main_loop:
         else:
             given_feedback = "wrong.png"
         
-            
+        
         image_2.setImage(given_feedback)
         # keep track of which components have finished
         stroop_feedComponents = [image_2]
@@ -2045,7 +2235,6 @@ for thisMain_loop in main_loop:
         
         if type == 1:
             abs_trial += 1
-        
         if type == 2:
             run_ev, run_effort, run_stroop, run_rew = 0, 1, 0, 0
         elif type == 3:
@@ -2057,7 +2246,49 @@ for thisMain_loop in main_loop:
             run_stroop, run_ev, run_effort, run_rew = 0, 1, 1, 0
         elif type == 6:
             run_stroop, run_effort, run_ev, run_rew = 0, 1, 0, 0
-                
+        
+        
+        # this will need to be more elaborate after
+        # we get the whole thing running more concretely
+        
+        pump_selecter = ['\13', '\14', '\15', '\16']
+        pumps = ['\1', '\2', '\3', '\4']
+        pump_vol = {} # this gives us a clear mapping between volume and commands to send
+        
+        # clear mapping to make sure we know how much to send 
+        ctr = 1
+        stringed_ctr = str(ctr)
+        for vol in range(100, 4100, 100):
+            while stringed_ctr[-1] != '8' and stringed_ctr[-1] != '9':
+                pump_vol[str(vol)] = ctr
+                ctr += 1                        # fix me 
+                stringed_ctr = str(ctr)
+            else:
+                ctr += 1
+                stringed_ctr = str(ctr)
+        
+        
+        
+        if current_rew == 'juice.png' and \
+           given_feedback == 'correct.png':
+            dev.write('\1') # send juice squirt
+            gus_fed = dev.readlines()
+        
+        # we parse the feedback - we can convert from hexadecimal here 
+        
+        gus_fed = gus_fed[0]
+        if len(gus_fed) == 2:
+            act_pump = gus_fed[0]
+            act_pump_nr = gus_fed[1]
+            act_vol = gustaf_feedback[2]
+        else:
+            act_pump = gus_fed[0]
+            act_pump_nr = gus_fed[1]
+            act_vol = 1000    
+        
+        
+        
+        
         
         # ------Prepare to start Routine "cross_iti"-------
         t = 0
