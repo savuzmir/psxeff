@@ -1,0 +1,5 @@
+main_trials
+reward_type (1 - money, 2 - juice)
+cue (1 - left, 2 - right)
+cond (1 - congruent, 2 - incongruent, 3 - neutral, 4 - no/go)
+correct_response - (1 - left key, 2 - right key, 3 - empty) 

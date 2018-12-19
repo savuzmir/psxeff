@@ -1,0 +1,17 @@
+cue,cond,correct_response
+left_congruent.png,congruent,1
+right_congruent.png,congruent,2
+left_incongruent.png,incongruent,1
+right_incongruent.png,incongruent,2
+left_neutral.png,neutral,1
+right_neutral.png,neutral,2
+right_nogo.png,nogo,3
+left_nogo.png,nogo,3
+left_congruent.png,congruent,1
+right_congruent.png,congruent,2
+left_incongruent.png,incongruent,1
+right_incongruent.png,incongruent,2
+left_neutral.png,neutral,1
+right_neutral.png,neutral,2
+right_nogo.png,nogo,3
+left_nogo.png,nogo,3
