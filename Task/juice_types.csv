@@ -1,4 +1,4 @@
-current_pump
-\1
-\2
-\3
+current_pump,curr_juice
+0,stimuli\applejuice.png
+1,stimuli\orangejuice.png
+2,stimuli\pineapplejuice.png
