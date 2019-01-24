@@ -1,8 +1,8 @@
-#!/usr/bin/env python
+#!/usr/bin/env python2
 # -*- coding: utf-8 -*-
 """
-This experiment was created using PsychoPy3 Experiment Builder (v3.0.2),
-    on January 21, 2019, at 13:42
+This experiment was created using PsychoPy2 Experiment Builder (v3.0.2),
+    on Thu 24 Jan 2019 01:01:49 GMT
 If you publish work using this script please cite the PsychoPy publications:
     Peirce, JW (2007) PsychoPy - Psychophysics software in Python.
         Journal of Neuroscience Methods, 162(1-2), 8-13.
@@ -13,9 +13,9 @@ If you publish work using this script please cite the PsychoPy publications:
 from __future__ import absolute_import, division
 
 import psychopy
-psychopy.useVersion('3')
+psychopy.useVersion('1.84')
 
-from psychopy import locale_setup, sound, gui, visual, core, data, event, logging, clock
+from psychopy import locale_setup, sound, gui, visual, core, data, event, logging
 from psychopy.constants import (NOT_STARTED, STARTED, PLAYING, PAUSED,
                                 STOPPED, FINISHED, PRESSED, RELEASED, FOREVER)
 import numpy as np  # whole numpy lib is available, prepend 'np.'
@@ -25,21 +25,18 @@ from numpy.random import random, randint, normal, shuffle
 import os  # handy system and path functions
 import sys  # to get file system encoding
 
-
 # Ensure that relative paths start from the same directory as this script
 _thisDir = os.path.dirname(os.path.abspath(__file__)).decode(sys.getfilesystemencoding())
 os.chdir(_thisDir)
 
 # Store info about the experiment session
-psychopyVersion = '3.0.2'
-expName = 'psreff3'  # from the Builder filename that created this script
-expInfo = {u'participant': u'9999', u'go_pract': u'5', u'eff_pract': u'4', u'age': u'1992-11-12', u'run_first': u'1', u'sample': u'1', u'run_second': u'1', u're_o': u'1', u'g_conn': u'1', u'type': u'1', u'pic_eval': u'1'}
+expName = u'psreff3'  # from the Builder filename that created this script
+expInfo = {u'run_second': u'1', u'go_pract': u'12', u'eff_pract': u'4', u'age': u'1992-11-12', u'participant': u'9999', u'sample': u'1', u're_o': u'1', u'g_conn': u'1', u'type': u'1', u'run_first': u'1'}
 dlg = gui.DlgFromDict(dictionary=expInfo, title=expName)
 if dlg.OK == False:
     core.quit()  # user pressed cancel
 expInfo['date'] = data.getDateStr()  # add a simple timestamp
 expInfo['expName'] = expName
-expInfo['psychopyVersion'] = psychopyVersion
 
 # Data file name stem = absolute path + name; later add .psyexp, .csv, .log, etc
 filename = _thisDir + os.sep + u'data/%s_%s_%s' % (expInfo['participant'], expName, expInfo['date'])
@@ -47,7 +44,7 @@ filename = _thisDir + os.sep + u'data/%s_%s_%s' % (expInfo['participant'], expNa
 # An ExperimentHandler isn't essential but helps with data saving
 thisExp = data.ExperimentHandler(name=expName, version='',
     extraInfo=expInfo, runtimeInfo=None,
-    originPath='E:\\Experiments\\UCL\\Sebastijan\\PrimarySecondaryReward\\Experiment\\psreff_t.py',
+    originPath=None,
     savePickle=True, saveWideText=True,
     dataFileName=filename)
 logging.console.setLevel(logging.WARNING)  # this outputs to the screen, not a file
@@ -58,9 +55,9 @@ endExpNow = False  # flag for 'escape' or other condition => quit the exp
 
 # Setup the Window
 win = visual.Window(
-    size=[1920, 1080], fullscr=True, screen=0,
+    size=[800, 600], fullscr=False, screen=0,
     allowGUI=True, allowStencil=False,
-    monitor='default', color=[1, 1, 1], colorSpace='rgb',
+    monitor=u'default', color=[1, 1, 1], colorSpace='rgb',
     blendMode='avg', useFBO=True)
 # store frame rate of monitor if we can measure it
 expInfo['frameRate'] = win.getActualFrameRate()
@@ -79,19 +76,18 @@ from copy import deepcopy
 import glob
 import math as m
 import itertools
+import webbrowser
 
 
 ################################################################################################
 ############################## set up eye tracker ##############################################
 ################################################################################################
-from psychopy_tobii_controller import tobii_controller
-
 try:
-    controller = tobii_controller(win)
-    et_connected = 1
+    from psychopy_tobii_controller import tobii_controller
 except:
-    et_connected = 0
+    print("Tobii wasn't imported")
 
+et_connected = 0
 
 ################################################################################################
 ########### listing all the functions in the experiment ########################################
@@ -169,7 +165,7 @@ def save_eff(eff_dataset, eff_f):
 
 def save_go(go_dataset, go_f):
 
-    go_f.write("{} \t {} \t {} \t {} \t {} \t {} \t {} \t {} \t {} \t {} \t {} \t {} \t {} \n".format(
+    go_f.write("{} \t {} \t {} \t {} \t {} \t {} \t {} \t {} \t {} \t {} \t {} \t {} \t {} \t {} \n".format(
                                                                                                     go_dataset[0], \
                                                                                                     go_dataset[1], \
                                                                                                     go_dataset[2], \
@@ -182,7 +178,8 @@ def save_go(go_dataset, go_f):
                                                                                                     go_dataset[9], \
                                                                                                     go_dataset[10], \
                                                                                                     go_dataset[11], \
-                                                                                                    go_dataset[12]))
+                                                                                                    go_dataset[12], \
+                                                                                                    go_dataset[13]))
 
 
 
@@ -327,7 +324,7 @@ def find_age_bracket(part_year, part_month, age_list, part_type):
             except:
                 pass
     if corr_brack == '':
-        print('The subject is either too old or too young')
+            print("The subject is either too young or too old")
     return corr_brack
 
 def get_juice_name(info):
@@ -615,8 +612,8 @@ nfc_trial = 0
 go_switch = 0                                     # number of switches for the real announcement
 eff_switch = 0                                      
 ev_switch = 0                                       
-num_trials = 38                                  # will decide on the absolute number of trials / this subsumes eff and ev and is akin to abs_trial
-num_eff_trials = 144                               # 6 (rew) * 4 (diff) * 3 (repeated)
+num_trials = 528                                  # needs to be 528. will decide on the absolute number of trials / this subsumes eff and ev and is akin to abs_trial
+num_eff_trials = 144                               # 6 (rew) * 4 (diff) * 3 (repeated) should be 144
 
 halfway_go = int(round(num_trials/2))
 halfway_eff = int(round(num_eff_trials/2))
@@ -664,8 +661,8 @@ eff_instr_trial = 1
 go_instr_trial = 1
 cog_eff_instr_trial = 1
 
-num_pauses = 1                                     # defines number of breaks
-block_length = num_trials/num_pauses               # defines block length for gng task
+num_pauses = 4                                     # defines number of breaks | shouldnt be zero. should be 4
+block_length = num_trials/num_pauses               # defines block length for gng task 
 
 already_switched = 0                              # helper variable used in the matrix evaluation procedure
 reverse_corrected = 0                             # was the reverse correcetd (e.g. by 1 1)
@@ -679,6 +676,7 @@ ctr = 1                                           # used in the pump volume eval
 
 pump = ''
 
+cum_juice = 0
 cum_amount = 0
 turn_off = 0                                        # to not check for reverse correction every time
 initial_q = ''                                      # variable for initial questions that determine a participants state
@@ -699,7 +697,10 @@ tmp_design_matrix = []                                 # this is a special case 
 tmp_evaluater = []                                     # list used for evaluating
                                                        # matrix reasoning correctness
 tmp_str = ''
-tmp_rt = [0.6] # we initialize with a sensible value that will get removed afterwards
+tmp_rt = [0.38] # we initialize with a sensible value that will get removed afterwards
+                 # for children we should use  0.671. These values are based on Brydges et al 2012 and 2013
+                 # for adults a total of both studies was used for congr 
+                 
 tmp_runner = 100
 struct_1 = ''                                          # generic helper variables
 struct_2 = ''
@@ -859,24 +860,23 @@ juice_rew = 'primary'
 pound_rew = 'secondary'
 
 
+################################################################################################
+################################# cog efff #####################################################
+################################################################################################
+
+chanc = 0.3
 text_7 = visual.TextStim(win=win, name='text_7',
     text='Welcome to the experiment! We kindly ask you to turn off your phone and put it in your bag/on the chair behind you. If your phone is turned on, it will interfere with the signal and cause data loss for us. ',
     font='Arial',
     pos=(0, 0), height=0.1, wrapWidth=None, ori=0, 
-    color='black', colorSpace='rgb', opacity=1, 
-    languageStyle='LTR',
+    color='black', colorSpace='rgb', opacity=1,
     depth=-2.0);
 text_9 = visual.TextStim(win=win, name='text_9',
     text='Press SPACE to continue!',
     font='Arial',
     pos=(0, -0.6), height=0.1, wrapWidth=None, ori=0, 
-    color='black', colorSpace='rgb', opacity=1, 
-    languageStyle='LTR',
+    color='black', colorSpace='rgb', opacity=1,
     depth=-3.0);
-
-# Initialize components for Routine "calibration"
-calibrationClock = core.Clock()
-
 
 # Initialize components for Routine "instr2"
 instr2Clock = core.Clock()
@@ -885,15 +885,13 @@ text_79 = visual.TextStim(win=win, name='text_79',
     text='default text',
     font='Arial',
     pos=(0, 0.6), height=0.1, wrapWidth=None, ori=0, 
-    color='black', colorSpace='rgb', opacity=1, 
-    languageStyle='LTR',
+    color='black', colorSpace='rgb', opacity=1,
     depth=-1.0);
 text_80 = visual.TextStim(win=win, name='text_80',
     text='default text',
     font='Arial',
     pos=(0, -0.6), height=0.1, wrapWidth=None, ori=0, 
-    color='black', colorSpace='rgb', opacity=1, 
-    languageStyle='LTR',
+    color='black', colorSpace='rgb', opacity=1,
     depth=-3.0);
 image_19 = visual.ImageStim(
     win=win, name='image_19',
@@ -910,15 +908,13 @@ text_84 = visual.TextStim(win=win, name='text_84',
     text='Part I: Tell us about yourself!',
     font='Arial',
     pos=(0, 0), height=0.1, wrapWidth=None, ori=0, 
-    color='black', colorSpace='rgb', opacity=1, 
-    languageStyle='LTR',
+    color='black', colorSpace='rgb', opacity=1,
     depth=-1.0);
 text_87 = visual.TextStim(win=win, name='text_87',
     text='Press SPACE to continue!    ',
     font='Arial',
     pos=(0, -0.6), height=0.1, wrapWidth=None, ori=0, 
-    color='black', colorSpace='rgb', opacity=1, 
-    languageStyle='LTR',
+    color='black', colorSpace='rgb', opacity=1,
     depth=-3.0);
 
 # Initialize components for Routine "mat_ev"
@@ -935,15 +931,13 @@ text_55 = visual.TextStim(win=win, name='text_55',
     text='default text',
     font='Arial',
     pos=(0, 0.87), height=0.1, wrapWidth=1.4, ori=0, 
-    color='black', colorSpace='rgb', opacity=1, 
-    languageStyle='LTR',
+    color='black', colorSpace='rgb', opacity=1,
     depth=-3.0);
 diagnostics_3 = visual.TextStim(win=win, name='diagnostics_3',
     text='default text',
     font='Arial',
     pos=(0.4, 0.8), height=0.05, wrapWidth=None, ori=0, 
-    color='black', colorSpace='rgb', opacity=0, 
-    languageStyle='LTR',
+    color='black', colorSpace='rgb', opacity=0,
     depth=-4.0);
 
 # Initialize components for Routine "mat_ans"
@@ -967,29 +961,25 @@ text_51 = visual.TextStim(win=win, name='text_51',
     text='You have chosen:',
     font='Arial',
     pos=(0, 0.6), height=0.1, wrapWidth=None, ori=0, 
-    color='white', colorSpace='rgb', opacity=1, 
-    languageStyle='LTR',
+    color='white', colorSpace='rgb', opacity=1,
     depth=-3.0);
 text_52 = visual.TextStim(win=win, name='text_52',
     text='default text',
     font='Arial',
     pos=(0, 0.4), height=0.3, wrapWidth=None, ori=0, 
-    color='white', colorSpace='rgb', opacity=1, 
-    languageStyle='LTR',
+    color='white', colorSpace='rgb', opacity=1,
     depth=-4.0);
 text_53 = visual.TextStim(win=win, name='text_53',
     text='If this is true, press "y". \nIf you want to choose again, press "n".',
     font='Arial',
     pos=(0, 0.05), height=0.1, wrapWidth=0.6, ori=0, 
-    color='white', colorSpace='rgb', opacity=1, 
-    languageStyle='LTR',
+    color='white', colorSpace='rgb', opacity=1,
     depth=-6.0);
 diagnostics = visual.TextStim(win=win, name='diagnostics',
     text='default text',
     font='Arial',
     pos=(0.4, 0.8), height=0.05, wrapWidth=None, ori=0, 
-    color='black', colorSpace='rgb', opacity=0, 
-    languageStyle='LTR',
+    color='black', colorSpace='rgb', opacity=0,
     depth=-7.0);
 polygon_5 = visual.Polygon(
     win=win, name='polygon_5',
@@ -1013,8 +1003,7 @@ diagnostics_2 = visual.TextStim(win=win, name='diagnostics_2',
     text='default text',
     font='Arial',
     pos=(0.4, 0.8), height=0.05, wrapWidth=None, ori=0, 
-    color='black', colorSpace='rgb', opacity=0, 
-    languageStyle='LTR',
+    color='black', colorSpace='rgb', opacity=0,
     depth=-3.0);
 
 # Initialize components for Routine "transition"
@@ -1024,36 +1013,31 @@ text_54 = visual.TextStim(win=win, name='text_54',
     text='Great job! We would now like you to answer a number of questions!',
     font='Arial',
     pos=(0, 0), height=0.1, wrapWidth=None, ori=0, 
-    color='black', colorSpace='rgb', opacity=1, 
-    languageStyle='LTR',
+    color='black', colorSpace='rgb', opacity=1,
     depth=-1.0);
 text_66 = visual.TextStim(win=win, name='text_66',
     text='default text',
     font='Arial',
     pos=(0, 0.8), height=0.1, wrapWidth=None, ori=0, 
-    color='white', colorSpace='rgb', opacity=1, 
-    languageStyle='LTR',
+    color='white', colorSpace='rgb', opacity=1,
     depth=-2.0);
 text_67 = visual.TextStim(win=win, name='text_67',
     text='default text',
     font='Arial',
     pos=(0, -0.4), height=0.1, wrapWidth=None, ori=0, 
-    color='white', colorSpace='rgb', opacity=1, 
-    languageStyle='LTR',
+    color='white', colorSpace='rgb', opacity=1,
     depth=-3.0);
 text_68 = visual.TextStim(win=win, name='text_68',
     text='default text',
     font='Arial',
     pos=(0, 0.9), height=0.1, wrapWidth=None, ori=0, 
-    color='white', colorSpace='rgb', opacity=1, 
-    languageStyle='LTR',
+    color='white', colorSpace='rgb', opacity=1,
     depth=-5.0);
 text_69 = visual.TextStim(win=win, name='text_69',
     text='Press SPACE to continue!',
     font='Arial',
     pos=(0, -0.6), height=0.1, wrapWidth=None, ori=0, 
-    color='black', colorSpace='rgb', opacity=1, 
-    languageStyle='LTR',
+    color='black', colorSpace='rgb', opacity=1,
     depth=-6.0);
 
 # Initialize components for Routine "ev_iniq"
@@ -1061,15 +1045,18 @@ ev_iniqClock = core.Clock()
 
 rating = visual.RatingScale(win=win, name='rating', size = 0.8,
 lineColor = 'black',
-stretch = 1.4,
+stretch = 2,
 textColor = "black",
+low = 1,
+high = 100,
+mouseOnly = True,
+scale = None,
 labels = ["Not at all", "Extremely"])
 text_44 = visual.TextStim(win=win, name='text_44',
     text='default text',
     font='Arial',
     pos=(0, 0), height=0.1, wrapWidth=None, ori=0, 
-    color='black', colorSpace='rgb', opacity=1, 
-    languageStyle='LTR',
+    color='black', colorSpace='rgb', opacity=1,
     depth=-2.0);
 
 # Initialize components for Routine "ev_pic"
@@ -1079,11 +1066,15 @@ rating_2 = visual.RatingScale(win=win, name='rating_2', size = 0.8,
 lineColor = 'black',
 stretch = 1.4,
 textColor = "black",
-labels = ["not at all", "extremely"])
+low = 1,
+mouseOnly = True,
+high = 7,
+scale = None,
+labels = ["Extremely dislike", "Extremely like"])
 image_2 = visual.ImageStim(
     win=win, name='image_2',units='pix', 
     image='sin', mask=None,
-    ori=0, pos=(0, 0.2), size=(207, 23),
+    ori=0, pos=(0, 0.2), size=(217, 25),
     color=[1,1,1], colorSpace='rgb', opacity=1,
     flipHoriz=False, flipVert=False,
     texRes=128, interpolate=True, depth=-2.0)
@@ -1091,8 +1082,7 @@ text_49 = visual.TextStim(win=win, name='text_49',
     text='How much do you like this picture?',
     font='Arial',
     pos=(0, 0.6), height=0.1, wrapWidth=None, ori=0, 
-    color='black', colorSpace='rgb', opacity=1, 
-    languageStyle='LTR',
+    color='black', colorSpace='rgb', opacity=1,
     depth=-3.0);
 
 # Initialize components for Routine "est_sal"
@@ -1102,15 +1092,13 @@ text_24 = visual.TextStim(win=win, name='text_24',
     text='default text',
     font='Arial',
     pos=(0, 0), height=0.1, wrapWidth=None, ori=0, 
-    color='black', colorSpace='rgb', opacity=1, 
-    languageStyle='LTR',
+    color='black', colorSpace='rgb', opacity=1,
     depth=-1.0);
 text_29 = visual.TextStim(win=win, name='text_29',
     text='Press SPACE to continue!',
     font='Arial',
     pos=(0, -0.6), height=0.1, wrapWidth=None, ori=0, 
-    color='black', colorSpace='rgb', opacity=1, 
-    languageStyle='LTR',
+    color='black', colorSpace='rgb', opacity=1,
     depth=-3.0);
 
 # Initialize components for Routine "jui_warn"
@@ -1119,8 +1107,7 @@ text_88 = visual.TextStim(win=win, name='text_88',
     text='You will now receive juice!',
     font='Arial',
     pos=(0, 0), height=0.1, wrapWidth=None, ori=0, 
-    color='black', colorSpace='rgb', opacity=1, 
-    languageStyle='LTR',
+    color='black', colorSpace='rgb', opacity=1,
     depth=0.0);
 
 # Initialize components for Routine "supl_jui"
@@ -1130,8 +1117,7 @@ text_4 = visual.TextStim(win=win, name='text_4',
     text='default text',
     font='Arial',
     pos=(0, 0), height=0.1, wrapWidth=None, ori=0, 
-    color='black', colorSpace='rgb', opacity=1, 
-    languageStyle='LTR',
+    color='black', colorSpace='rgb', opacity=1,
     depth=-1.0);
 jui_pic = visual.ImageStim(
     win=win, name='jui_pic',
@@ -1148,8 +1134,7 @@ text_30 = visual.TextStim(win=win, name='text_30',
     text='default text',
     font='Arial',
     pos=(0, 0.6), height=0.1, wrapWidth=0.8, ori=0, 
-    color='black', colorSpace='rgb', opacity=1, 
-    languageStyle='LTR',
+    color='black', colorSpace='rgb', opacity=1,
     depth=-2.0);
 first_2 = visual.Rect(
     win=win, name='first_2',
@@ -1197,43 +1182,37 @@ text_31 = visual.TextStim(win=win, name='text_31',
     text='1',
     font='Arial',
     pos=[-0.8, -0.58], height=0.3, wrapWidth=None, ori=0, 
-    color='white', colorSpace='rgb', opacity=1, 
-    languageStyle='LTR',
+    color='white', colorSpace='rgb', opacity=1,
     depth=-9.0);
 text_32 = visual.TextStim(win=win, name='text_32',
     text='2',
     font='Arial',
     pos=[-0.5, -0.58], height=0.3, wrapWidth=None, ori=0, 
-    color='white', colorSpace='rgb', opacity=1, 
-    languageStyle='LTR',
+    color='white', colorSpace='rgb', opacity=1,
     depth=-10.0);
 text_33 = visual.TextStim(win=win, name='text_33',
     text='3',
     font='Arial',
     pos=[-0.2, -0.58], height=0.3, wrapWidth=None, ori=0, 
-    color='white', colorSpace='rgb', opacity=1, 
-    languageStyle='LTR',
+    color='white', colorSpace='rgb', opacity=1,
     depth=-11.0);
 text_34 = visual.TextStim(win=win, name='text_34',
     text='4',
     font='Arial',
     pos=[0.1, -0.58], height=0.3, wrapWidth=None, ori=0, 
-    color='white', colorSpace='rgb', opacity=1, 
-    languageStyle='LTR',
+    color='white', colorSpace='rgb', opacity=1,
     depth=-12.0);
 text_35 = visual.TextStim(win=win, name='text_35',
     text='5',
     font='Arial',
     pos=[0.4, -0.58], height=0.3, wrapWidth=None, ori=0, 
-    color='white', colorSpace='rgb', opacity=1, 
-    languageStyle='LTR',
+    color='white', colorSpace='rgb', opacity=1,
     depth=-13.0);
 text_22 = visual.TextStim(win=win, name='text_22',
     text='6',
     font='Arial',
     pos=[0.7, -0.58], height=0.3, wrapWidth=None, ori=0, 
-    color='white', colorSpace='rgb', opacity=1, 
-    languageStyle='LTR',
+    color='white', colorSpace='rgb', opacity=1,
     depth=-14.0);
 image_23 = visual.ImageStim(
     win=win, name='image_23',
@@ -1292,43 +1271,37 @@ text_36 = visual.TextStim(win=win, name='text_36',
     text='1',
     font='Arial',
     pos=[-0.8, -0.58], height=0.3, wrapWidth=None, ori=0, 
-    color='white', colorSpace='rgb', opacity=1, 
-    languageStyle='LTR',
+    color='white', colorSpace='rgb', opacity=1,
     depth=-7.0);
 text_37 = visual.TextStim(win=win, name='text_37',
     text='2',
     font='Arial',
     pos=[-0.5, -0.58], height=0.3, wrapWidth=None, ori=0, 
-    color='white', colorSpace='rgb', opacity=1, 
-    languageStyle='LTR',
+    color='white', colorSpace='rgb', opacity=1,
     depth=-8.0);
 text_38 = visual.TextStim(win=win, name='text_38',
     text='3',
     font='Arial',
     pos=[-0.2, -0.58], height=0.3, wrapWidth=None, ori=0, 
-    color='white', colorSpace='rgb', opacity=1, 
-    languageStyle='LTR',
+    color='white', colorSpace='rgb', opacity=1,
     depth=-9.0);
 text_39 = visual.TextStim(win=win, name='text_39',
     text='4',
     font='Arial',
     pos=[0.1, -0.58], height=0.3, wrapWidth=None, ori=0, 
-    color='white', colorSpace='rgb', opacity=1, 
-    languageStyle='LTR',
+    color='white', colorSpace='rgb', opacity=1,
     depth=-10.0);
 text_40 = visual.TextStim(win=win, name='text_40',
     text='5',
     font='Arial',
     pos=[0,0], height=0.3, wrapWidth=None, ori=0, 
-    color='white', colorSpace='rgb', opacity=1, 
-    languageStyle='LTR',
+    color='white', colorSpace='rgb', opacity=1,
     depth=-11.0);
 text_25 = visual.TextStim(win=win, name='text_25',
     text='6',
     font='Arial',
     pos=(0.7, -0.58), height=0.3, wrapWidth=None, ori=0, 
-    color='white', colorSpace='rgb', opacity=1, 
-    languageStyle='LTR',
+    color='white', colorSpace='rgb', opacity=1,
     depth=-12.0);
 image_25 = visual.ImageStim(
     win=win, name='image_25',
@@ -1344,8 +1317,7 @@ palate_cleanse = visual.TextStim(win=win, name='palate_cleanse',
     text='You will now receive water to wash out the juice!',
     font='Arial',
     pos=(0, 0), height=0.1, wrapWidth=None, ori=0, 
-    color='black', colorSpace='rgb', opacity=1, 
-    languageStyle='LTR',
+    color='black', colorSpace='rgb', opacity=1,
     depth=0.0);
 
 # Initialize components for Routine "water_disp"
@@ -1355,8 +1327,7 @@ prompt_next = visual.TextStim(win=win, name='prompt_next',
     text='Get ready for the next one!',
     font='Arial',
     pos=(0, 0), height=0.2, wrapWidth=None, ori=0, 
-    color='white', colorSpace='rgb', opacity=1, 
-    languageStyle='LTR',
+    color=1.0, colorSpace='rgb', opacity=1,
     depth=-1.0);
 
 # Initialize components for Routine "jui_out"
@@ -1366,15 +1337,13 @@ fav_juice_t = visual.TextStim(win=win, name='fav_juice_t',
     text='Your favourite juice was:',
     font='Arial',
     pos=(0, 0.8), height=0.1, wrapWidth=None, ori=0, 
-    color='black', colorSpace='rgb', opacity=1, 
-    languageStyle='LTR',
+    color='black', colorSpace='rgb', opacity=1,
     depth=-1.0);
 conf_prompt = visual.TextStim(win=win, name='conf_prompt',
     text='Please confirm by pressing "y" if this is correct or "n" if you want to choose another one.',
     font='Arial',
     pos=(0, -0.4), height=0.1, wrapWidth=None, ori=0, 
-    color='black', colorSpace='rgb', opacity=1, 
-    languageStyle='LTR',
+    color='black', colorSpace='rgb', opacity=1,
     depth=-3.0);
 fav_juice_pic = visual.ImageStim(
     win=win, name='fav_juice_pic',
@@ -1391,8 +1360,7 @@ mouse_prompt = visual.TextStim(win=win, name='mouse_prompt',
     text='Select your favourite by pressing:\n1 (left), 2 (middle), 3 (right)',
     font='Arial',
     pos=(0, 0.4), height=0.1, wrapWidth=None, ori=0, 
-    color='black', colorSpace='rgb', opacity=1, 
-    languageStyle='LTR',
+    color='black', colorSpace='rgb', opacity=1,
     depth=-1.0);
 jui_pic_1 = visual.ImageStim(
     win=win, name='jui_pic_1',
@@ -1433,33 +1401,30 @@ text_73 = visual.TextStim(win=win, name='text_73',
     text='Part II: Get ready for the games!',
     font='Arial',
     pos=(0, 0), height=0.1, wrapWidth=None, ori=0, 
-    color='white', colorSpace='rgb', opacity=1, 
-    languageStyle='LTR',
+    color='white', colorSpace='rgb', opacity=1,
     depth=-1.0);
 
 # Initialize components for Routine "rew_expl"
 rew_explClock = core.Clock()
 lh = 0.000001
+past_first = 0
 text_41 = visual.TextStim(win=win, name='text_41',
     text='default text',
     font='Arial',
     pos=(0, 0), height=0.1, wrapWidth=None, ori=0, 
-    color='white', colorSpace='rgb', opacity=1, 
-    languageStyle='LTR',
+    color='white', colorSpace='rgb', opacity=1,
     depth=-1.0);
 text_42 = visual.TextStim(win=win, name='text_42',
     text='Press SPACE to continue!',
     font='Arial',
     pos=(0, -0.6), height=0.1, wrapWidth=None, ori=0, 
-    color='white', colorSpace='rgb', opacity=1, 
-    languageStyle='LTR',
+    color='white', colorSpace='rgb', opacity=1,
     depth=-3.0);
 text_82 = visual.TextStim(win=win, name='text_82',
     text='Tutorial',
     font='Arial',
     pos=(-0.8, 0.8), height=1.0, wrapWidth=None, ori=0, 
-    color='white', colorSpace='rgb', opacity=1.0, 
-    languageStyle='LTR',
+    color='white', colorSpace='rgb', opacity=1.0,
     depth=-4.0);
 polygon_6 = visual.Rect(
     win=win, name='polygon_6',
@@ -1476,8 +1441,7 @@ text_2 = visual.TextStim(win=win, name='text_2',
     text='You are playing for:',
     font='Arial',
     pos=(0, 0.6), height=0.1, wrapWidth=None, ori=0, 
-    color='white', colorSpace='rgb', opacity=1, 
-    languageStyle='LTR',
+    color='white', colorSpace='rgb', opacity=1,
     depth=-1.0);
 image = visual.ImageStim(
     win=win, name='image',
@@ -1490,8 +1454,7 @@ text_125 = visual.TextStim(win=win, name='text_125',
     text='Get ready!',
     font='Arial',
     pos=(0, 0), height=0.1, wrapWidth=None, ori=0, 
-    color='white', colorSpace='rgb', opacity=1, 
-    languageStyle='LTR',
+    color='white', colorSpace='rgb', opacity=1,
     depth=-3.0);
 
 # Initialize components for Routine "ev_expl"
@@ -1501,22 +1464,19 @@ text_45 = visual.TextStim(win=win, name='text_45',
     text='default text',
     font='Arial',
     pos=(0, 0), height=0.1, wrapWidth=None, ori=0, 
-    color='white', colorSpace='rgb', opacity=1, 
-    languageStyle='LTR',
+    color='white', colorSpace='rgb', opacity=1,
     depth=-1.0);
 text_64 = visual.TextStim(win=win, name='text_64',
     text='Press SPACE to continue!',
     font='Arial',
     pos=(0, -0.6), height=0.1, wrapWidth=None, ori=0, 
-    color='white', colorSpace='rgb', opacity=1, 
-    languageStyle='LTR',
+    color='white', colorSpace='rgb', opacity=1,
     depth=-3.0);
 text_89 = visual.TextStim(win=win, name='text_89',
     text='Tutorial',
     font='Arial',
     pos=(-0.8, 0.8), height=1.0, wrapWidth=None, ori=0, 
-    color='white', colorSpace='rgb', opacity=1, 
-    languageStyle='LTR',
+    color='white', colorSpace='rgb', opacity=1,
     depth=-4.0);
 polygon_7 = visual.Rect(
     win=win, name='polygon_7',
@@ -1533,8 +1493,7 @@ text_5 = visual.TextStim(win=win, name='text_5',
     text='default text',
     font='Arial',
     pos=(0, 0.6), height=0.1, wrapWidth=0.8, ori=0, 
-    color='white', colorSpace='rgb', opacity=1, 
-    languageStyle='LTR',
+    color='white', colorSpace='rgb', opacity=1,
     depth=-2.0);
 first = visual.Rect(
     win=win, name='first',
@@ -1582,43 +1541,37 @@ text_12 = visual.TextStim(win=win, name='text_12',
     text='1',
     font='Arial',
     pos=[-0.8, -0.58], height=0.3, wrapWidth=None, ori=0, 
-    color='white', colorSpace='rgb', opacity=1, 
-    languageStyle='LTR',
+    color='white', colorSpace='rgb', opacity=1,
     depth=-9.0);
 text_13 = visual.TextStim(win=win, name='text_13',
     text='2',
     font='Arial',
     pos=[-0.5, -0.58], height=0.3, wrapWidth=None, ori=0, 
-    color='white', colorSpace='rgb', opacity=1, 
-    languageStyle='LTR',
+    color='white', colorSpace='rgb', opacity=1,
     depth=-10.0);
 text_14 = visual.TextStim(win=win, name='text_14',
     text='3',
     font='Arial',
     pos=[-0.2, -0.58], height=0.3, wrapWidth=None, ori=0, 
-    color='white', colorSpace='rgb', opacity=1, 
-    languageStyle='LTR',
+    color='white', colorSpace='rgb', opacity=1,
     depth=-11.0);
 text_15 = visual.TextStim(win=win, name='text_15',
     text='4',
     font='Arial',
     pos=[0.1, -0.58], height=0.3, wrapWidth=None, ori=0, 
-    color='white', colorSpace='rgb', opacity=1, 
-    languageStyle='LTR',
+    color='white', colorSpace='rgb', opacity=1,
     depth=-12.0);
 text_16 = visual.TextStim(win=win, name='text_16',
     text='5',
     font='Arial',
     pos=[0.4, -0.58], height=0.3, wrapWidth=None, ori=0, 
-    color='white', colorSpace='rgb', opacity=1, 
-    languageStyle='LTR',
+    color='white', colorSpace='rgb', opacity=1,
     depth=-13.0);
 text_47 = visual.TextStim(win=win, name='text_47',
     text='6',
     font='Arial',
     pos=[0.7, -0.58], height=0.3, wrapWidth=None, ori=0, 
-    color='white', colorSpace='rgb', opacity=1, 
-    languageStyle='LTR',
+    color='white', colorSpace='rgb', opacity=1,
     depth=-14.0);
 image_17 = visual.ImageStim(
     win=win, name='image_17',
@@ -1677,50 +1630,43 @@ text_17 = visual.TextStim(win=win, name='text_17',
     text='1',
     font='Arial',
     pos=[-0.8, -0.58], height=0.3, wrapWidth=None, ori=0, 
-    color='white', colorSpace='rgb', opacity=1, 
-    languageStyle='LTR',
+    color='white', colorSpace='rgb', opacity=1,
     depth=-7.0);
 text_18 = visual.TextStim(win=win, name='text_18',
     text='2',
     font='Arial',
     pos=[-0.5, -0.58], height=0.3, wrapWidth=None, ori=0, 
-    color='white', colorSpace='rgb', opacity=1, 
-    languageStyle='LTR',
+    color='white', colorSpace='rgb', opacity=1,
     depth=-8.0);
 text_19 = visual.TextStim(win=win, name='text_19',
     text='3',
     font='Arial',
     pos=[-0.2, -0.58], height=0.3, wrapWidth=None, ori=0, 
-    color='white', colorSpace='rgb', opacity=1, 
-    languageStyle='LTR',
+    color='white', colorSpace='rgb', opacity=1,
     depth=-9.0);
 text_20 = visual.TextStim(win=win, name='text_20',
     text='4',
     font='Arial',
     pos=[0.1, -0.58], height=0.3, wrapWidth=None, ori=0, 
-    color='white', colorSpace='rgb', opacity=1, 
-    languageStyle='LTR',
+    color='white', colorSpace='rgb', opacity=1,
     depth=-10.0);
 text_21 = visual.TextStim(win=win, name='text_21',
     text='5',
     font='Arial',
     pos=[0.4, -0.58], height=0.3, wrapWidth=None, ori=0, 
-    color='white', colorSpace='rgb', opacity=1, 
-    languageStyle='LTR',
+    color='white', colorSpace='rgb', opacity=1,
     depth=-11.0);
 text_46 = visual.TextStim(win=win, name='text_46',
     text='6',
     font='Arial',
     pos=[0.7,  -0.58], height=0.3, wrapWidth=None, ori=0, 
-    color='white', colorSpace='rgb', opacity=1, 
-    languageStyle='LTR',
+    color='white', colorSpace='rgb', opacity=1,
     depth=-12.0);
 text_91 = visual.TextStim(win=win, name='text_91',
     text='Tutorial',
     font='Arial',
     pos=(-0.8, 0.8), height=1.0, wrapWidth=None, ori=0, 
-    color='white', colorSpace='rgb', opacity=1, 
-    languageStyle='LTR',
+    color='white', colorSpace='rgb', opacity=1,
     depth=-13.0);
 
 # Initialize components for Routine "ev_save"
@@ -1734,15 +1680,13 @@ text_50 = visual.TextStim(win=win, name='text_50',
     text='default text',
     font='Arial',
     pos=(0, 0.2), height=0.1, wrapWidth=None, ori=0, 
-    color='white', colorSpace='rgb', opacity=1, 
-    languageStyle='LTR',
+    color='white', colorSpace='rgb', opacity=1,
     depth=-1.0);
 text_65 = visual.TextStim(win=win, name='text_65',
     text='Press SPACE to continue!',
     font='Arial',
     pos=(0, -0.6), height=0.1, wrapWidth=None, ori=0, 
-    color='white', colorSpace='rgb', opacity=1, 
-    languageStyle='LTR',
+    color='white', colorSpace='rgb', opacity=1,
     depth=-3.0);
 polygon_10 = visual.Rect(
     win=win, name='polygon_10',
@@ -1755,8 +1699,7 @@ text_92 = visual.TextStim(win=win, name='text_92',
     text='Tutorial',
     font='Arial',
     pos=(-0.8, 0.8), height=1.0, wrapWidth=None, ori=0, 
-    color='white', colorSpace='rgb', opacity=1, 
-    languageStyle='LTR',
+    color='white', colorSpace='rgb', opacity=1,
     depth=-5.0);
 image_29 = visual.ImageStim(
     win=win, name='image_29',
@@ -1793,13 +1736,6 @@ image_38 = visual.ImageStim(
     color=[1,1,1], colorSpace='rgb', opacity=1.0,
     flipHoriz=False, flipVert=False,
     texRes=128, interpolate=True, depth=-10.0)
-text_122 = visual.TextStim(win=win, name='text_122',
-    text='default text',
-    font='Arial',
-    pos=(0, -0.8), height=0.1, wrapWidth=None, ori=0, 
-    color='white', colorSpace='rgb', opacity=1, 
-    languageStyle='LTR',
-    depth=-11.0);
 
 # Initialize components for Routine "eff_expl2"
 eff_expl2Clock = core.Clock()
@@ -1808,8 +1744,7 @@ text_70 = visual.TextStim(win=win, name='text_70',
     text='The size of the reward will change:',
     font='Arial',
     pos=(0, 0.85), height=0.1, wrapWidth=None, ori=0, 
-    color='white', colorSpace='rgb', opacity=1, 
-    languageStyle='LTR',
+    color='white', colorSpace='rgb', opacity=1,
     depth=-1.0);
 image_8 = visual.ImageStim(
     win=win, name='image_8',
@@ -1836,15 +1771,13 @@ text_71 = visual.TextStim(win=win, name='text_71',
     text='Press SPACE to continue!',
     font='Arial',
     pos=(0, -0.8), height=0.1, wrapWidth=None, ori=0, 
-    color='white', colorSpace='rgb', opacity=1, 
-    languageStyle='LTR',
+    color='white', colorSpace='rgb', opacity=1,
     depth=-6.0);
 text_93 = visual.TextStim(win=win, name='text_93',
     text='Tutorial',
     font='Arial',
     pos=(-0.8, 0.8), height=1.0, wrapWidth=None, ori=0, 
-    color='white', colorSpace='rgb', opacity=1, 
-    languageStyle='LTR',
+    color='white', colorSpace='rgb', opacity=1,
     depth=-7.0);
 polygon_11 = visual.Rect(
     win=win, name='polygon_11',
@@ -1882,8 +1815,7 @@ text_77 = visual.TextStim(win=win, name='text_77',
     text='You will see both the picture type and reward:',
     font='Arial',
     pos=(0, 0.8), height=0.1, wrapWidth=None, ori=0, 
-    color='white', colorSpace='rgb', opacity=1, 
-    languageStyle='LTR',
+    color='white', colorSpace='rgb', opacity=1,
     depth=-1.0);
 image_16 = visual.ImageStim(
     win=win, name='image_16',
@@ -1896,15 +1828,13 @@ text_83 = visual.TextStim(win=win, name='text_83',
     text='Press SPACE to continue.',
     font='Arial',
     pos=(0, -0.8), height=0.1, wrapWidth=None, ori=0, 
-    color='white', colorSpace='rgb', opacity=1, 
-    languageStyle='LTR',
+    color='white', colorSpace='rgb', opacity=1,
     depth=-4.0);
 text_95 = visual.TextStim(win=win, name='text_95',
     text='Tutorial',
     font='Arial',
     pos=(-0.8, 0.8), height=1.0, wrapWidth=None, ori=0, 
-    color='white', colorSpace='rgb', opacity=1, 
-    languageStyle='LTR',
+    color='white', colorSpace='rgb', opacity=1,
     depth=-5.0);
 polygon_13 = visual.Rect(
     win=win, name='polygon_13',
@@ -1924,22 +1854,19 @@ text_28 = visual.TextStim(win=win, name='text_28',
     text='And will choose between playing it out or not:',
     font='Arial',
     pos=(0, -0.2), height=0.1, wrapWidth=None, ori=0, 
-    color='white', colorSpace='rgb', opacity=1, 
-    languageStyle='LTR',
+    color='white', colorSpace='rgb', opacity=1,
     depth=-8.0);
 text_62 = visual.TextStim(win=win, name='text_62',
     text='Yes',
     font='Arial',
     pos=(0.2, -0.4), height=0.1, wrapWidth=None, ori=0, 
-    color='white', colorSpace='rgb', opacity=1, 
-    languageStyle='LTR',
+    color='white', colorSpace='rgb', opacity=1,
     depth=-9.0);
 text_63 = visual.TextStim(win=win, name='text_63',
     text='No',
     font='Arial',
     pos=(-0.2, -0.4), height=0.1, wrapWidth=None, ori=0, 
-    color='white', colorSpace='rgb', opacity=1, 
-    languageStyle='LTR',
+    color='white', colorSpace='rgb', opacity=1,
     depth=-10.0);
 
 # Initialize components for Routine "eff_practice"
@@ -1948,8 +1875,7 @@ text_104 = visual.TextStim(win=win, name='text_104',
     text="Let's practice!",
     font='Arial',
     pos=(0, 0), height=0.1, wrapWidth=None, ori=0, 
-    color='white', colorSpace='rgb', opacity=1, 
-    languageStyle='LTR',
+    color='white', colorSpace='rgb', opacity=1,
     depth=0.0);
 
 # Initialize components for Routine "eff_midway"
@@ -1959,8 +1885,7 @@ text_99 = visual.TextStim(win=win, name='text_99',
     text='Now you will be choosing for:',
     font='Arial',
     pos=(0, 0.9), height=0.1, wrapWidth=None, ori=0, 
-    color='white', colorSpace='rgb', opacity=1, 
-    languageStyle='LTR',
+    color='white', colorSpace='rgb', opacity=1,
     depth=-1.0);
 image_27 = visual.ImageStim(
     win=win, name='image_27',
@@ -1987,8 +1912,7 @@ text_105 = visual.TextStim(win=win, name='text_105',
     text='Press SPACE to continue.',
     font='Arial',
     pos=(0, -0.9), height=0.1, wrapWidth=None, ori=0, 
-    color='white', colorSpace='rgb', opacity=1, 
-    languageStyle='LTR',
+    color='white', colorSpace='rgb', opacity=1,
     depth=-6.0);
 image_39 = visual.ImageStim(
     win=win, name='image_39',
@@ -2019,15 +1943,13 @@ text_26 = visual.TextStim(win=win, name='text_26',
     text='Now the main game begins!',
     font='Arial',
     pos=(0, 0), height=0.1, wrapWidth=None, ori=0, 
-    color='white', colorSpace='rgb', opacity=1, 
-    languageStyle='LTR',
+    color='white', colorSpace='rgb', opacity=1,
     depth=-1.0);
 text_27 = visual.TextStim(win=win, name='text_27',
     text='Press SPACE to continue!',
     font='Arial',
     pos=(0, -0.6), height=0.1, wrapWidth=None, ori=0, 
-    color='white', colorSpace='rgb', opacity=1, 
-    languageStyle='LTR',
+    color='white', colorSpace='rgb', opacity=1,
     depth=-2.0);
 
 # Initialize components for Routine "eff_press"
@@ -2058,44 +1980,26 @@ text_96 = visual.TextStim(win=win, name='text_96',
     text='Tutorial',
     font='Arial',
     pos=(-0.8, 0.8), height=1.0, wrapWidth=None, ori=0, 
-    color='white', colorSpace='rgb', opacity=1, 
-    languageStyle='LTR',
+    color='white', colorSpace='rgb', opacity=1,
     depth=-4.0);
 text_114 = visual.TextStim(win=win, name='text_114',
-    text='Please try to respond faster',
+    text='Please respond faster.',
     font='Arial',
     pos=(0, 0.8), height=0.1, wrapWidth=None, ori=0, 
-    color='blue', colorSpace='rgb', opacity=1, 
-    languageStyle='LTR',
+    color='blue', colorSpace='rgb', opacity=1,
     depth=-5.0);
 text_78 = visual.TextStim(win=win, name='text_78',
     text='Yes',
     font='Arial',
     pos=[0,0], height=0.1, wrapWidth=None, ori=0, 
-    color='white', colorSpace='rgb', opacity=1, 
-    languageStyle='LTR',
+    color='white', colorSpace='rgb', opacity=1,
     depth=-7.0);
 text_118 = visual.TextStim(win=win, name='text_118',
     text='No',
     font='Arial',
     pos=[0,0], height=0.1, wrapWidth=None, ori=0, 
-    color='white', colorSpace='rgb', opacity=1, 
-    languageStyle='LTR',
+    color='white', colorSpace='rgb', opacity=1,
     depth=-8.0);
-text_123 = visual.TextStim(win=win, name='text_123',
-    text='default text',
-    font='Arial',
-    pos=(0, -0.8), height=0.1, wrapWidth=None, ori=0, 
-    color='white', colorSpace='rgb', opacity=1, 
-    languageStyle='LTR',
-    depth=-9.0);
-text_124 = visual.TextStim(win=win, name='text_124',
-    text='default text',
-    font='Arial',
-    pos=(0, 0.8), height=0.1, wrapWidth=None, ori=0, 
-    color='white', colorSpace='rgb', opacity=1, 
-    languageStyle='LTR',
-    depth=-10.0);
 
 # Initialize components for Routine "eff_feed"
 eff_feedClock = core.Clock()
@@ -2118,8 +2022,7 @@ text_97 = visual.TextStim(win=win, name='text_97',
     text='Tutorial',
     font='Arial',
     pos=(-0.8, 0.8), height=1.0, wrapWidth=None, ori=0, 
-    color='white', colorSpace='rgb', opacity=1, 
-    languageStyle='LTR',
+    color='white', colorSpace='rgb', opacity=1,
     depth=-3.0);
 polygon_15 = visual.Rect(
     win=win, name='polygon_15',
@@ -2132,15 +2035,13 @@ text_119 = visual.TextStim(win=win, name='text_119',
     text='Yes',
     font='Arial',
     pos=[0,0], height=0.1, wrapWidth=None, ori=0, 
-    color='white', colorSpace='rgb', opacity=1, 
-    languageStyle='LTR',
+    color=1.0, colorSpace='rgb', opacity=1,
     depth=-5.0);
 text_120 = visual.TextStim(win=win, name='text_120',
     text='No',
     font='Arial',
     pos=[0,0], height=0.1, wrapWidth=None, ori=0, 
-    color='white', colorSpace='rgb', opacity=1, 
-    languageStyle='LTR',
+    color=1.0, colorSpace='rgb', opacity=1,
     depth=-6.0);
 
 # Initialize components for Routine "transition3"
@@ -2150,15 +2051,13 @@ text_43 = visual.TextStim(win=win, name='text_43',
     text="Let's continue with the next game!",
     font='Arial',
     pos=(0, 0), height=0.1, wrapWidth=None, ori=0, 
-    color='white', colorSpace='rgb', opacity=1, 
-    languageStyle='LTR',
+    color='white', colorSpace='rgb', opacity=1,
     depth=-1.0);
 text_121 = visual.TextStim(win=win, name='text_121',
     text='Press SPACE to continue.',
     font='Arial',
     pos=(0, -0.6), height=0.1, wrapWidth=None, ori=0, 
-    color='white', colorSpace='rgb', opacity=1, 
-    languageStyle='LTR',
+    color='white', colorSpace='rgb', opacity=1,
     depth=-3.0);
 
 # Initialize components for Routine "go_expl"
@@ -2168,22 +2067,19 @@ text_low = visual.TextStim(win=win, name='text_low',
     text='default text',
     font='Arial',
     pos=(0, -0.2), height=0.1, wrapWidth=None, ori=0, 
-    color='white', colorSpace='rgb', opacity=1, 
-    languageStyle='LTR',
+    color='white', colorSpace='rgb', opacity=1,
     depth=-1.0);
 text_85 = visual.TextStim(win=win, name='text_85',
     text='Press SPACE to continue!',
     font='Arial',
     pos=(0, -0.9), height=0.1, wrapWidth=None, ori=0, 
-    color='white', colorSpace='rgb', opacity=1, 
-    languageStyle='LTR',
+    color='white', colorSpace='rgb', opacity=1,
     depth=-3.0);
 text_upp = visual.TextStim(win=win, name='text_upp',
     text='default text',
     font='Arial',
     pos=(0, 0.7), height=0.1, wrapWidth=None, ori=0, 
-    color='white', colorSpace='rgb', opacity=1, 
-    languageStyle='LTR',
+    color='white', colorSpace='rgb', opacity=1,
     depth=-4.0);
 image_upp = visual.ImageStim(
     win=win, name='image_upp',
@@ -2203,8 +2099,7 @@ text_100 = visual.TextStim(win=win, name='text_100',
     text='Tutorial',
     font='Arial',
     pos=(-0.8, 0.8), height=1.0, wrapWidth=None, ori=0, 
-    color='white', colorSpace='rgb', opacity=1, 
-    languageStyle='LTR',
+    color='white', colorSpace='rgb', opacity=1,
     depth=-7.0);
 polygon_16 = visual.Rect(
     win=win, name='polygon_16',
@@ -2220,8 +2115,7 @@ text_106 = visual.TextStim(win=win, name='text_106',
     text="Let's practice!",
     font='Arial',
     pos=(0, 0), height=0.1, wrapWidth=None, ori=0, 
-    color='white', colorSpace='rgb', opacity=1, 
-    languageStyle='LTR',
+    color='white', colorSpace='rgb', opacity=1,
     depth=0.0);
 
 # Initialize components for Routine "real_go_ann"
@@ -2231,48 +2125,24 @@ text = visual.TextStim(win=win, name='text',
     text='Now the main game begins!',
     font='Arial',
     pos=(0, 0), height=0.1, wrapWidth=None, ori=0, 
-    color='white', colorSpace='rgb', opacity=1, 
-    languageStyle='LTR',
+    color='white', colorSpace='rgb', opacity=1,
     depth=-1.0);
 text_81 = visual.TextStim(win=win, name='text_81',
-    text='Press SPACE to continue!',
+    text='Press RIGHT to continue!',
     font='Arial',
     pos=(0, -0.6), height=0.1, wrapWidth=None, ori=0, 
-    color='white', colorSpace='rgb', opacity=1, 
-    languageStyle='LTR',
+    color='white', colorSpace='rgb', opacity=1,
     depth=-2.0);
 
 # Initialize components for Routine "pause"
 pauseClock = core.Clock()
 text_90 = visual.TextStim(win=win, name='text_90',
-    text='Take a little break!',
+    text='You have a short break before the calibration!',
     font='Arial',
     pos=(0, 0), height=0.1, wrapWidth=None, ori=0, 
-    color='white', colorSpace='rgb', opacity=1, 
-    languageStyle='LTR',
+    color='white', colorSpace='rgb', opacity=1,
     depth=0.0);
 
-text_111 = visual.TextStim(win=win, name='text_111',
-    text='We start in 3',
-    font='Arial',
-    pos=(0, 0), height=0.1, wrapWidth=None, ori=0, 
-    color='white', colorSpace='rgb', opacity=1, 
-    languageStyle='LTR',
-    depth=-2.0);
-text_112 = visual.TextStim(win=win, name='text_112',
-    text='2',
-    font='Arial',
-    pos=(0, 0), height=0.1, wrapWidth=None, ori=0, 
-    color='white', colorSpace='rgb', opacity=1, 
-    languageStyle='LTR',
-    depth=-3.0);
-text_113 = visual.TextStim(win=win, name='text_113',
-    text='1',
-    font='Arial',
-    pos=(0, 0), height=0.1, wrapWidth=None, ori=0, 
-    color='white', colorSpace='rgb', opacity=1, 
-    languageStyle='LTR',
-    depth=-4.0);
 
 # Initialize components for Routine "beg_fix"
 beg_fixClock = core.Clock()
@@ -2288,8 +2158,7 @@ text_101 = visual.TextStim(win=win, name='text_101',
     text='Tutorial',
     font='Arial',
     pos=(-0.8, 0.8), height=1.0, wrapWidth=None, ori=0, 
-    color='white', colorSpace='rgb', opacity=1, 
-    languageStyle='LTR',
+    color='white', colorSpace='rgb', opacity=1,
     depth=-2.0);
 polygon_17 = visual.Rect(
     win=win, name='polygon_17',
@@ -2312,8 +2181,7 @@ text_108 = visual.TextStim(win=win, name='text_108',
     text='+',
     font='Arial',
     pos=(0, 0), height=0.1, wrapWidth=None, ori=0, 
-    color='white', colorSpace='rgb', opacity=1, 
-    languageStyle='LTR',
+    color='white', colorSpace='rgb', opacity=1,
     depth=0.0);
 
 # Initialize components for Routine "tar_ann"
@@ -2321,7 +2189,7 @@ tar_annClock = core.Clock()
 main_image = visual.ImageStim(
     win=win, name='main_image',units='pix', 
     image='sin', mask=None,
-    ori=0, pos=(0, 0), size=(207, 23),
+    ori=0, pos=(0, 0), size=(217, 25),
     color=[1,1,1], colorSpace='rgb', opacity=1,
     flipHoriz=False, flipVert=False,
     texRes=128, interpolate=True, depth=0.0)
@@ -2336,8 +2204,7 @@ text_102 = visual.TextStim(win=win, name='text_102',
     text='Tutorial',
     font='Arial',
     pos=(-0.8, 0.8), height=1.0, wrapWidth=None, ori=0, 
-    color='white', colorSpace='rgb', opacity=1, 
-    languageStyle='LTR',
+    color='white', colorSpace='rgb', opacity=1,
     depth=-3.0);
 
 # Initialize components for Routine "comp"
@@ -2346,23 +2213,21 @@ compClock = core.Clock()
 text_86 = visual.TextStim(win=win, name='text_86',
     text='default text',
     font='Arial',
-    pos=(0, 0.6), height=0.1, wrapWidth=None, ori=0, 
-    color='white', colorSpace='rgb', opacity=1, 
-    languageStyle='LTR',
+    pos=(0, 0.0), height=0.1, wrapWidth=None, ori=0, 
+    color=[0, 0, 0], colorSpace='rgb', opacity=1,
     depth=-1.0);
 image_22 = visual.ImageStim(
     win=win, name='image_22',
     image='sin', mask=None,
     ori=0, pos=(0, 0), size=(0.35, 0.5),
-    color=[90, 0, 1], colorSpace='dkl', opacity=1,
+    color=[90, 0, 1], colorSpace='dkl', opacity=0,
     flipHoriz=False, flipVert=False,
     texRes=128, interpolate=True, depth=-2.0)
 text_103 = visual.TextStim(win=win, name='text_103',
     text='Tutorial',
     font='Arial',
     pos=(-0.8, 0.8), height=1.0, wrapWidth=None, ori=0, 
-    color='white', colorSpace='rgb', opacity=1, 
-    languageStyle='LTR',
+    color='white', colorSpace='rgb', opacity=1,
     depth=-3.0);
 polygon_19 = visual.Rect(
     win=win, name='polygon_19',
@@ -2371,20 +2236,6 @@ polygon_19 = visual.Rect(
     lineWidth=10, lineColor=[1,-1,-1], lineColorSpace='rgb',
     fillColor=None, fillColorSpace='rgb',
     opacity=1.0, depth=-4.0, interpolate=True)
-text_116 = visual.TextStim(win=win, name='text_116',
-    text='default text',
-    font='Arial',
-    pos=(-0.4, -0.8), height=0.1, wrapWidth=None, ori=0, 
-    color='white', colorSpace='rgb', opacity=1, 
-    languageStyle='LTR',
-    depth=-5.0);
-text_117 = visual.TextStim(win=win, name='text_117',
-    text='default text',
-    font='Arial',
-    pos=(0.3, -0.8), height=0.1, wrapWidth=None, ori=0, 
-    color='white', colorSpace='rgb', opacity=1, 
-    languageStyle='LTR',
-    depth=-6.0);
 
 # Initialize components for Routine "cog_eff_instr"
 cog_eff_instrClock = core.Clock()
@@ -2393,16 +2244,18 @@ text_109 = visual.TextStim(win=win, name='text_109',
     text='default text',
     font='Arial',
     pos=(0, 0), height=0.1, wrapWidth=None, ori=0, 
-    color='white', colorSpace='rgb', opacity=1, 
-    languageStyle='LTR',
+    color='black', colorSpace='rgb', opacity=1,
     depth=-2.0);
 text_110 = visual.TextStim(win=win, name='text_110',
     text='Press SPACE to continue.',
     font='Arial',
     pos=(0, -0.8), height=0.1, wrapWidth=None, ori=0, 
-    color='white', colorSpace='rgb', opacity=1, 
-    languageStyle='LTR',
+    color='black', colorSpace='rgb', opacity=1,
     depth=-3.0);
+
+# Initialize components for Routine "calibration"
+calibrationClock = core.Clock()
+
 
 # Initialize components for Routine "cog_eff_fin_select"
 cog_eff_fin_selectClock = core.Clock()
@@ -2411,8 +2264,7 @@ text_115 = visual.TextStim(win=win, name='text_115',
     text='The computer selected:',
     font='Arial',
     pos=(0, 0.9), height=0.1, wrapWidth=None, ori=0, 
-    color='white', colorSpace='rgb', opacity=1, 
-    languageStyle='LTR',
+    color='black', colorSpace='rgb', opacity=1,
     depth=-1.0);
 image_31 = visual.ImageStim(
     win=win, name='image_31',
@@ -2431,13 +2283,14 @@ image_32 = visual.ImageStim(
 
 # Initialize components for Routine "cog_eff_fin"
 cog_eff_finClock = core.Clock()
+
 image_24 = visual.ImageStim(
     win=win, name='image_24',
     image='sin', mask=None,
     ori=0, pos=(0, 0.0), size=(1.5, 1.5),
-    color=[0,45,1], colorSpace='dkl', opacity=1,
+    color=[1,1,1], colorSpace='rgb', opacity=1,
     flipHoriz=False, flipVert=False,
-    texRes=128, interpolate=True, depth=0.0)
+    texRes=128, interpolate=True, depth=-1.0)
 
 # Initialize components for Routine "cog_eff_fin_answ"
 cog_eff_fin_answClock = core.Clock()
@@ -2446,8 +2299,7 @@ text_98 = visual.TextStim(win=win, name='text_98',
     text='default text',
     font='Arial',
     pos=(0, 0), height=0.1, wrapWidth=None, ori=0, 
-    color='white', colorSpace='rgb', opacity=1, 
-    languageStyle='LTR',
+    color='black', colorSpace='rgb', opacity=1,
     depth=-1.0);
 
 # Initialize components for Routine "nasa_tlx"
@@ -2457,14 +2309,17 @@ nasa_tlx_text = visual.TextStim(win=win, name='nasa_tlx_text',
     text='default text',
     font='Arial',
     pos=(0, 0.2), height=0.1, wrapWidth=None, ori=0, 
-    color='black', colorSpace='rgb', opacity=1, 
-    languageStyle='LTR',
+    color='black', colorSpace='rgb', opacity=1,
     depth=-1.0);
 rating_3 = visual.RatingScale(win=win, name='rating_3', size = 0.8,
 lineColor = 'black',
-stretch = 1.4,
+stretch = 1.8,
 textColor = "black",
-labels = ["Very Low", "Very High"])
+scale = None,
+labels = ['Very Low', 'Very High'],
+low = 1, 
+high = 20,
+mouseOnly = True)
 
 # Initialize components for Routine "juice_eval"
 juice_evalClock = core.Clock()
@@ -2473,15 +2328,13 @@ quest_prompt = visual.TextStim(win=win, name='quest_prompt',
     text='How much do you think 100ml of juice is worth? (please write down the number in pence, e.g. for one pound, write down 100) ',
     font='Arial',
     pos=(0, 0.2), height=0.1, wrapWidth=None, ori=0, 
-    color='black', colorSpace='rgb', opacity=1, 
-    languageStyle='LTR',
+    color='black', colorSpace='rgb', opacity=1,
     depth=-1.0);
 resp_box = visual.TextStim(win=win, name='resp_box',
     text='default text',
     font='Arial',
     pos=(0, -0.3), height=0.1, wrapWidth=None, ori=0, 
-    color='blue', colorSpace='rgb', opacity=1, 
-    languageStyle='LTR',
+    color='blue', colorSpace='rgb', opacity=1,
     depth=-3.0);
 
 # Initialize components for Routine "ev_pic"
@@ -2491,11 +2344,15 @@ rating_2 = visual.RatingScale(win=win, name='rating_2', size = 0.8,
 lineColor = 'black',
 stretch = 1.4,
 textColor = "black",
-labels = ["not at all", "extremely"])
+low = 1,
+mouseOnly = True,
+high = 7,
+scale = None,
+labels = ["Extremely dislike", "Extremely like"])
 image_2 = visual.ImageStim(
     win=win, name='image_2',units='pix', 
     image='sin', mask=None,
-    ori=0, pos=(0, 0.2), size=(207, 23),
+    ori=0, pos=(0, 0.2), size=(217, 25),
     color=[1,1,1], colorSpace='rgb', opacity=1,
     flipHoriz=False, flipVert=False,
     texRes=128, interpolate=True, depth=-2.0)
@@ -2503,8 +2360,7 @@ text_49 = visual.TextStim(win=win, name='text_49',
     text='How much do you like this picture?',
     font='Arial',
     pos=(0, 0.6), height=0.1, wrapWidth=None, ori=0, 
-    color='black', colorSpace='rgb', opacity=1, 
-    languageStyle='LTR',
+    color='black', colorSpace='rgb', opacity=1,
     depth=-3.0);
 
 # Initialize components for Routine "nfc_scale"
@@ -2514,20 +2370,26 @@ nfc_scale_text = visual.TextStim(win=win, name='nfc_scale_text',
     text='default text',
     font='Arial',
     pos=(0, 0), height=0.1, wrapWidth=None, ori=0, 
-    color='black', colorSpace='rgb', opacity=1, 
-    languageStyle='LTR',
+    color='black', colorSpace='rgb', opacity=1,
     depth=-1.0);
-rating_4 = visual.RatingScale(win=win, name='rating_4', marker='triangle', size=1.0, pos=[0.0, -0.4], low=1, high=5, labels=['extremely uncharacteristic of me', ' somewhat uncharacteristic of me', ' uncertain', ' somewhat characteristic of me', ' extremely characteristic of me'], scale='')
+rating_4 = visual.RatingScale(win=win, name='rating_4', size = 0.8,
+lineColor = 'black',
+stretch = 1.4,
+textColor = "black",
+scale = None,
+low = 1,
+high = 5,
+labels = ['extremely uncharacteristic of me', 'uncertain', 'extremely characteristic of me'])
 
 # Initialize components for Routine "final_screen"
 final_screenClock = core.Clock()
 text_48 = visual.TextStim(win=win, name='text_48',
-    text='That was all, you are done! Thank you for your participation :)',
+    text='That was all, a final short questionnaire will pop up shortly!',
     font='Arial',
     pos=(0, 0), height=0.1, wrapWidth=None, ori=0, 
-    color='black', colorSpace='rgb', opacity=1, 
-    languageStyle='LTR',
+    color='black', colorSpace='rgb', opacity=1,
     depth=0.0);
+
 
 # Create some handy timers
 globalClock = core.Clock()  # to track the time since experiment started
@@ -2587,41 +2449,32 @@ else:
     participant_age = find_age_bracket(part_year, part_month, age_children, participant_type)
     participant_type = 'child'
 
-go_pract = get_input_box(expInfo, 'go_pract', 1)     # number of practice trials | default is 20
+go_pract = get_input_box(expInfo, 'go_pract', 1)     # number of practice trials | default is 12
 eff_pract = get_input_box(expInfo, 'eff_pract', 1)
-
-halfway_go = halfway_go - go_pract
 
 out_type = str(type)                                   # we do this to avoid issues with reconverting type over and over 
 
-
-pic_eval = get_input_box(expInfo, 'pic_eval', 1) 
-
-if pic_eval == 1:
-    run_pic_eval_b = 1
+if random.random () > chance_level: 
+    run_pic_eval_b = 1#
     run_pic_eval_e = 0
 else:
-    run_pic_eval_b = 0
-    run_pic_eval_e = 1
+    run_pic_eval_e = 0
+    run_pic_eval_b = 1
 
 
 part_char = [exp_name, sub_id, out_type, dat, cwd]
 
 
 compl_go = set_filename(part_char, 'go')              # filename
-compl_eff = set_filename(part_char, 'eff')              # filename
 compl_ev = set_filename(part_char, 'ev')              # filename
 
 
 go_f = open(compl_go, 'w')                           # open a text file 
-eff_f = open(compl_eff, 'w')                           
 ev_f= open(compl_ev, 'w')                           
 
                                                         # in the first row we save header columns | add the others later
 
-go_f.write('trial \t reinforcer \t reward_size \t difficulty \t direction \t condition \t response \t rt \t sub_id \t cum_amount \t pump \t pump_vol \t pump_times\n') 
-eff_f.write('trial \t reinforcer \t reward_size \t difficulty \t choice \t rt \t sub_id \n')
-
+go_f.write('trial \t reinforcer \t reward_size \t difficulty \t direction \t condition \t response \t rt \t cum_money \t cum_juice \t sub_id \t pump \t pump_vol \t pump_times\n') 
 ev_f.write('trial \t quest1 \t quest1rt \t quest2 \t quest2rt \t quest3 \t quest3rt \t reinforcer \t sub_id \n')
 
 
@@ -2647,29 +2500,26 @@ if gust_connected:                                      # if we want to connect 
                                              # Keep in mind there should be at least a 10ms difference
                                              # between changing amount of juice and the actual squirting
                                              # sequence itself. 
-    dev.write('\13') # write to pump 1 
-    dev.write('\62') # set 5ml for tasting 
-    core.wait(0.2)
+    dev.write('\13') # write to pump 1
+    core.wait(0.1)
+    dev.write('\74') # set 5ml for tasting 
+    core.wait(0.1)
     dev.write('\14') # write to pump 2
-    dev.write('\62') # set 5ml for tasting 
-    core.wait(0.2)
+    core.wait(0.1)
+    dev.write('\74') # set 5ml for tasting 
+    core.wait(0.1)
     dev.write('\15') # write to pump 3
-    dev.write('\62') # set 5ml for tasting 
-    core.wait(0.2)
+    core.wait(0.1)
+    dev.write('\74') # set 5ml for tasting 
+    core.wait(0.1)
     dev.write('\16') # write to water 
-    dev.write('106') # give them 7ml of water to rinse 
-    core.wait(0.2)
+    core.wait(0.1)
+    dev.write('\62') # give them 5ml of water to rinse 
+    core.wait(0.1)
 
 
     if(dev.isOpen() == False):              # safety feature to make sure port is open 
         dev.open()
-
-
-if et_connected:
-    eyetracker_file = 'data/eyetracker/eyetracker_' + sub_id + '_' + dat + '.tsv'
-    controller.open_datafile(eyetracker_file, embed_events=False)
-
-
 
 # keep track of which components have finished
 instr1Components = [instr1_resp, text_7, text_9]
@@ -2716,10 +2566,6 @@ while continueRoutine:
         text_9.frameNStart = frameN  # exact frame index
         text_9.setAutoDraw(True)
     
-    # check for quit (typically the Esc key)
-    if endExpNow or event.getKeys(keyList=["escape"]):
-        core.quit()
-    
     # check if all components have finished
     if not continueRoutine:  # a component has requested a forced-end of Routine
         break
@@ -2729,6 +2575,10 @@ while continueRoutine:
             continueRoutine = True
             break  # at least one component has not yet finished
     
+    # check for quit (the Esc key)
+    if endExpNow or event.getKeys(keyList=["escape"]):
+        core.quit()
+    
     # refresh the screen
     if continueRoutine:  # don't flip if this routine is over or we'll get a blank screen
         win.flip()
@@ -2737,61 +2587,54 @@ while continueRoutine:
 for thisComponent in instr1Components:
     if hasattr(thisComponent, "setAutoDraw"):
         thisComponent.setAutoDraw(False)
+# if something goes wrong, you can eliminate individual parts of the experiment
+#run_debug = 0
+#run_begin_instr = 0
+#run_rew = 0
+#run_effort = 0
+#run_ev = 0
+#run_fin_eff = 0
+#run_all = 1
+#run_matrix = 0
+#run_est_sal = 1
+#run_juice_reeval = 1
+#run_cog_eff_instr = 1
+#run_fin_eff = 1
+#run_eff_tr = 0
 
+run_last = 0  # this should only be on if the main task crashed and you want
+          # to run only the selection of picture sequencs in the end
+          
+          
+if not run_last:                                            # so it doesn't crash.
+    compl_eff = set_filename(part_char, 'eff')              # filename
+    eff_f = open(compl_eff, 'w')                           
+    eff_f.write('trial \t reinforcer \t reward_size \t difficulty \t choice \t rt \t sub_id \n')
+    
+    
+    
+all_trials = []
+
+try:
+    part_file = 'trial_gen/part_' + sub_id + '.csv'
+
+    with open(part_file, 'r') as f:
+        raw_trial_data = f.readlines()
+        print(raw_trial_data)
+
+
+    for trial in raw_trial_data[1:]: # remove the header
+    # trial, reinforcer, reward_size, difficulty, position, trial_type, stimulus, correct_resp
+        tr, rf, rs, df, ps, tt, st, cr = trial.split(',')
+        cr = cr.split('\n')[0] # remove the newline
+        all_trials.append([tr, rf, rs, df, ps, tt, st, cr])
+
+    print("Correctly extracted participant data")
+
+
+except ValueError:
+        print("Couldn't open the participant file, check what's up with this.")
 # the Routine "instr1" was not non-slip safe, so reset the non-slip timer
-routineTimer.reset()
-
-# ------Prepare to start Routine "calibration"-------
-t = 0
-calibrationClock.reset()  # clock
-frameN = -1
-continueRoutine = True
-# update component parameters for each repeat
-win.setColor('gray')
-controller.subscribe()
-
-if et_connected:
-    ret = controller.run_calibration(
-        [(-0.4,0.4), (0.4,0.4) , (0.0,0.0), (-0.4,-0.4), (0.4,-0.4)],
-        )
-
-# keep track of which components have finished
-calibrationComponents = []
-for thisComponent in calibrationComponents:
-    if hasattr(thisComponent, 'status'):
-        thisComponent.status = NOT_STARTED
-
-# -------Start Routine "calibration"-------
-while continueRoutine:
-    # get current time
-    t = calibrationClock.getTime()
-    frameN = frameN + 1  # number of completed frames (so 0 is the first frame)
-    # update/draw components on each frame
-    
-    
-    # check for quit (typically the Esc key)
-    if endExpNow or event.getKeys(keyList=["escape"]):
-        core.quit()
-    
-    # check if all components have finished
-    if not continueRoutine:  # a component has requested a forced-end of Routine
-        break
-    continueRoutine = False  # will revert to True if at least one component still running
-    for thisComponent in calibrationComponents:
-        if hasattr(thisComponent, "status") and thisComponent.status != FINISHED:
-            continueRoutine = True
-            break  # at least one component has not yet finished
-    
-    # refresh the screen
-    if continueRoutine:  # don't flip if this routine is over or we'll get a blank screen
-        win.flip()
-
-# -------Ending Routine "calibration"-------
-for thisComponent in calibrationComponents:
-    if hasattr(thisComponent, "setAutoDraw"):
-        thisComponent.setAutoDraw(False)
-
-# the Routine "calibration" was not non-slip safe, so reset the non-slip timer
 routineTimer.reset()
 
 # set up handler to look after randomisation of conditions etc
@@ -2803,15 +2646,15 @@ thisExp.addLoop(trials_6)  # add the loop to the experiment
 thisTrial_6 = trials_6.trialList[0]  # so we can initialise stimuli with some values
 # abbreviate parameter names if possible (e.g. rgb = thisTrial_6.rgb)
 if thisTrial_6 != None:
-    for paramName in thisTrial_6:
-        exec('{} = thisTrial_6[paramName]'.format(paramName))
+    for paramName in thisTrial_6.keys():
+        exec(paramName + '= thisTrial_6.' + paramName)
 
 for thisTrial_6 in trials_6:
     currentLoop = trials_6
     # abbreviate parameter names if possible (e.g. rgb = thisTrial_6.rgb)
     if thisTrial_6 != None:
-        for paramName in thisTrial_6:
-            exec('{} = thisTrial_6[paramName]'.format(paramName))
+        for paramName in thisTrial_6.keys():
+            exec(paramName + '= thisTrial_6.' + paramName)
     
     # ------Prepare to start Routine "instr2"-------
     t = 0
@@ -2920,10 +2763,6 @@ for thisTrial_6 in trials_6:
             image_19.frameNStart = frameN  # exact frame index
             image_19.setAutoDraw(True)
         
-        # check for quit (typically the Esc key)
-        if endExpNow or event.getKeys(keyList=["escape"]):
-            core.quit()
-        
         # check if all components have finished
         if not continueRoutine:  # a component has requested a forced-end of Routine
             break
@@ -2932,6 +2771,10 @@ for thisTrial_6 in trials_6:
             if hasattr(thisComponent, "status") and thisComponent.status != FINISHED:
                 continueRoutine = True
                 break  # at least one component has not yet finished
+        
+        # check for quit (the Esc key)
+        if endExpNow or event.getKeys(keyList=["escape"]):
+            core.quit()
         
         # refresh the screen
         if continueRoutine:  # don't flip if this routine is over or we'll get a blank screen
@@ -2969,15 +2812,15 @@ thisExp.addLoop(first_loop)  # add the loop to the experiment
 thisFirst_loop = first_loop.trialList[0]  # so we can initialise stimuli with some values
 # abbreviate parameter names if possible (e.g. rgb = thisFirst_loop.rgb)
 if thisFirst_loop != None:
-    for paramName in thisFirst_loop:
-        exec('{} = thisFirst_loop[paramName]'.format(paramName))
+    for paramName in thisFirst_loop.keys():
+        exec(paramName + '= thisFirst_loop.' + paramName)
 
 for thisFirst_loop in first_loop:
     currentLoop = first_loop
     # abbreviate parameter names if possible (e.g. rgb = thisFirst_loop.rgb)
     if thisFirst_loop != None:
-        for paramName in thisFirst_loop:
-            exec('{} = thisFirst_loop[paramName]'.format(paramName))
+        for paramName in thisFirst_loop.keys():
+            exec(paramName + '= thisFirst_loop.' + paramName)
     
     # ------Prepare to start Routine "part1"-------
     t = 0
@@ -3037,10 +2880,6 @@ for thisFirst_loop in first_loop:
             text_87.frameNStart = frameN  # exact frame index
             text_87.setAutoDraw(True)
         
-        # check for quit (typically the Esc key)
-        if endExpNow or event.getKeys(keyList=["escape"]):
-            core.quit()
-        
         # check if all components have finished
         if not continueRoutine:  # a component has requested a forced-end of Routine
             break
@@ -3049,6 +2888,10 @@ for thisFirst_loop in first_loop:
             if hasattr(thisComponent, "status") and thisComponent.status != FINISHED:
                 continueRoutine = True
                 break  # at least one component has not yet finished
+        
+        # check for quit (the Esc key)
+        if endExpNow or event.getKeys(keyList=["escape"]):
+            core.quit()
         
         # refresh the screen
         if continueRoutine:  # don't flip if this routine is over or we'll get a blank screen
@@ -3077,15 +2920,15 @@ for thisFirst_loop in first_loop:
     thisMat_tr = mat_tr.trialList[0]  # so we can initialise stimuli with some values
     # abbreviate parameter names if possible (e.g. rgb = thisMat_tr.rgb)
     if thisMat_tr != None:
-        for paramName in thisMat_tr:
-            exec('{} = thisMat_tr[paramName]'.format(paramName))
+        for paramName in thisMat_tr.keys():
+            exec(paramName + '= thisMat_tr.' + paramName)
     
     for thisMat_tr in mat_tr:
         currentLoop = mat_tr
         # abbreviate parameter names if possible (e.g. rgb = thisMat_tr.rgb)
         if thisMat_tr != None:
-            for paramName in thisMat_tr:
-                exec('{} = thisMat_tr[paramName]'.format(paramName))
+            for paramName in thisMat_tr.keys():
+                exec(paramName + '= thisMat_tr.' + paramName)
         
         # ------Prepare to start Routine "mat_ev"-------
         t = 0
@@ -3263,10 +3106,6 @@ for thisFirst_loop in first_loop:
                 diagnostics_3.frameNStart = frameN  # exact frame index
                 diagnostics_3.setAutoDraw(True)
             
-            # check for quit (typically the Esc key)
-            if endExpNow or event.getKeys(keyList=["escape"]):
-                core.quit()
-            
             # check if all components have finished
             if not continueRoutine:  # a component has requested a forced-end of Routine
                 break
@@ -3275,6 +3114,10 @@ for thisFirst_loop in first_loop:
                 if hasattr(thisComponent, "status") and thisComponent.status != FINISHED:
                     continueRoutine = True
                     break  # at least one component has not yet finished
+            
+            # check for quit (the Esc key)
+            if endExpNow or event.getKeys(keyList=["escape"]):
+                core.quit()
             
             # refresh the screen
             if continueRoutine:  # don't flip if this routine is over or we'll get a blank screen
@@ -3411,10 +3254,6 @@ for thisFirst_loop in first_loop:
                 polygon_5.frameNStart = frameN  # exact frame index
                 polygon_5.setAutoDraw(True)
             
-            # check for quit (typically the Esc key)
-            if endExpNow or event.getKeys(keyList=["escape"]):
-                core.quit()
-            
             # check if all components have finished
             if not continueRoutine:  # a component has requested a forced-end of Routine
                 break
@@ -3423,6 +3262,10 @@ for thisFirst_loop in first_loop:
                 if hasattr(thisComponent, "status") and thisComponent.status != FINISHED:
                     continueRoutine = True
                     break  # at least one component has not yet finished
+            
+            # check for quit (the Esc key)
+            if endExpNow or event.getKeys(keyList=["escape"]):
+                core.quit()
             
             # refresh the screen
             if continueRoutine:  # don't flip if this routine is over or we'll get a blank screen
@@ -3491,15 +3334,15 @@ for thisFirst_loop in first_loop:
         thisMatrix_re = matrix_re.trialList[0]  # so we can initialise stimuli with some values
         # abbreviate parameter names if possible (e.g. rgb = thisMatrix_re.rgb)
         if thisMatrix_re != None:
-            for paramName in thisMatrix_re:
-                exec('{} = thisMatrix_re[paramName]'.format(paramName))
+            for paramName in thisMatrix_re.keys():
+                exec(paramName + '= thisMatrix_re.' + paramName)
         
         for thisMatrix_re in matrix_re:
             currentLoop = matrix_re
             # abbreviate parameter names if possible (e.g. rgb = thisMatrix_re.rgb)
             if thisMatrix_re != None:
-                for paramName in thisMatrix_re:
-                    exec('{} = thisMatrix_re[paramName]'.format(paramName))
+                for paramName in thisMatrix_re.keys():
+                    exec(paramName + '= thisMatrix_re.' + paramName)
             
             # ------Prepare to start Routine "mat_re"-------
             t = 0
@@ -3560,10 +3403,6 @@ for thisFirst_loop in first_loop:
                     diagnostics_2.frameNStart = frameN  # exact frame index
                     diagnostics_2.setAutoDraw(True)
                 
-                # check for quit (typically the Esc key)
-                if endExpNow or event.getKeys(keyList=["escape"]):
-                    core.quit()
-                
                 # check if all components have finished
                 if not continueRoutine:  # a component has requested a forced-end of Routine
                     break
@@ -3572,6 +3411,10 @@ for thisFirst_loop in first_loop:
                     if hasattr(thisComponent, "status") and thisComponent.status != FINISHED:
                         continueRoutine = True
                         break  # at least one component has not yet finished
+                
+                # check for quit (the Esc key)
+                if endExpNow or event.getKeys(keyList=["escape"]):
+                    core.quit()
                 
                 # refresh the screen
                 if continueRoutine:  # don't flip if this routine is over or we'll get a blank screen
@@ -3664,7 +3507,14 @@ for thisFirst_loop in first_loop:
         elif f_r not in stor_matrix_ans:
             ans_sum = str(sum(stor_matrix_ans.values()) + 3)            # this necessarily means reverse wasnt entered so this is ok
     
-        print("This is ans sum {} and this is stor matrix ans {}".format(ans_sum, stor_matrix_ans))
+    #    print("This is ans sum {} and this is stor matrix ans {}".format(ans_sum, stor_matrix_ans))
+    
+    ## if something goes wrong, here you can enter the participant type ('adult', 'child'), age (look for corresponding
+    ## bracket in the beginning, and ans sum which is the number of correct answers in the matrix task as a string
+    # participant_type = 
+    # participant_age = 
+    #    ans_sum = 25
+    
     
     
         part_t = matrix_reason[participant_type][participant_age][ans_sum]
@@ -3762,7 +3612,7 @@ for thisFirst_loop in first_loop:
         t = ''
         ans_sum = ''
         tmp_list = []
-        elems = [15, 21, 24, 30]
+        elems = [15, 21, 24, 30]    # 
     text_66.setText(part_t)
     text_67.setText(t)
     key_resp_7 = event.BuilderKeyResponse()
@@ -3837,10 +3687,6 @@ for thisFirst_loop in first_loop:
             text_69.frameNStart = frameN  # exact frame index
             text_69.setAutoDraw(True)
         
-        # check for quit (typically the Esc key)
-        if endExpNow or event.getKeys(keyList=["escape"]):
-            core.quit()
-        
         # check if all components have finished
         if not continueRoutine:  # a component has requested a forced-end of Routine
             break
@@ -3849,6 +3695,10 @@ for thisFirst_loop in first_loop:
             if hasattr(thisComponent, "status") and thisComponent.status != FINISHED:
                 continueRoutine = True
                 break  # at least one component has not yet finished
+        
+        # check for quit (the Esc key)
+        if endExpNow or event.getKeys(keyList=["escape"]):
+            core.quit()
         
         # refresh the screen
         if continueRoutine:  # don't flip if this routine is over or we'll get a blank screen
@@ -3930,7 +3780,7 @@ for thisFirst_loop in first_loop:
     routineTimer.reset()
     
     # set up handler to look after randomisation of conditions etc
-    init_qs = data.TrialHandler(nReps=0, method='random', 
+    init_qs = data.TrialHandler(nReps=1, method='random', 
         extraInfo=expInfo, originPath=-1,
         trialList=data.importConditions('initial_q.csv'),
         seed=None, name='init_qs')
@@ -3938,15 +3788,15 @@ for thisFirst_loop in first_loop:
     thisInit_q = init_qs.trialList[0]  # so we can initialise stimuli with some values
     # abbreviate parameter names if possible (e.g. rgb = thisInit_q.rgb)
     if thisInit_q != None:
-        for paramName in thisInit_q:
-            exec('{} = thisInit_q[paramName]'.format(paramName))
+        for paramName in thisInit_q.keys():
+            exec(paramName + '= thisInit_q.' + paramName)
     
     for thisInit_q in init_qs:
         currentLoop = init_qs
         # abbreviate parameter names if possible (e.g. rgb = thisInit_q.rgb)
         if thisInit_q != None:
-            for paramName in thisInit_q:
-                exec('{} = thisInit_q[paramName]'.format(paramName))
+            for paramName in thisInit_q.keys():
+                exec(paramName + '= thisInit_q.' + paramName)
         
         # ------Prepare to start Routine "ev_iniq"-------
         t = 0
@@ -3988,10 +3838,6 @@ for thisFirst_loop in first_loop:
                 text_44.frameNStart = frameN  # exact frame index
                 text_44.setAutoDraw(True)
             
-            # check for quit (typically the Esc key)
-            if endExpNow or event.getKeys(keyList=["escape"]):
-                core.quit()
-            
             # check if all components have finished
             if not continueRoutine:  # a component has requested a forced-end of Routine
                 break
@@ -4000,6 +3846,10 @@ for thisFirst_loop in first_loop:
                 if hasattr(thisComponent, "status") and thisComponent.status != FINISHED:
                     continueRoutine = True
                     break  # at least one component has not yet finished
+            
+            # check for quit (the Esc key)
+            if endExpNow or event.getKeys(keyList=["escape"]):
+                core.quit()
             
             # refresh the screen
             if continueRoutine:  # don't flip if this routine is over or we'll get a blank screen
@@ -4037,11 +3887,6 @@ for thisFirst_loop in first_loop:
             tmp_list = [el2 for el1, el2 in stor_init_q] # extract question answers
             tmp_list.append(sub_id)
         
-            print(tmp_list)
-            print(struct_1)
-            print(struct_2)
-            print(stor_init_q)
-        
             init_q_data.write(struct_2.format(tmp_list[0], tmp_list[1], tmp_list[2], tmp_list[3], tmp_list[4]))
             init_q_data.close()
             print("Successfully saved the initial evaluation dataset.")
@@ -4055,7 +3900,7 @@ for thisFirst_loop in first_loop:
         init_qs.addData('rating.response', rating.getRating())
         # the Routine "ev_iniq" was not non-slip safe, so reset the non-slip timer
         routineTimer.reset()
-    # completed 0 repeats of 'init_qs'
+    # completed 1 repeats of 'init_qs'
     
     
     # set up handler to look after randomisation of conditions etc
@@ -4067,15 +3912,15 @@ for thisFirst_loop in first_loop:
     thisTrial_pic_eval = trial_pic_eval.trialList[0]  # so we can initialise stimuli with some values
     # abbreviate parameter names if possible (e.g. rgb = thisTrial_pic_eval.rgb)
     if thisTrial_pic_eval != None:
-        for paramName in thisTrial_pic_eval:
-            exec('{} = thisTrial_pic_eval[paramName]'.format(paramName))
+        for paramName in thisTrial_pic_eval.keys():
+            exec(paramName + '= thisTrial_pic_eval.' + paramName)
     
     for thisTrial_pic_eval in trial_pic_eval:
         currentLoop = trial_pic_eval
         # abbreviate parameter names if possible (e.g. rgb = thisTrial_pic_eval.rgb)
         if thisTrial_pic_eval != None:
-            for paramName in thisTrial_pic_eval:
-                exec('{} = thisTrial_pic_eval[paramName]'.format(paramName))
+            for paramName in thisTrial_pic_eval.keys():
+                exec(paramName + '= thisTrial_pic_eval.' + paramName)
         
         # ------Prepare to start Routine "ev_pic"-------
         t = 0
@@ -4123,10 +3968,6 @@ for thisFirst_loop in first_loop:
                 text_49.frameNStart = frameN  # exact frame index
                 text_49.setAutoDraw(True)
             
-            # check for quit (typically the Esc key)
-            if endExpNow or event.getKeys(keyList=["escape"]):
-                core.quit()
-            
             # check if all components have finished
             if not continueRoutine:  # a component has requested a forced-end of Routine
                 break
@@ -4135,6 +3976,10 @@ for thisFirst_loop in first_loop:
                 if hasattr(thisComponent, "status") and thisComponent.status != FINISHED:
                     continueRoutine = True
                     break  # at least one component has not yet finished
+            
+            # check for quit (the Esc key)
+            if endExpNow or event.getKeys(keyList=["escape"]):
+                core.quit()
             
             # refresh the screen
             if continueRoutine:  # don't flip if this routine is over or we'll get a blank screen
@@ -4146,7 +3991,7 @@ for thisFirst_loop in first_loop:
                 thisComponent.setAutoDraw(False)
         stor_pic_q.append([sav_mapping, rating_2.getRating()])
         tmp_trial += 1
-        row_len = 7
+        row_len = 4
         
         if tmp_trial == row_len: # end of questions about pictures
         
@@ -4171,7 +4016,7 @@ for thisFirst_loop in first_loop:
             tmp_list.append(sub_id)
         
             pic_q_data.write(struct_2.format(tmp_list[0], tmp_list[1], tmp_list[2], tmp_list[3],
-                                             tmp_list[4], tmp_list[5], tmp_list[6]))
+                                             tmp_list[4]))
             pic_q_data.close()
             print("Successfully saved the picture evaluation dataset.")
         
@@ -4179,7 +4024,7 @@ for thisFirst_loop in first_loop:
             struct_2 = ''
             tmp_list = []
             tmp_trial = 0
-            print("this is tmp trial after ev pic {}".format(tmp_trial))
+        #    print("this is tmp trial after ev pic {}".format(tmp_trial))
         
         # store data for trial_pic_eval (TrialHandler)
         trial_pic_eval.addData('rating_2.response', rating_2.getRating())
@@ -4197,15 +4042,15 @@ for thisFirst_loop in first_loop:
     thisTrial_9 = trials_9.trialList[0]  # so we can initialise stimuli with some values
     # abbreviate parameter names if possible (e.g. rgb = thisTrial_9.rgb)
     if thisTrial_9 != None:
-        for paramName in thisTrial_9:
-            exec('{} = thisTrial_9[paramName]'.format(paramName))
+        for paramName in thisTrial_9.keys():
+            exec(paramName + '= thisTrial_9.' + paramName)
     
     for thisTrial_9 in trials_9:
         currentLoop = trials_9
         # abbreviate parameter names if possible (e.g. rgb = thisTrial_9.rgb)
         if thisTrial_9 != None:
-            for paramName in thisTrial_9:
-                exec('{} = thisTrial_9[paramName]'.format(paramName))
+            for paramName in thisTrial_9.keys():
+                exec(paramName + '= thisTrial_9.' + paramName)
         
         # ------Prepare to start Routine "est_sal"-------
         t = 0
@@ -4281,10 +4126,6 @@ for thisFirst_loop in first_loop:
                 text_29.frameNStart = frameN  # exact frame index
                 text_29.setAutoDraw(True)
             
-            # check for quit (typically the Esc key)
-            if endExpNow or event.getKeys(keyList=["escape"]):
-                core.quit()
-            
             # check if all components have finished
             if not continueRoutine:  # a component has requested a forced-end of Routine
                 break
@@ -4293,6 +4134,10 @@ for thisFirst_loop in first_loop:
                 if hasattr(thisComponent, "status") and thisComponent.status != FINISHED:
                     continueRoutine = True
                     break  # at least one component has not yet finished
+            
+            # check for quit (the Esc key)
+            if endExpNow or event.getKeys(keyList=["escape"]):
+                core.quit()
             
             # refresh the screen
             if continueRoutine:  # don't flip if this routine is over or we'll get a blank screen
@@ -4310,6 +4155,7 @@ for thisFirst_loop in first_loop:
             continueRoutine = False
             trials_9.finished = True
         
+        win.mouseVisible = False
         # check responses
         if key_resp_5.keys in ['', [], None]:  # No response was made
             key_resp_5.keys=None
@@ -4330,15 +4176,15 @@ for thisFirst_loop in first_loop:
     thisJui_typ = jui_typ.trialList[0]  # so we can initialise stimuli with some values
     # abbreviate parameter names if possible (e.g. rgb = thisJui_typ.rgb)
     if thisJui_typ != None:
-        for paramName in thisJui_typ:
-            exec('{} = thisJui_typ[paramName]'.format(paramName))
+        for paramName in thisJui_typ.keys():
+            exec(paramName + '= thisJui_typ.' + paramName)
     
     for thisJui_typ in jui_typ:
         currentLoop = jui_typ
         # abbreviate parameter names if possible (e.g. rgb = thisJui_typ.rgb)
         if thisJui_typ != None:
-            for paramName in thisJui_typ:
-                exec('{} = thisJui_typ[paramName]'.format(paramName))
+            for paramName in thisJui_typ.keys():
+                exec(paramName + '= thisJui_typ.' + paramName)
         
         # set up handler to look after randomisation of conditions etc
         jui_sal = data.TrialHandler(nReps=1, method='random', 
@@ -4349,15 +4195,15 @@ for thisFirst_loop in first_loop:
         thisJui_sal = jui_sal.trialList[0]  # so we can initialise stimuli with some values
         # abbreviate parameter names if possible (e.g. rgb = thisJui_sal.rgb)
         if thisJui_sal != None:
-            for paramName in thisJui_sal:
-                exec('{} = thisJui_sal[paramName]'.format(paramName))
+            for paramName in thisJui_sal.keys():
+                exec(paramName + '= thisJui_sal.' + paramName)
         
         for thisJui_sal in jui_sal:
             currentLoop = jui_sal
             # abbreviate parameter names if possible (e.g. rgb = thisJui_sal.rgb)
             if thisJui_sal != None:
-                for paramName in thisJui_sal:
-                    exec('{} = thisJui_sal[paramName]'.format(paramName))
+                for paramName in thisJui_sal.keys():
+                    exec(paramName + '= thisJui_sal.' + paramName)
             
             # set up handler to look after randomisation of conditions etc
             disp = data.TrialHandler(nReps=run_dispenser, method='random', 
@@ -4368,22 +4214,22 @@ for thisFirst_loop in first_loop:
             thisDisp = disp.trialList[0]  # so we can initialise stimuli with some values
             # abbreviate parameter names if possible (e.g. rgb = thisDisp.rgb)
             if thisDisp != None:
-                for paramName in thisDisp:
-                    exec('{} = thisDisp[paramName]'.format(paramName))
+                for paramName in thisDisp.keys():
+                    exec(paramName + '= thisDisp.' + paramName)
             
             for thisDisp in disp:
                 currentLoop = disp
                 # abbreviate parameter names if possible (e.g. rgb = thisDisp.rgb)
                 if thisDisp != None:
-                    for paramName in thisDisp:
-                        exec('{} = thisDisp[paramName]'.format(paramName))
+                    for paramName in thisDisp.keys():
+                        exec(paramName + '= thisDisp.' + paramName)
                 
                 # ------Prepare to start Routine "jui_warn"-------
                 t = 0
                 jui_warnClock.reset()  # clock
                 frameN = -1
                 continueRoutine = True
-                routineTimer.add(0.500000)
+                routineTimer.add(2.000000)
                 # update component parameters for each repeat
                 # keep track of which components have finished
                 jui_warnComponents = [text_88]
@@ -4404,13 +4250,9 @@ for thisFirst_loop in first_loop:
                         text_88.tStart = t
                         text_88.frameNStart = frameN  # exact frame index
                         text_88.setAutoDraw(True)
-                    frameRemains = 0.0 + 0.5- win.monitorFramePeriod * 0.75  # most of one frame period left
+                    frameRemains = 0.0 + 2- win.monitorFramePeriod * 0.75  # most of one frame period left
                     if text_88.status == STARTED and t >= frameRemains:
                         text_88.setAutoDraw(False)
-                    
-                    # check for quit (typically the Esc key)
-                    if endExpNow or event.getKeys(keyList=["escape"]):
-                        core.quit()
                     
                     # check if all components have finished
                     if not continueRoutine:  # a component has requested a forced-end of Routine
@@ -4420,6 +4262,10 @@ for thisFirst_loop in first_loop:
                         if hasattr(thisComponent, "status") and thisComponent.status != FINISHED:
                             continueRoutine = True
                             break  # at least one component has not yet finished
+                    
+                    # check for quit (the Esc key)
+                    if endExpNow or event.getKeys(keyList=["escape"]):
+                        core.quit()
                     
                     # refresh the screen
                     if continueRoutine:  # don't flip if this routine is over or we'll get a blank screen
@@ -4449,7 +4295,7 @@ for thisFirst_loop in first_loop:
                 win.mouseVisible = False
                 
                 #duration set to 10s
-                jui_t = 1
+                jui_t = 7.5
                 text_4.setText(pump)
                 jui_pic.setImage(curr_juice)
                 # keep track of which components have finished
@@ -4486,10 +4332,6 @@ for thisFirst_loop in first_loop:
                     if jui_pic.status == STARTED and t >= frameRemains:
                         jui_pic.setAutoDraw(False)
                     
-                    # check for quit (typically the Esc key)
-                    if endExpNow or event.getKeys(keyList=["escape"]):
-                        core.quit()
-                    
                     # check if all components have finished
                     if not continueRoutine:  # a component has requested a forced-end of Routine
                         break
@@ -4498,6 +4340,10 @@ for thisFirst_loop in first_loop:
                         if hasattr(thisComponent, "status") and thisComponent.status != FINISHED:
                             continueRoutine = True
                             break  # at least one component has not yet finished
+                    
+                    # check for quit (the Esc key)
+                    if endExpNow or event.getKeys(keyList=["escape"]):
+                        core.quit()
                     
                     # refresh the screen
                     if continueRoutine:  # don't flip if this routine is over or we'll get a blank screen
@@ -4658,10 +4504,6 @@ for thisFirst_loop in first_loop:
                     image_23.frameNStart = frameN  # exact frame index
                     image_23.setAutoDraw(True)
                 
-                # check for quit (typically the Esc key)
-                if endExpNow or event.getKeys(keyList=["escape"]):
-                    core.quit()
-                
                 # check if all components have finished
                 if not continueRoutine:  # a component has requested a forced-end of Routine
                     break
@@ -4670,6 +4512,10 @@ for thisFirst_loop in first_loop:
                     if hasattr(thisComponent, "status") and thisComponent.status != FINISHED:
                         continueRoutine = True
                         break  # at least one component has not yet finished
+                
+                # check for quit (the Esc key)
+                if endExpNow or event.getKeys(keyList=["escape"]):
+                    core.quit()
                 
                 # refresh the screen
                 if continueRoutine:  # don't flip if this routine is over or we'll get a blank screen
@@ -4868,10 +4714,6 @@ for thisFirst_loop in first_loop:
                 if image_25.status == STARTED and t >= frameRemains:
                     image_25.setAutoDraw(False)
                 
-                # check for quit (typically the Esc key)
-                if endExpNow or event.getKeys(keyList=["escape"]):
-                    core.quit()
-                
                 # check if all components have finished
                 if not continueRoutine:  # a component has requested a forced-end of Routine
                     break
@@ -4880,6 +4722,10 @@ for thisFirst_loop in first_loop:
                     if hasattr(thisComponent, "status") and thisComponent.status != FINISHED:
                         continueRoutine = True
                         break  # at least one component has not yet finished
+                
+                # check for quit (the Esc key)
+                if endExpNow or event.getKeys(keyList=["escape"]):
+                    core.quit()
                 
                 # refresh the screen
                 if continueRoutine:  # don't flip if this routine is over or we'll get a blank screen
@@ -4911,15 +4757,15 @@ for thisFirst_loop in first_loop:
             thisDisp_c = disp_c.trialList[0]  # so we can initialise stimuli with some values
             # abbreviate parameter names if possible (e.g. rgb = thisDisp_c.rgb)
             if thisDisp_c != None:
-                for paramName in thisDisp_c:
-                    exec('{} = thisDisp_c[paramName]'.format(paramName))
+                for paramName in thisDisp_c.keys():
+                    exec(paramName + '= thisDisp_c.' + paramName)
             
             for thisDisp_c in disp_c:
                 currentLoop = disp_c
                 # abbreviate parameter names if possible (e.g. rgb = thisDisp_c.rgb)
                 if thisDisp_c != None:
-                    for paramName in thisDisp_c:
-                        exec('{} = thisDisp_c[paramName]'.format(paramName))
+                    for paramName in thisDisp_c.keys():
+                        exec(paramName + '= thisDisp_c.' + paramName)
                 
                 # ------Prepare to start Routine "wat_warn"-------
                 t = 0
@@ -4951,10 +4797,6 @@ for thisFirst_loop in first_loop:
                     if palate_cleanse.status == STARTED and t >= frameRemains:
                         palate_cleanse.setAutoDraw(False)
                     
-                    # check for quit (typically the Esc key)
-                    if endExpNow or event.getKeys(keyList=["escape"]):
-                        core.quit()
-                    
                     # check if all components have finished
                     if not continueRoutine:  # a component has requested a forced-end of Routine
                         break
@@ -4963,6 +4805,10 @@ for thisFirst_loop in first_loop:
                         if hasattr(thisComponent, "status") and thisComponent.status != FINISHED:
                             continueRoutine = True
                             break  # at least one component has not yet finished
+                    
+                    # check for quit (the Esc key)
+                    if endExpNow or event.getKeys(keyList=["escape"]):
+                        core.quit()
                     
                     # refresh the screen
                     if continueRoutine:  # don't flip if this routine is over or we'll get a blank screen
@@ -4984,8 +4830,8 @@ for thisFirst_loop in first_loop:
                         dev.write('\4')
                     run_dispenser = 1
                     juice_trial = 1
-                    t1 = 1
-                    t2 = 2 #should be 10
+                    t1 = 0.5
+                    t2 = 7.5 #should be 10
                     col = 'black'
                 
                 if len(tmp_list) == 9:
@@ -5018,10 +4864,6 @@ for thisFirst_loop in first_loop:
                     if prompt_next.status == STARTED and t >= frameRemains:
                         prompt_next.setAutoDraw(False)
                     
-                    # check for quit (typically the Esc key)
-                    if endExpNow or event.getKeys(keyList=["escape"]):
-                        core.quit()
-                    
                     # check if all components have finished
                     if not continueRoutine:  # a component has requested a forced-end of Routine
                         break
@@ -5030,6 +4872,10 @@ for thisFirst_loop in first_loop:
                         if hasattr(thisComponent, "status") and thisComponent.status != FINISHED:
                             continueRoutine = True
                             break  # at least one component has not yet finished
+                    
+                    # check for quit (the Esc key)
+                    if endExpNow or event.getKeys(keyList=["escape"]):
+                        core.quit()
                     
                     # refresh the screen
                     if continueRoutine:  # don't flip if this routine is over or we'll get a blank screen
@@ -5070,7 +4916,7 @@ for thisFirst_loop in first_loop:
     
     # picks the max and if there's more than one it picks one randomly
     # we then later ask to reconfirm their favourite juice 
-    print("these are the juice mean values {}".format(tmp_list))
+    #print("these are the juice mean values {}".format(tmp_list))
     
     fav_juice = max(tmp_list, key=lambda item:item[1])[0] # take the max
     
@@ -5137,10 +4983,6 @@ for thisFirst_loop in first_loop:
             fav_juice_pic.frameNStart = frameN  # exact frame index
             fav_juice_pic.setAutoDraw(True)
         
-        # check for quit (typically the Esc key)
-        if endExpNow or event.getKeys(keyList=["escape"]):
-            core.quit()
-        
         # check if all components have finished
         if not continueRoutine:  # a component has requested a forced-end of Routine
             break
@@ -5149,6 +4991,10 @@ for thisFirst_loop in first_loop:
             if hasattr(thisComponent, "status") and thisComponent.status != FINISHED:
                 continueRoutine = True
                 break  # at least one component has not yet finished
+        
+        # check for quit (the Esc key)
+        if endExpNow or event.getKeys(keyList=["escape"]):
+            core.quit()
         
         # refresh the screen
         if continueRoutine:  # don't flip if this routine is over or we'll get a blank screen
@@ -5165,7 +5011,6 @@ for thisFirst_loop in first_loop:
     
     else:
         run_juice_reeval = 1
-        win.mouseVisible = True
     
     # check responses
     if juice_conf.keys in ['', [], None]:  # No response was made
@@ -5185,15 +5030,15 @@ for thisFirst_loop in first_loop:
     thisJuice_re = juice_re.trialList[0]  # so we can initialise stimuli with some values
     # abbreviate parameter names if possible (e.g. rgb = thisJuice_re.rgb)
     if thisJuice_re != None:
-        for paramName in thisJuice_re:
-            exec('{} = thisJuice_re[paramName]'.format(paramName))
+        for paramName in thisJuice_re.keys():
+            exec(paramName + '= thisJuice_re.' + paramName)
     
     for thisJuice_re in juice_re:
         currentLoop = juice_re
         # abbreviate parameter names if possible (e.g. rgb = thisJuice_re.rgb)
         if thisJuice_re != None:
-            for paramName in thisJuice_re:
-                exec('{} = thisJuice_re[paramName]'.format(paramName))
+            for paramName in thisJuice_re.keys():
+                exec(paramName + '= thisJuice_re.' + paramName)
         
         # ------Prepare to start Routine "jui_re"-------
         t = 0
@@ -5305,10 +5150,6 @@ for thisFirst_loop in first_loop:
                     # a response ends the routine
                     continueRoutine = False
             
-            # check for quit (typically the Esc key)
-            if endExpNow or event.getKeys(keyList=["escape"]):
-                core.quit()
-            
             # check if all components have finished
             if not continueRoutine:  # a component has requested a forced-end of Routine
                 break
@@ -5317,6 +5158,10 @@ for thisFirst_loop in first_loop:
                 if hasattr(thisComponent, "status") and thisComponent.status != FINISHED:
                     continueRoutine = True
                     break  # at least one component has not yet finished
+            
+            # check for quit (the Esc key)
+            if endExpNow or event.getKeys(keyList=["escape"]):
+                core.quit()
             
             # refresh the screen
             if continueRoutine:  # don't flip if this routine is over or we'll get a blank screen
@@ -5377,10 +5222,6 @@ for thisFirst_loop in first_loop:
             if image_21.status == STARTED and t >= frameRemains:
                 image_21.setAutoDraw(False)
             
-            # check for quit (typically the Esc key)
-            if endExpNow or event.getKeys(keyList=["escape"]):
-                core.quit()
-            
             # check if all components have finished
             if not continueRoutine:  # a component has requested a forced-end of Routine
                 break
@@ -5389,6 +5230,10 @@ for thisFirst_loop in first_loop:
                 if hasattr(thisComponent, "status") and thisComponent.status != FINISHED:
                     continueRoutine = True
                     break  # at least one component has not yet finished
+            
+            # check for quit (the Esc key)
+            if endExpNow or event.getKeys(keyList=["escape"]):
+                core.quit()
             
             # refresh the screen
             if continueRoutine:  # don't flip if this routine is over or we'll get a blank screen
@@ -5426,6 +5271,13 @@ routineTimer.add(2.000000)
 # update component parameters for each repeat
 time.sleep(0.5)
 background_image.setAutoDraw(True)
+# if something goes wrong, her you can enter the juice information
+#fav_juice =  'pineapple'
+#fav_juice_pump =  '\3'
+#fav_juice_pumpid =  '\15' 
+#run_rew = 0
+#run_ev = 0
+#run_eff = 0
 # keep track of which components have finished
 transition2Components = [text_73]
 for thisComponent in transition2Components:
@@ -5450,10 +5302,6 @@ while continueRoutine and routineTimer.getTime() > 0:
     if text_73.status == STARTED and t >= frameRemains:
         text_73.setAutoDraw(False)
     
-    # check for quit (typically the Esc key)
-    if endExpNow or event.getKeys(keyList=["escape"]):
-        core.quit()
-    
     # check if all components have finished
     if not continueRoutine:  # a component has requested a forced-end of Routine
         break
@@ -5462,6 +5310,10 @@ while continueRoutine and routineTimer.getTime() > 0:
         if hasattr(thisComponent, "status") and thisComponent.status != FINISHED:
             continueRoutine = True
             break  # at least one component has not yet finished
+    
+    # check for quit (the Esc key)
+    if endExpNow or event.getKeys(keyList=["escape"]):
+        core.quit()
     
     # refresh the screen
     if continueRoutine:  # don't flip if this routine is over or we'll get a blank screen
@@ -5476,21 +5328,21 @@ for thisComponent in transition2Components:
 # set up handler to look after randomisation of conditions etc
 main_loop = data.TrialHandler(nReps=run_all, method='sequential', 
     extraInfo=expInfo, originPath=-1,
-    trialList=data.importConditions('part_1_small.csv'),
+    trialList=data.importConditions(participant_file),
     seed=None, name='main_loop')
 thisExp.addLoop(main_loop)  # add the loop to the experiment
 thisMain_loop = main_loop.trialList[0]  # so we can initialise stimuli with some values
 # abbreviate parameter names if possible (e.g. rgb = thisMain_loop.rgb)
 if thisMain_loop != None:
-    for paramName in thisMain_loop:
-        exec('{} = thisMain_loop[paramName]'.format(paramName))
+    for paramName in thisMain_loop.keys():
+        exec(paramName + '= thisMain_loop.' + paramName)
 
 for thisMain_loop in main_loop:
     currentLoop = main_loop
     # abbreviate parameter names if possible (e.g. rgb = thisMain_loop.rgb)
     if thisMain_loop != None:
-        for paramName in thisMain_loop:
-            exec('{} = thisMain_loop[paramName]'.format(paramName))
+        for paramName in thisMain_loop.keys():
+            exec(paramName + '= thisMain_loop.' + paramName)
     
     # set up handler to look after randomisation of conditions etc
     rew_role = data.TrialHandler(nReps=run_rew, method='random', 
@@ -5501,15 +5353,15 @@ for thisMain_loop in main_loop:
     thisRew_role = rew_role.trialList[0]  # so we can initialise stimuli with some values
     # abbreviate parameter names if possible (e.g. rgb = thisRew_role.rgb)
     if thisRew_role != None:
-        for paramName in thisRew_role:
-            exec('{} = thisRew_role[paramName]'.format(paramName))
+        for paramName in thisRew_role.keys():
+            exec(paramName + '= thisRew_role.' + paramName)
     
     for thisRew_role in rew_role:
         currentLoop = rew_role
         # abbreviate parameter names if possible (e.g. rgb = thisRew_role.rgb)
         if thisRew_role != None:
-            for paramName in thisRew_role:
-                exec('{} = thisRew_role[paramName]'.format(paramName))
+            for paramName in thisRew_role.keys():
+                exec(paramName + '= thisRew_role.' + paramName)
         
         # set up handler to look after randomisation of conditions etc
         trials_2 = data.TrialHandler(nReps=run_rew_instr, method='random', 
@@ -5520,15 +5372,15 @@ for thisMain_loop in main_loop:
         thisTrial_2 = trials_2.trialList[0]  # so we can initialise stimuli with some values
         # abbreviate parameter names if possible (e.g. rgb = thisTrial_2.rgb)
         if thisTrial_2 != None:
-            for paramName in thisTrial_2:
-                exec('{} = thisTrial_2[paramName]'.format(paramName))
+            for paramName in thisTrial_2.keys():
+                exec(paramName + '= thisTrial_2.' + paramName)
         
         for thisTrial_2 in trials_2:
             currentLoop = trials_2
             # abbreviate parameter names if possible (e.g. rgb = thisTrial_2.rgb)
             if thisTrial_2 != None:
-                for paramName in thisTrial_2:
-                    exec('{} = thisTrial_2[paramName]'.format(paramName))
+                for paramName in thisTrial_2.keys():
+                    exec(paramName + '= thisTrial_2.' + paramName)
             
             # ------Prepare to start Routine "rew_expl"-------
             t = 0
@@ -5582,20 +5434,21 @@ for thisMain_loop in main_loop:
             if rew_instr_trial == present_tutorial:                # this is the trial where we want to start presenting the tutorial sign
                 lh, tutorial_opac = turn_on_tutorial()
             
-            if reinforcer == 'primary':
+            if reinforcer_type == 1:
                 texts_main = texts_main_1_1
                 curr_reward = gen_stim_path('juice')
-            else:
+            
+            elif reinforcer_type == 1 and (trial >= block_length + num_pract):
+                curr_reward = gen_stim_path('pound')
+                texts_main = texts_main_1_2
+                
+            elif reinforcer_type == 2:
                 texts_main = texts_main_2_1
                 curr_reward = gen_stim_path('pound')
             
-            if (trial + go_pract) >= halfway_go:                          # when this evaluated, we are halfway through 
-                if reinforcer == 'primary': 
-                    texts_main = texts_main_1_2
-                    curr_reward = gen_stim_path('pound')
-                else:
-                    texts_main = texts_main_2_2
-                    curr_reward = gen_stim_path('juice')
+            elif reinforcer_type == 2 and (trial >= block_length + num_pract):
+                texts_main = texts_main_2_2
+                curr_reward = gen_stim_path('juice')
             
             
             
@@ -5668,10 +5521,6 @@ for thisMain_loop in main_loop:
                     polygon_6.frameNStart = frameN  # exact frame index
                     polygon_6.setAutoDraw(True)
                 
-                # check for quit (typically the Esc key)
-                if endExpNow or event.getKeys(keyList=["escape"]):
-                    core.quit()
-                
                 # check if all components have finished
                 if not continueRoutine:  # a component has requested a forced-end of Routine
                     break
@@ -5680,6 +5529,10 @@ for thisMain_loop in main_loop:
                     if hasattr(thisComponent, "status") and thisComponent.status != FINISHED:
                         continueRoutine = True
                         break  # at least one component has not yet finished
+                
+                # check for quit (the Esc key)
+                if endExpNow or event.getKeys(keyList=["escape"]):
+                    core.quit()
                 
                 # refresh the screen
                 if continueRoutine:  # don't flip if this routine is over or we'll get a blank screen
@@ -5768,10 +5621,6 @@ for thisMain_loop in main_loop:
             if text_125.status == STARTED and t >= frameRemains:
                 text_125.setAutoDraw(False)
             
-            # check for quit (typically the Esc key)
-            if endExpNow or event.getKeys(keyList=["escape"]):
-                core.quit()
-            
             # check if all components have finished
             if not continueRoutine:  # a component has requested a forced-end of Routine
                 break
@@ -5780,6 +5629,10 @@ for thisMain_loop in main_loop:
                 if hasattr(thisComponent, "status") and thisComponent.status != FINISHED:
                     continueRoutine = True
                     break  # at least one component has not yet finished
+            
+            # check for quit (the Esc key)
+            if endExpNow or event.getKeys(keyList=["escape"]):
+                core.quit()
             
             # refresh the screen
             if continueRoutine:  # don't flip if this routine is over or we'll get a blank screen
@@ -5805,15 +5658,15 @@ for thisMain_loop in main_loop:
     thisEv_role = ev_role.trialList[0]  # so we can initialise stimuli with some values
     # abbreviate parameter names if possible (e.g. rgb = thisEv_role.rgb)
     if thisEv_role != None:
-        for paramName in thisEv_role:
-            exec('{} = thisEv_role[paramName]'.format(paramName))
+        for paramName in thisEv_role.keys():
+            exec(paramName + '= thisEv_role.' + paramName)
     
     for thisEv_role in ev_role:
         currentLoop = ev_role
         # abbreviate parameter names if possible (e.g. rgb = thisEv_role.rgb)
         if thisEv_role != None:
-            for paramName in thisEv_role:
-                exec('{} = thisEv_role[paramName]'.format(paramName))
+            for paramName in thisEv_role.keys():
+                exec(paramName + '= thisEv_role.' + paramName)
         
         # set up handler to look after randomisation of conditions etc
         ev_loop = data.TrialHandler(nReps=1, method='random', 
@@ -5824,15 +5677,15 @@ for thisMain_loop in main_loop:
         thisEv_loop = ev_loop.trialList[0]  # so we can initialise stimuli with some values
         # abbreviate parameter names if possible (e.g. rgb = thisEv_loop.rgb)
         if thisEv_loop != None:
-            for paramName in thisEv_loop:
-                exec('{} = thisEv_loop[paramName]'.format(paramName))
+            for paramName in thisEv_loop.keys():
+                exec(paramName + '= thisEv_loop.' + paramName)
         
         for thisEv_loop in ev_loop:
             currentLoop = ev_loop
             # abbreviate parameter names if possible (e.g. rgb = thisEv_loop.rgb)
             if thisEv_loop != None:
-                for paramName in thisEv_loop:
-                    exec('{} = thisEv_loop[paramName]'.format(paramName))
+                for paramName in thisEv_loop.keys():
+                    exec(paramName + '= thisEv_loop.' + paramName)
             
             # set up handler to look after randomisation of conditions etc
             trials_3 = data.TrialHandler(nReps=run_ev_instr, method='random', 
@@ -5843,15 +5696,15 @@ for thisMain_loop in main_loop:
             thisTrial_3 = trials_3.trialList[0]  # so we can initialise stimuli with some values
             # abbreviate parameter names if possible (e.g. rgb = thisTrial_3.rgb)
             if thisTrial_3 != None:
-                for paramName in thisTrial_3:
-                    exec('{} = thisTrial_3[paramName]'.format(paramName))
+                for paramName in thisTrial_3.keys():
+                    exec(paramName + '= thisTrial_3.' + paramName)
             
             for thisTrial_3 in trials_3:
                 currentLoop = trials_3
                 # abbreviate parameter names if possible (e.g. rgb = thisTrial_3.rgb)
                 if thisTrial_3 != None:
-                    for paramName in thisTrial_3:
-                        exec('{} = thisTrial_3[paramName]'.format(paramName))
+                    for paramName in thisTrial_3.keys():
+                        exec(paramName + '= thisTrial_3.' + paramName)
                 
                 # ------Prepare to start Routine "ev_expl"-------
                 t = 0
@@ -5931,10 +5784,6 @@ for thisMain_loop in main_loop:
                         polygon_7.frameNStart = frameN  # exact frame index
                         polygon_7.setAutoDraw(True)
                     
-                    # check for quit (typically the Esc key)
-                    if endExpNow or event.getKeys(keyList=["escape"]):
-                        core.quit()
-                    
                     # check if all components have finished
                     if not continueRoutine:  # a component has requested a forced-end of Routine
                         break
@@ -5943,6 +5792,10 @@ for thisMain_loop in main_loop:
                         if hasattr(thisComponent, "status") and thisComponent.status != FINISHED:
                             continueRoutine = True
                             break  # at least one component has not yet finished
+                    
+                    # check for quit (the Esc key)
+                    if endExpNow or event.getKeys(keyList=["escape"]):
+                        core.quit()
                     
                     # refresh the screen
                     if continueRoutine:  # don't flip if this routine is over or we'll get a blank screen
@@ -6116,10 +5969,6 @@ for thisMain_loop in main_loop:
                     image_17.frameNStart = frameN  # exact frame index
                     image_17.setAutoDraw(True)
                 
-                # check for quit (typically the Esc key)
-                if endExpNow or event.getKeys(keyList=["escape"]):
-                    core.quit()
-                
                 # check if all components have finished
                 if not continueRoutine:  # a component has requested a forced-end of Routine
                     break
@@ -6128,6 +5977,10 @@ for thisMain_loop in main_loop:
                     if hasattr(thisComponent, "status") and thisComponent.status != FINISHED:
                         continueRoutine = True
                         break  # at least one component has not yet finished
+                
+                # check for quit (the Esc key)
+                if endExpNow or event.getKeys(keyList=["escape"]):
+                    core.quit()
                 
                 # refresh the screen
                 if continueRoutine:  # don't flip if this routine is over or we'll get a blank screen
@@ -6316,10 +6169,6 @@ for thisMain_loop in main_loop:
                 if text_91.status == STARTED and t >= frameRemains:
                     text_91.setAutoDraw(False)
                 
-                # check for quit (typically the Esc key)
-                if endExpNow or event.getKeys(keyList=["escape"]):
-                    core.quit()
-                
                 # check if all components have finished
                 if not continueRoutine:  # a component has requested a forced-end of Routine
                     break
@@ -6328,6 +6177,10 @@ for thisMain_loop in main_loop:
                     if hasattr(thisComponent, "status") and thisComponent.status != FINISHED:
                         continueRoutine = True
                         break  # at least one component has not yet finished
+                
+                # check for quit (the Esc key)
+                if endExpNow or event.getKeys(keyList=["escape"]):
+                    core.quit()
                 
                 # refresh the screen
                 if continueRoutine:  # don't flip if this routine is over or we'll get a blank screen
@@ -6357,7 +6210,10 @@ for thisMain_loop in main_loop:
         
         # saves to participant file
         save_ev(long_stor, ev_f)
-        
+        # clear them out for the next trial
+        stor_ev = collections.defaultdict()
+        long_stor = []
+        ev_trial = 1
         # keep track of which components have finished
         ev_saveComponents = []
         for thisComponent in ev_saveComponents:
@@ -6372,10 +6228,6 @@ for thisMain_loop in main_loop:
             # update/draw components on each frame
             
             
-            # check for quit (typically the Esc key)
-            if endExpNow or event.getKeys(keyList=["escape"]):
-                core.quit()
-            
             # check if all components have finished
             if not continueRoutine:  # a component has requested a forced-end of Routine
                 break
@@ -6384,6 +6236,10 @@ for thisMain_loop in main_loop:
                 if hasattr(thisComponent, "status") and thisComponent.status != FINISHED:
                     continueRoutine = True
                     break  # at least one component has not yet finished
+            
+            # check for quit (the Esc key)
+            if endExpNow or event.getKeys(keyList=["escape"]):
+                core.quit()
             
             # refresh the screen
             if continueRoutine:  # don't flip if this routine is over or we'll get a blank screen
@@ -6427,15 +6283,15 @@ for thisMain_loop in main_loop:
     thisEffort_role = effort_role.trialList[0]  # so we can initialise stimuli with some values
     # abbreviate parameter names if possible (e.g. rgb = thisEffort_role.rgb)
     if thisEffort_role != None:
-        for paramName in thisEffort_role:
-            exec('{} = thisEffort_role[paramName]'.format(paramName))
+        for paramName in thisEffort_role.keys():
+            exec(paramName + '= thisEffort_role.' + paramName)
     
     for thisEffort_role in effort_role:
         currentLoop = effort_role
         # abbreviate parameter names if possible (e.g. rgb = thisEffort_role.rgb)
         if thisEffort_role != None:
-            for paramName in thisEffort_role:
-                exec('{} = thisEffort_role[paramName]'.format(paramName))
+            for paramName in thisEffort_role.keys():
+                exec(paramName + '= thisEffort_role.' + paramName)
         
         # set up handler to look after randomisation of conditions etc
         trials_4 = data.TrialHandler(nReps=run_eff_instr, method='sequential', 
@@ -6446,15 +6302,15 @@ for thisMain_loop in main_loop:
         thisTrial_4 = trials_4.trialList[0]  # so we can initialise stimuli with some values
         # abbreviate parameter names if possible (e.g. rgb = thisTrial_4.rgb)
         if thisTrial_4 != None:
-            for paramName in thisTrial_4:
-                exec('{} = thisTrial_4[paramName]'.format(paramName))
+            for paramName in thisTrial_4.keys():
+                exec(paramName + '= thisTrial_4.' + paramName)
         
         for thisTrial_4 in trials_4:
             currentLoop = trials_4
             # abbreviate parameter names if possible (e.g. rgb = thisTrial_4.rgb)
             if thisTrial_4 != None:
-                for paramName in thisTrial_4:
-                    exec('{} = thisTrial_4[paramName]'.format(paramName))
+                for paramName in thisTrial_4.keys():
+                    exec(paramName + '= thisTrial_4.' + paramName)
             
             # set up handler to look after randomisation of conditions etc
             trials_7 = data.TrialHandler(nReps=run_eff_instr, method='sequential', 
@@ -6465,15 +6321,15 @@ for thisMain_loop in main_loop:
             thisTrial_7 = trials_7.trialList[0]  # so we can initialise stimuli with some values
             # abbreviate parameter names if possible (e.g. rgb = thisTrial_7.rgb)
             if thisTrial_7 != None:
-                for paramName in thisTrial_7:
-                    exec('{} = thisTrial_7[paramName]'.format(paramName))
+                for paramName in thisTrial_7.keys():
+                    exec(paramName + '= thisTrial_7.' + paramName)
             
             for thisTrial_7 in trials_7:
                 currentLoop = trials_7
                 # abbreviate parameter names if possible (e.g. rgb = thisTrial_7.rgb)
                 if thisTrial_7 != None:
-                    for paramName in thisTrial_7:
-                        exec('{} = thisTrial_7[paramName]'.format(paramName))
+                    for paramName in thisTrial_7.keys():
+                        exec(paramName + '= thisTrial_7.' + paramName)
                 
                 # ------Prepare to start Routine "eff_expl"-------
                 t = 0
@@ -6489,7 +6345,7 @@ for thisMain_loop in main_loop:
                               'And for some you did not know the answer at all.', \
                               'The choices you will be making will be about having to play out similar picture sequences.', \
                               'You will be presented with a certain difficulty level denoted by the number of filled out quarters.', \
-                              'So, the left shows, a picture sequence that you found very easy.', \
+                              'So, the left shows a picture sequence that you found very easy.', \
                               'On the right, you see one that you found very hard.', \
                               'You will now be given several choices between either playing a shown picture sequence or not playing.', \
                               'Remember that the picture sequences will vary in difficulty level and that this is indicated by the filled out quarters.', \
@@ -6499,7 +6355,10 @@ for thisMain_loop in main_loop:
                               "You will see a picture sequence towards the end of the experiment and will have to give us an answer.", \
                               "If it will select a round where you decided not to do it, you will not have to play and will not do anything.", \
                               "To make it more interesting, by opening a door and providing an answer...", \
-                              "You will get a reward!"]
+                              "You will get a reward!", \
+                              "If you will have to play a sequence in the end, there will always be a chance of you winning the reward.", \
+                              "That means, even if you would get the answer wrong, you could perhaps get a reward! The computer lottery will determine if that will happen.", \
+                              "However, if you answer correctly, you will certainly get the reward!"]
                 
                 curr_text = texts_main[eff_instr_trial - 1]
                 
@@ -6526,9 +6385,8 @@ for thisMain_loop in main_loop:
                 image_36.setOpacity(diff_lev_opac)
                 image_37.setOpacity(diff_lev_opac)
                 image_38.setOpacity(diff_lev_opac)
-                text_122.setText(str(run_eff_instr))
                 # keep track of which components have finished
-                eff_explComponents = [text_50, key_resp_8, text_65, polygon_10, text_92, image_29, image_35, image_36, image_37, image_38, text_122]
+                eff_explComponents = [text_50, key_resp_8, text_65, polygon_10, text_92, image_29, image_35, image_36, image_37, image_38]
                 for thisComponent in eff_explComponents:
                     if hasattr(thisComponent, 'status'):
                         thisComponent.status = NOT_STARTED
@@ -6621,17 +6479,6 @@ for thisMain_loop in main_loop:
                         image_38.frameNStart = frameN  # exact frame index
                         image_38.setAutoDraw(True)
                     
-                    # *text_122* updates
-                    if t >= 0.0 and text_122.status == NOT_STARTED:
-                        # keep track of start time/frame for later
-                        text_122.tStart = t
-                        text_122.frameNStart = frameN  # exact frame index
-                        text_122.setAutoDraw(True)
-                    
-                    # check for quit (typically the Esc key)
-                    if endExpNow or event.getKeys(keyList=["escape"]):
-                        core.quit()
-                    
                     # check if all components have finished
                     if not continueRoutine:  # a component has requested a forced-end of Routine
                         break
@@ -6640,6 +6487,10 @@ for thisMain_loop in main_loop:
                         if hasattr(thisComponent, "status") and thisComponent.status != FINISHED:
                             continueRoutine = True
                             break  # at least one component has not yet finished
+                    
+                    # check for quit (the Esc key)
+                    if endExpNow or event.getKeys(keyList=["escape"]):
+                        core.quit()
                     
                     # refresh the screen
                     if continueRoutine:  # don't flip if this routine is over or we'll get a blank screen
@@ -6672,7 +6523,7 @@ for thisMain_loop in main_loop:
             ################################################################################################
             ################################# effort (design matrix) #######################################
             ################################################################################################
-            fav_juice = 'apple'            # comment out when doin git for real
+            #fav_juice = 'apple'            # comment out when doin git for real
             
             drops = ["1_drops_", "2_drops_", "3_drops_", "4_drops_", "5_drops_", "6_drops_"]
             pounds = ["1_pounds", "2_pounds", "3_pounds", "4_pounds", "5_pounds", "6_pounds"]
@@ -6850,10 +6701,6 @@ for thisMain_loop in main_loop:
                     image_34.frameNStart = frameN  # exact frame index
                     image_34.setAutoDraw(True)
                 
-                # check for quit (typically the Esc key)
-                if endExpNow or event.getKeys(keyList=["escape"]):
-                    core.quit()
-                
                 # check if all components have finished
                 if not continueRoutine:  # a component has requested a forced-end of Routine
                     break
@@ -6862,6 +6709,10 @@ for thisMain_loop in main_loop:
                     if hasattr(thisComponent, "status") and thisComponent.status != FINISHED:
                         continueRoutine = True
                         break  # at least one component has not yet finished
+                
+                # check for quit (the Esc key)
+                if endExpNow or event.getKeys(keyList=["escape"]):
+                    core.quit()
                 
                 # refresh the screen
                 if continueRoutine:  # don't flip if this routine is over or we'll get a blank screen
@@ -6984,10 +6835,6 @@ for thisMain_loop in main_loop:
                     text_63.frameNStart = frameN  # exact frame index
                     text_63.setAutoDraw(True)
                 
-                # check for quit (typically the Esc key)
-                if endExpNow or event.getKeys(keyList=["escape"]):
-                    core.quit()
-                
                 # check if all components have finished
                 if not continueRoutine:  # a component has requested a forced-end of Routine
                     break
@@ -6996,6 +6843,10 @@ for thisMain_loop in main_loop:
                     if hasattr(thisComponent, "status") and thisComponent.status != FINISHED:
                         continueRoutine = True
                         break  # at least one component has not yet finished
+                
+                # check for quit (the Esc key)
+                if endExpNow or event.getKeys(keyList=["escape"]):
+                    core.quit()
                 
                 # refresh the screen
                 if continueRoutine:  # don't flip if this routine is over or we'll get a blank screen
@@ -7042,10 +6893,6 @@ for thisMain_loop in main_loop:
                 if text_104.status == STARTED and t >= frameRemains:
                     text_104.setAutoDraw(False)
                 
-                # check for quit (typically the Esc key)
-                if endExpNow or event.getKeys(keyList=["escape"]):
-                    core.quit()
-                
                 # check if all components have finished
                 if not continueRoutine:  # a component has requested a forced-end of Routine
                     break
@@ -7054,6 +6901,10 @@ for thisMain_loop in main_loop:
                     if hasattr(thisComponent, "status") and thisComponent.status != FINISHED:
                         continueRoutine = True
                         break  # at least one component has not yet finished
+                
+                # check for quit (the Esc key)
+                if endExpNow or event.getKeys(keyList=["escape"]):
+                    core.quit()
                 
                 # refresh the screen
                 if continueRoutine:  # don't flip if this routine is over or we'll get a blank screen
@@ -7075,15 +6926,15 @@ for thisMain_loop in main_loop:
         thisEffort_midway = effort_midway.trialList[0]  # so we can initialise stimuli with some values
         # abbreviate parameter names if possible (e.g. rgb = thisEffort_midway.rgb)
         if thisEffort_midway != None:
-            for paramName in thisEffort_midway:
-                exec('{} = thisEffort_midway[paramName]'.format(paramName))
+            for paramName in thisEffort_midway.keys():
+                exec(paramName + '= thisEffort_midway.' + paramName)
         
         for thisEffort_midway in effort_midway:
             currentLoop = effort_midway
             # abbreviate parameter names if possible (e.g. rgb = thisEffort_midway.rgb)
             if thisEffort_midway != None:
-                for paramName in thisEffort_midway:
-                    exec('{} = thisEffort_midway[paramName]'.format(paramName))
+                for paramName in thisEffort_midway.keys():
+                    exec(paramName + '= thisEffort_midway.' + paramName)
             
             # ------Prepare to start Routine "eff_midway"-------
             t = 0
@@ -7191,10 +7042,6 @@ for thisMain_loop in main_loop:
                     image_41.frameNStart = frameN  # exact frame index
                     image_41.setAutoDraw(True)
                 
-                # check for quit (typically the Esc key)
-                if endExpNow or event.getKeys(keyList=["escape"]):
-                    core.quit()
-                
                 # check if all components have finished
                 if not continueRoutine:  # a component has requested a forced-end of Routine
                     break
@@ -7203,6 +7050,10 @@ for thisMain_loop in main_loop:
                     if hasattr(thisComponent, "status") and thisComponent.status != FINISHED:
                         continueRoutine = True
                         break  # at least one component has not yet finished
+                
+                # check for quit (the Esc key)
+                if endExpNow or event.getKeys(keyList=["escape"]):
+                    core.quit()
                 
                 # refresh the screen
                 if continueRoutine:  # don't flip if this routine is over or we'll get a blank screen
@@ -7227,15 +7078,15 @@ for thisMain_loop in main_loop:
         thisReal_info = real_info.trialList[0]  # so we can initialise stimuli with some values
         # abbreviate parameter names if possible (e.g. rgb = thisReal_info.rgb)
         if thisReal_info != None:
-            for paramName in thisReal_info:
-                exec('{} = thisReal_info[paramName]'.format(paramName))
+            for paramName in thisReal_info.keys():
+                exec(paramName + '= thisReal_info.' + paramName)
         
         for thisReal_info in real_info:
             currentLoop = real_info
             # abbreviate parameter names if possible (e.g. rgb = thisReal_info.rgb)
             if thisReal_info != None:
-                for paramName in thisReal_info:
-                    exec('{} = thisReal_info[paramName]'.format(paramName))
+                for paramName in thisReal_info.keys():
+                    exec(paramName + '= thisReal_info.' + paramName)
             
             # ------Prepare to start Routine "real_ann"-------
             t = 0
@@ -7308,10 +7159,6 @@ for thisMain_loop in main_loop:
                         # a response ends the routine
                         continueRoutine = False
                 
-                # check for quit (typically the Esc key)
-                if endExpNow or event.getKeys(keyList=["escape"]):
-                    core.quit()
-                
                 # check if all components have finished
                 if not continueRoutine:  # a component has requested a forced-end of Routine
                     break
@@ -7320,6 +7167,10 @@ for thisMain_loop in main_loop:
                     if hasattr(thisComponent, "status") and thisComponent.status != FINISHED:
                         continueRoutine = True
                         break  # at least one component has not yet finished
+                
+                # check for quit (the Esc key)
+                if endExpNow or event.getKeys(keyList=["escape"]):
+                    core.quit()
                 
                 # refresh the screen
                 if continueRoutine:  # don't flip if this routine is over or we'll get a blank screen
@@ -7377,10 +7228,8 @@ for thisMain_loop in main_loop:
         eff_choice_box = event.BuilderKeyResponse()
         text_78.setPos(yes)
         text_118.setPos(no)
-        text_123.setText(diagnostics)
-        text_124.setText(run_eff_instr)
         # keep track of which components have finished
-        eff_pressComponents = [dr1, chst1, polygon_14, text_96, text_114, eff_choice_box, text_78, text_118, text_123, text_124]
+        eff_pressComponents = [dr1, chst1, polygon_14, text_96, text_114, eff_choice_box, text_78, text_118]
         for thisComponent in eff_pressComponents:
             if hasattr(thisComponent, 'status'):
                 thisComponent.status = NOT_STARTED
@@ -7422,7 +7271,7 @@ for thisMain_loop in main_loop:
                 text_96.setAutoDraw(True)
             
             # *text_114* updates
-            if t >= 3 and text_114.status == NOT_STARTED:
+            if t >= 2.5 and text_114.status == NOT_STARTED:
                 # keep track of start time/frame for later
                 text_114.tStart = t
                 text_114.frameNStart = frameN  # exact frame index
@@ -7463,24 +7312,6 @@ for thisMain_loop in main_loop:
                 text_118.frameNStart = frameN  # exact frame index
                 text_118.setAutoDraw(True)
             
-            # *text_123* updates
-            if t >= 0.0 and text_123.status == NOT_STARTED:
-                # keep track of start time/frame for later
-                text_123.tStart = t
-                text_123.frameNStart = frameN  # exact frame index
-                text_123.setAutoDraw(True)
-            
-            # *text_124* updates
-            if t >= 0.0 and text_124.status == NOT_STARTED:
-                # keep track of start time/frame for later
-                text_124.tStart = t
-                text_124.frameNStart = frameN  # exact frame index
-                text_124.setAutoDraw(True)
-            
-            # check for quit (typically the Esc key)
-            if endExpNow or event.getKeys(keyList=["escape"]):
-                core.quit()
-            
             # check if all components have finished
             if not continueRoutine:  # a component has requested a forced-end of Routine
                 break
@@ -7489,6 +7320,10 @@ for thisMain_loop in main_loop:
                 if hasattr(thisComponent, "status") and thisComponent.status != FINISHED:
                     continueRoutine = True
                     break  # at least one component has not yet finished
+            
+            # check for quit (the Esc key)
+            if endExpNow or event.getKeys(keyList=["escape"]):
+                core.quit()
             
             # refresh the screen
             if continueRoutine:  # don't flip if this routine is over or we'll get a blank screen
@@ -7631,10 +7466,6 @@ for thisMain_loop in main_loop:
             if text_120.status == STARTED and t >= frameRemains:
                 text_120.setAutoDraw(False)
             
-            # check for quit (typically the Esc key)
-            if endExpNow or event.getKeys(keyList=["escape"]):
-                core.quit()
-            
             # check if all components have finished
             if not continueRoutine:  # a component has requested a forced-end of Routine
                 break
@@ -7643,6 +7474,10 @@ for thisMain_loop in main_loop:
                 if hasattr(thisComponent, "status") and thisComponent.status != FINISHED:
                     continueRoutine = True
                     break  # at least one component has not yet finished
+            
+            # check for quit (the Esc key)
+            if endExpNow or event.getKeys(keyList=["escape"]):
+                core.quit()
             
             # refresh the screen
             if continueRoutine:  # don't flip if this routine is over or we'll get a blank screen
@@ -7728,15 +7563,15 @@ for thisMain_loop in main_loop:
     thisTrial_12 = trials_12.trialList[0]  # so we can initialise stimuli with some values
     # abbreviate parameter names if possible (e.g. rgb = thisTrial_12.rgb)
     if thisTrial_12 != None:
-        for paramName in thisTrial_12:
-            exec('{} = thisTrial_12[paramName]'.format(paramName))
+        for paramName in thisTrial_12.keys():
+            exec(paramName + '= thisTrial_12.' + paramName)
     
     for thisTrial_12 in trials_12:
         currentLoop = trials_12
         # abbreviate parameter names if possible (e.g. rgb = thisTrial_12.rgb)
         if thisTrial_12 != None:
-            for paramName in thisTrial_12:
-                exec('{} = thisTrial_12[paramName]'.format(paramName))
+            for paramName in thisTrial_12.keys():
+                exec(paramName + '= thisTrial_12.' + paramName)
         
         # ------Prepare to start Routine "transition3"-------
         t = 0
@@ -7792,10 +7627,6 @@ for thisMain_loop in main_loop:
                 text_121.frameNStart = frameN  # exact frame index
                 text_121.setAutoDraw(True)
             
-            # check for quit (typically the Esc key)
-            if endExpNow or event.getKeys(keyList=["escape"]):
-                core.quit()
-            
             # check if all components have finished
             if not continueRoutine:  # a component has requested a forced-end of Routine
                 break
@@ -7804,6 +7635,10 @@ for thisMain_loop in main_loop:
                 if hasattr(thisComponent, "status") and thisComponent.status != FINISHED:
                     continueRoutine = True
                     break  # at least one component has not yet finished
+            
+            # check for quit (the Esc key)
+            if endExpNow or event.getKeys(keyList=["escape"]):
+                core.quit()
             
             # refresh the screen
             if continueRoutine:  # don't flip if this routine is over or we'll get a blank screen
@@ -7842,15 +7677,15 @@ for thisMain_loop in main_loop:
     thisGo_role = go_role.trialList[0]  # so we can initialise stimuli with some values
     # abbreviate parameter names if possible (e.g. rgb = thisGo_role.rgb)
     if thisGo_role != None:
-        for paramName in thisGo_role:
-            exec('{} = thisGo_role[paramName]'.format(paramName))
+        for paramName in thisGo_role.keys():
+            exec(paramName + '= thisGo_role.' + paramName)
     
     for thisGo_role in go_role:
         currentLoop = go_role
         # abbreviate parameter names if possible (e.g. rgb = thisGo_role.rgb)
         if thisGo_role != None:
-            for paramName in thisGo_role:
-                exec('{} = thisGo_role[paramName]'.format(paramName))
+            for paramName in thisGo_role.keys():
+                exec(paramName + '= thisGo_role.' + paramName)
         
         # set up handler to look after randomisation of conditions etc
         trials_5 = data.TrialHandler(nReps=run_go_instr, method='random', 
@@ -7861,15 +7696,15 @@ for thisMain_loop in main_loop:
         thisTrial_5 = trials_5.trialList[0]  # so we can initialise stimuli with some values
         # abbreviate parameter names if possible (e.g. rgb = thisTrial_5.rgb)
         if thisTrial_5 != None:
-            for paramName in thisTrial_5:
-                exec('{} = thisTrial_5[paramName]'.format(paramName))
+            for paramName in thisTrial_5.keys():
+                exec(paramName + '= thisTrial_5.' + paramName)
         
         for thisTrial_5 in trials_5:
             currentLoop = trials_5
             # abbreviate parameter names if possible (e.g. rgb = thisTrial_5.rgb)
             if thisTrial_5 != None:
-                for paramName in thisTrial_5:
-                    exec('{} = thisTrial_5[paramName]'.format(paramName))
+                for paramName in thisTrial_5.keys():
+                    exec(paramName + '= thisTrial_5.' + paramName)
             
             # ------Prepare to start Routine "go_expl"-------
             t = 0
@@ -7885,18 +7720,20 @@ for thisMain_loop in main_loop:
                           "steven_l", \
                           "steven_con", \
                           "steven_con", \
-                          "steven_inc", \
-                          "steven_inc", \
                            "empty", \
                            "empty", \
                            "juice", \
                            "juice", \
+                           "empty", \
+                           "empty", \
                            "hard_diff", \
                            "hard_diff", \
                            "empty", \
+                           "empty", \
                            "5_drops", \
-                           "5_drops", \
+                           "empty", \
                             "empty"]
+            
             
             
             imgs_lower = ["empty", \
@@ -7918,7 +7755,8 @@ for thisMain_loop in main_loop:
                           "empty",  \
                           "empty", \
                           "1_drops", \
-                          "empty",]
+                          "empty", \
+                          "empty"]
             
             size_u = [(0.2, 0.2), \
                     (0.2, 0.2), \
@@ -7926,14 +7764,14 @@ for thisMain_loop in main_loop:
                     (0.2, 0.2), \
                     (0.2, 0.2), \
                     (0.2, 0.2), \
-                    (0.1, 0.035), \
-                    (0.1, 0.035), \
-                    (0.1, 0.035), \
-                    (0.1, 0.035), \
-                    (0.2, 0.2), \
-                    (0.2, 0.2), \
+                    (0.18, 0.06), \
+                    (0.18, 0.06), \
+                    (0.18, 0.06), \
+                    (0.18, 0.06), \
                     (0.35, 0.5), \
                     (0.35, 0.5), \
+                    (0.2, 0.3), \
+                    (0.2, 0.3), \
                     (0.2, 0.3), \
                     (0.2, 0.3), \
                     (0.3, 0.5), \
@@ -7949,10 +7787,10 @@ for thisMain_loop in main_loop:
                     (0.2, 0.2), \
                     (0.2, 0.2), \
                     (0.2, 0.2), \
-                    (0.1, 0.035), \
-                    (0.1, 0.035), \
-                    (0.1, 0.035), \
-                    (0.1, 0.035), \
+                    (0.18, 0.06), \
+                    (0.18, 0.06), \
+                    (0.18, 0.06), \
+                    (0.18, 0.06), \
                     (0.2, 0.2), \
                     (0.35, 0.5), \
                     (0.2, 0.2), \
@@ -7961,21 +7799,20 @@ for thisMain_loop in main_loop:
                     (0.2, 0.2), \
                     (0.2, 0.2), \
                     (0.3, 0.5), \
+                    (0.2, 0.2), \
                     (0.2, 0.2)]
             
-            fav_juice = 'apple'         # comment out when done 
+            #fav_juice = 'apple'         # comment out when done 
             
             if reinforcer == 'primary':
-                imgs_upper[12] = 'juice'
-                imgs_upper[13] = 'juice'
-                imgs_upper[17] = '5_drops_' + fav_juice
+                imgs_upper[10] = 'juice'
+                imgs_upper[11] = 'juice'
                 imgs_upper[18] = '5_drops_' + fav_juice
                 imgs_lower[18] = '1_drops_' + fav_juice
             
             else:
-                imgs_upper[12] = 'pound'
-                imgs_upper[13] = 'pound'
-                imgs_upper[17] = '5_pounds'
+                imgs_upper[10] = 'pound'
+                imgs_upper[11] = 'pound'
                 imgs_upper[18] = '5_pounds'
                 imgs_lower[18] = '1_pounds'
             
@@ -7991,22 +7828,21 @@ for thisMain_loop in main_loop:
             
                           "Steven will always be accompanied by friends: ", \
                           "Steven will always be accompanied by friends: ", \
-            
-                          "In other cases, Steven's friends will be facing another direction, because they think the food is there.", \
-                          "In other cases, Steven's friends will be facing another direction, because they think the food is there.", \
                     
-                          "It is important that you always pay attention only to Steven and not to his friends. So, you have to focus on Steven!", \
-                          "It is important that you always pay attention only to Steven and not to his friends. So, you have to focus on Steven!", \
+                          "It is important that you always pay attention only to Steven (in the middle) and not to his friends. So, you have to focus on Steven!", \
+                          "It is important that you always pay attention only to Steven (in the middle) and not to his friends. So, you have to focus on Steven!", \
             
                           "You will receive the reward you were told about before: ", \
                           "You will receive the reward you were told about before: ", \
             
-                          "One last thing is that sometimes you will see Steven only briefly. If that happens, you will see the red clock: ", \
-                          "One last thing is that sometimes you will see Steven only briefly. If that happens, you will see the red clock: ", \
+                          "This means, the more often you will be correct, the more rewards you will get!", \
+                          "This means, the more often you will be correct, the more rewards you will get!", \
+            
+                          "One last thing is that sometimes you will see Steven only briefly. If that happens, you will see the yellow clock: ", \
+                          "One last thing is that sometimes you will see Steven only briefly. If that happens, you will see the yellow clock: ", \
             
                           "When you will see him briefly, you will need to be extra quick with your response!", \
-            
-                          "Sometimes, Steven will be able to give you a lot of reward if you will be correct: ", \
+                           "", \
                           "Sometimes, Steven will be able to give you a lot of reward if you will be correct: ", \
             
                           "Let's do some practice now!"]
@@ -8019,19 +7855,19 @@ for thisMain_loop in main_loop:
                           "", \
                           "If you see him going in this direction, you need to press 'k', again as quickly as possible.", \
                           "", \
-                          "Sometimes, his friends will be facing the same direction: ", \
+                          "His friends will always be facing the same direction: ", \
                           "", \
                           "Sometimes, it will happen that there is no food, so you should not press anything!", \
                           "", \
-                          "If you do the correct thing (pressing 'f' or 'k' when we know where the food is and not pressing anything when we do not...)", \
+                          "If you do the correct thing (pressing 'f' or 'k' when we know where the food is and not pressing anything when we do not!)", \
                           "", \
-                          "This means, the more often you will be correct, the more rewards you will get!", \
+                          "", \
                           "", \
                           "If you will see him for a longer time, you will see the green clock: ", \
                           "", \
                           "", \
                           "Sometimes, he will only be able to give you a little reward, if you are correct.", \
-                          ""]
+                          "", ""]
             
             curr_upp = texts_upper[go_instr_trial - 1]
             curr_low = texts_lower[go_instr_trial - 1]
@@ -8134,10 +7970,6 @@ for thisMain_loop in main_loop:
                     polygon_16.frameNStart = frameN  # exact frame index
                     polygon_16.setAutoDraw(True)
                 
-                # check for quit (typically the Esc key)
-                if endExpNow or event.getKeys(keyList=["escape"]):
-                    core.quit()
-                
                 # check if all components have finished
                 if not continueRoutine:  # a component has requested a forced-end of Routine
                     break
@@ -8146,6 +7978,10 @@ for thisMain_loop in main_loop:
                     if hasattr(thisComponent, "status") and thisComponent.status != FINISHED:
                         continueRoutine = True
                         break  # at least one component has not yet finished
+                
+                # check for quit (the Esc key)
+                if endExpNow or event.getKeys(keyList=["escape"]):
+                    core.quit()
                 
                 # refresh the screen
                 if continueRoutine:  # don't flip if this routine is over or we'll get a blank screen
@@ -8174,15 +8010,15 @@ for thisMain_loop in main_loop:
             thisTrial_8 = trials_8.trialList[0]  # so we can initialise stimuli with some values
             # abbreviate parameter names if possible (e.g. rgb = thisTrial_8.rgb)
             if thisTrial_8 != None:
-                for paramName in thisTrial_8:
-                    exec('{} = thisTrial_8[paramName]'.format(paramName))
+                for paramName in thisTrial_8.keys():
+                    exec(paramName + '= thisTrial_8.' + paramName)
             
             for thisTrial_8 in trials_8:
                 currentLoop = trials_8
                 # abbreviate parameter names if possible (e.g. rgb = thisTrial_8.rgb)
                 if thisTrial_8 != None:
-                    for paramName in thisTrial_8:
-                        exec('{} = thisTrial_8[paramName]'.format(paramName))
+                    for paramName in thisTrial_8.keys():
+                        exec(paramName + '= thisTrial_8.' + paramName)
                 
                 # ------Prepare to start Routine "go_expl3"-------
                 t = 0
@@ -8214,10 +8050,6 @@ for thisMain_loop in main_loop:
                     if text_106.status == STARTED and t >= frameRemains:
                         text_106.setAutoDraw(False)
                     
-                    # check for quit (typically the Esc key)
-                    if endExpNow or event.getKeys(keyList=["escape"]):
-                        core.quit()
-                    
                     # check if all components have finished
                     if not continueRoutine:  # a component has requested a forced-end of Routine
                         break
@@ -8226,6 +8058,10 @@ for thisMain_loop in main_loop:
                         if hasattr(thisComponent, "status") and thisComponent.status != FINISHED:
                             continueRoutine = True
                             break  # at least one component has not yet finished
+                    
+                    # check for quit (the Esc key)
+                    if endExpNow or event.getKeys(keyList=["escape"]):
+                        core.quit()
                     
                     # refresh the screen
                     if continueRoutine:  # don't flip if this routine is over or we'll get a blank screen
@@ -8249,15 +8085,15 @@ for thisMain_loop in main_loop:
         thisTrial = trials.trialList[0]  # so we can initialise stimuli with some values
         # abbreviate parameter names if possible (e.g. rgb = thisTrial.rgb)
         if thisTrial != None:
-            for paramName in thisTrial:
-                exec('{} = thisTrial[paramName]'.format(paramName))
+            for paramName in thisTrial.keys():
+                exec(paramName + '= thisTrial.' + paramName)
         
         for thisTrial in trials:
             currentLoop = trials
             # abbreviate parameter names if possible (e.g. rgb = thisTrial.rgb)
             if thisTrial != None:
-                for paramName in thisTrial:
-                    exec('{} = thisTrial[paramName]'.format(paramName))
+                for paramName in thisTrial.keys():
+                    exec(paramName + '= thisTrial.' + paramName)
             
             # ------Prepare to start Routine "real_go_ann"-------
             t = 0
@@ -8277,6 +8113,42 @@ for thisMain_loop in main_loop:
                 lh, tutorial_opac = turn_off_tutorial()
             
                 go_switch = 1
+                
+                try:
+                    controller = tobii_controller(win)
+                    et_connected = 1
+                except:
+                     et_connected = 0 
+            
+                try:
+                    controller.show_status()
+                except:
+                    print("Failed to show status on begin")
+            
+            if et_connected:
+                eyetracker_file = 'data/eyetracker/eyetracker_' + sub_id + '_' + dat + '.tsv'
+                controller.open_datafile(eyetracker_file, embed_events=True)
+                
+                background_image.setAutoDraw(False)
+                win.setColor('gray')
+                
+                try:
+                    ret = controller.run_calibration(
+                        [(-0.4,0.4), (0.4,0.4) , (0.0,0.0), (-0.4,-0.4), (0.4,-0.4)],
+                        )
+                except:
+                    print("Calibration did run correctly.")
+                
+                try:
+                    controller.subscribe()
+                    controller.record_event('begin go')
+                except:
+                    print("Couldn't subscribe and run go at beginning.")
+            
+                background_image.setAutoDraw(True)
+            
+            
+            
             key_resp_15 = event.BuilderKeyResponse()
             # keep track of which components have finished
             real_go_annComponents = [text, text_81, key_resp_15]
@@ -8315,7 +8187,7 @@ for thisMain_loop in main_loop:
                     # keyboard checking is just starting
                     event.clearEvents(eventType='keyboard')
                 if key_resp_15.status == STARTED:
-                    theseKeys = event.getKeys(keyList=['space'])
+                    theseKeys = event.getKeys(keyList=['right'])
                     
                     # check for quit:
                     if "escape" in theseKeys:
@@ -8323,10 +8195,6 @@ for thisMain_loop in main_loop:
                     if len(theseKeys) > 0:  # at least one key was pressed
                         # a response ends the routine
                         continueRoutine = False
-                
-                # check for quit (typically the Esc key)
-                if endExpNow or event.getKeys(keyList=["escape"]):
-                    core.quit()
                 
                 # check if all components have finished
                 if not continueRoutine:  # a component has requested a forced-end of Routine
@@ -8336,6 +8204,10 @@ for thisMain_loop in main_loop:
                     if hasattr(thisComponent, "status") and thisComponent.status != FINISHED:
                         continueRoutine = True
                         break  # at least one component has not yet finished
+                
+                # check for quit (the Esc key)
+                if endExpNow or event.getKeys(keyList=["escape"]):
+                    core.quit()
                 
                 # refresh the screen
                 if continueRoutine:  # don't flip if this routine is over or we'll get a blank screen
@@ -8360,32 +8232,33 @@ for thisMain_loop in main_loop:
         thisTrial_11 = trials_11.trialList[0]  # so we can initialise stimuli with some values
         # abbreviate parameter names if possible (e.g. rgb = thisTrial_11.rgb)
         if thisTrial_11 != None:
-            for paramName in thisTrial_11:
-                exec('{} = thisTrial_11[paramName]'.format(paramName))
+            for paramName in thisTrial_11.keys():
+                exec(paramName + '= thisTrial_11.' + paramName)
         
         for thisTrial_11 in trials_11:
             currentLoop = trials_11
             # abbreviate parameter names if possible (e.g. rgb = thisTrial_11.rgb)
             if thisTrial_11 != None:
-                for paramName in thisTrial_11:
-                    exec('{} = thisTrial_11[paramName]'.format(paramName))
+                for paramName in thisTrial_11.keys():
+                    exec(paramName + '= thisTrial_11.' + paramName)
             
             # ------Prepare to start Routine "pause"-------
             t = 0
             pauseClock.reset()  # clock
             frameN = -1
             continueRoutine = True
-            routineTimer.add(18.000000)
             # update component parameters for each repeat
+            
             run_pause = 0
+            key_resp_17 = event.BuilderKeyResponse()
             # keep track of which components have finished
-            pauseComponents = [text_90, text_111, text_112, text_113]
+            pauseComponents = [text_90, key_resp_17]
             for thisComponent in pauseComponents:
                 if hasattr(thisComponent, 'status'):
                     thisComponent.status = NOT_STARTED
             
             # -------Start Routine "pause"-------
-            while continueRoutine and routineTimer.getTime() > 0:
+            while continueRoutine:
                 # get current time
                 t = pauseClock.getTime()
                 frameN = frameN + 1  # number of completed frames (so 0 is the first frame)
@@ -8397,44 +8270,28 @@ for thisMain_loop in main_loop:
                     text_90.tStart = t
                     text_90.frameNStart = frameN  # exact frame index
                     text_90.setAutoDraw(True)
-                frameRemains = 0.0 + 15- win.monitorFramePeriod * 0.75  # most of one frame period left
+                frameRemains = 0.0 + 3- win.monitorFramePeriod * 0.75  # most of one frame period left
                 if text_90.status == STARTED and t >= frameRemains:
                     text_90.setAutoDraw(False)
                 
                 
-                # *text_111* updates
-                if t >= 15 and text_111.status == NOT_STARTED:
+                # *key_resp_17* updates
+                if t >= 0.0 and key_resp_17.status == NOT_STARTED:
                     # keep track of start time/frame for later
-                    text_111.tStart = t
-                    text_111.frameNStart = frameN  # exact frame index
-                    text_111.setAutoDraw(True)
-                frameRemains = 15 + 1- win.monitorFramePeriod * 0.75  # most of one frame period left
-                if text_111.status == STARTED and t >= frameRemains:
-                    text_111.setAutoDraw(False)
-                
-                # *text_112* updates
-                if t >= 16 and text_112.status == NOT_STARTED:
-                    # keep track of start time/frame for later
-                    text_112.tStart = t
-                    text_112.frameNStart = frameN  # exact frame index
-                    text_112.setAutoDraw(True)
-                frameRemains = 16 + 1.0- win.monitorFramePeriod * 0.75  # most of one frame period left
-                if text_112.status == STARTED and t >= frameRemains:
-                    text_112.setAutoDraw(False)
-                
-                # *text_113* updates
-                if t >= 17 and text_113.status == NOT_STARTED:
-                    # keep track of start time/frame for later
-                    text_113.tStart = t
-                    text_113.frameNStart = frameN  # exact frame index
-                    text_113.setAutoDraw(True)
-                frameRemains = 17 + 1.0- win.monitorFramePeriod * 0.75  # most of one frame period left
-                if text_113.status == STARTED and t >= frameRemains:
-                    text_113.setAutoDraw(False)
-                
-                # check for quit (typically the Esc key)
-                if endExpNow or event.getKeys(keyList=["escape"]):
-                    core.quit()
+                    key_resp_17.tStart = t
+                    key_resp_17.frameNStart = frameN  # exact frame index
+                    key_resp_17.status = STARTED
+                    # keyboard checking is just starting
+                    event.clearEvents(eventType='keyboard')
+                if key_resp_17.status == STARTED:
+                    theseKeys = event.getKeys(keyList=['right'])
+                    
+                    # check for quit:
+                    if "escape" in theseKeys:
+                        endExpNow = True
+                    if len(theseKeys) > 0:  # at least one key was pressed
+                        # a response ends the routine
+                        continueRoutine = False
                 
                 # check if all components have finished
                 if not continueRoutine:  # a component has requested a forced-end of Routine
@@ -8444,6 +8301,10 @@ for thisMain_loop in main_loop:
                     if hasattr(thisComponent, "status") and thisComponent.status != FINISHED:
                         continueRoutine = True
                         break  # at least one component has not yet finished
+                
+                # check for quit (the Esc key)
+                if endExpNow or event.getKeys(keyList=["escape"]):
+                    core.quit()
                 
                 # refresh the screen
                 if continueRoutine:  # don't flip if this routine is over or we'll get a blank screen
@@ -8455,8 +8316,30 @@ for thisMain_loop in main_loop:
                     thisComponent.setAutoDraw(False)
             
             if et_connected:
-                controller.subscribe()
+                background_image.setAutoDraw(False)
+                win.setColor('gray')
+                try:
+                    controller.show_status()
+                except:
+                    print("Failed to show status on begin")
+                
+                try:
+                    ret = controller.run_calibration(
+                        [(-0.4,0.4), (0.4,0.4) , (0.0,0.0), (-0.4,-0.4), (0.4,-0.4)],
+                        )
+                except:
+                    print("Calibration did not work correctly at pause")
+                
+                try:
+                    controller.record_event('pause at trial ' + str(go_trial))
+                except:
+                    print("Couldn't record event at pause on trial {}".format(str(go_trial)))
+                    
+                    
+                background_image.setAutoDraw(True)
             
+            # the Routine "pause" was not non-slip safe, so reset the non-slip timer
+            routineTimer.reset()
         # completed run_pause repeats of 'trials_11'
         
         
@@ -8471,7 +8354,14 @@ for thisMain_loop in main_loop:
         #block_types = ['easy_low_pound', 'easy_high_pound', 'hard_low_pound', 'hard_high_pound', \
         #               'easy_low_juice', 'easy_high_juice', 'hard_low_juice', 'hard_high_juice']
         
-        curr_t = random.uniform(0.1, 0.5)
+        curr_t = random.gauss(0.5, 0.1)
+        
+        # just as a way of clipping the max size
+        if curr_t < 0.25:
+                curr_t = 0.25
+        if curr_t > 0.75:
+                curr_t = 0.75
+        
         #fav_juice = 'apple'                 # comment out when done
         
         if reinforcer == 'primary':
@@ -8497,12 +8387,14 @@ for thisMain_loop in main_loop:
         if reward_size == 'high':
             if reinforcer == 'primary':
                 amount = '\6'
+                juice_nr = 0.6
             else:
                 amount = 0.06
                 
         else:
             if reinforcer == 'primary':
                 amount = '\2'
+                juice_nr = 0.2
             else:
                 amount = 0.02
         
@@ -8567,10 +8459,6 @@ for thisMain_loop in main_loop:
             if image_30.status == STARTED and t >= frameRemains:
                 image_30.setAutoDraw(False)
             
-            # check for quit (typically the Esc key)
-            if endExpNow or event.getKeys(keyList=["escape"]):
-                core.quit()
-            
             # check if all components have finished
             if not continueRoutine:  # a component has requested a forced-end of Routine
                 break
@@ -8580,6 +8468,10 @@ for thisMain_loop in main_loop:
                     continueRoutine = True
                     break  # at least one component has not yet finished
             
+            # check for quit (the Esc key)
+            if endExpNow or event.getKeys(keyList=["escape"]):
+                core.quit()
+            
             # refresh the screen
             if continueRoutine:  # don't flip if this routine is over or we'll get a blank screen
                 win.flip()
@@ -8588,6 +8480,12 @@ for thisMain_loop in main_loop:
         for thisComponent in beg_fixComponents:
             if hasattr(thisComponent, "setAutoDraw"):
                 thisComponent.setAutoDraw(False)
+        
+        # this should fetch the correct trial from the list on every trial. the added value of this approach is it will never be incorrecteven if skipping a loop
+        trial, reinforcer, reward_size, difficulty, position, trial_type, stimulus, correct_resp = all_trials[go_trial-1] # because indexing
+        
+        
+        
         main_cue = gen_stim_path(stimulus)
         
         # ------Prepare to start Routine "isi"-------
@@ -8619,10 +8517,6 @@ for thisMain_loop in main_loop:
             if text_108.status == STARTED and t >= frameRemains:
                 text_108.setAutoDraw(False)
             
-            # check for quit (typically the Esc key)
-            if endExpNow or event.getKeys(keyList=["escape"]):
-                core.quit()
-            
             # check if all components have finished
             if not continueRoutine:  # a component has requested a forced-end of Routine
                 break
@@ -8631,6 +8525,10 @@ for thisMain_loop in main_loop:
                 if hasattr(thisComponent, "status") and thisComponent.status != FINISHED:
                     continueRoutine = True
                     break  # at least one component has not yet finished
+            
+            # check for quit (the Esc key)
+            if endExpNow or event.getKeys(keyList=["escape"]):
+                core.quit()
             
             # refresh the screen
             if continueRoutine:  # don't flip if this routine is over or we'll get a blank screen
@@ -8687,7 +8585,7 @@ for thisMain_loop in main_loop:
                 event.clearEvents(eventType='keyboard')
             frameRemains = 0 + 1- win.monitorFramePeriod * 0.75  # most of one frame period left
             if main_resp.status == STARTED and t >= frameRemains:
-                main_resp.status = FINISHED
+                main_resp.status = STOPPED
             if main_resp.status == STARTED:
                 theseKeys = event.getKeys(keyList=['f', 'k'])
                 
@@ -8720,10 +8618,6 @@ for thisMain_loop in main_loop:
             if text_102.status == STARTED and t >= frameRemains:
                 text_102.setAutoDraw(False)
             
-            # check for quit (typically the Esc key)
-            if endExpNow or event.getKeys(keyList=["escape"]):
-                core.quit()
-            
             # check if all components have finished
             if not continueRoutine:  # a component has requested a forced-end of Routine
                 break
@@ -8732,6 +8626,10 @@ for thisMain_loop in main_loop:
                 if hasattr(thisComponent, "status") and thisComponent.status != FINISHED:
                     continueRoutine = True
                     break  # at least one component has not yet finished
+            
+            # check for quit (the Esc key)
+            if endExpNow or event.getKeys(keyList=["escape"]):
+                core.quit()
             
             # refresh the screen
             if continueRoutine:  # don't flip if this routine is over or we'll get a blank screen
@@ -8779,6 +8677,10 @@ for thisMain_loop in main_loop:
             ((part_resp == 2) and (correct_response == 2) and (main_resp.rt < allowed_length)):
             computed_resp = 1 # hit
         
+            if et_connected:
+                controller.record_event('1 ' + str(go_trial)) # trigger for start of rew present for correct resp
+                 
+        
         # if participant does respond and was supposed to respond and responds incorrectly
         elif ((part_resp == 1) and (correct_response == 2)) or \
             ((part_resp == 2) and (correct_response == 1)):
@@ -8792,13 +8694,16 @@ for thisMain_loop in main_loop:
         elif (part_resp == 3) and (correct_response == 3) and not main_resp.rt: # this makes it sure that participants
             computed_resp = 0 # correct rejection                               # who press in a nogo dont get accounted as 0
         
+            if et_connected:
+                controller.record_event('2 ' + str(go_trial)) # trigger for start of rew present for correct omission
+        
         # if participant does not respond and was supposed to respond 
         elif (part_resp == 3) and (correct_response != 3):
             computed_resp = 4 # miss
         
         elif ((part_resp == 1) and (correct_response == 1) and (main_resp.rt > allowed_length)) or \
             ((part_resp == 2) and (correct_response == 2) and (main_resp.rt > allowed_length)):
-                computed_resp = 5
+                computed_resp = 5       # too slow
         
         if main_resp.rt and (computed_resp != 3):
         
@@ -8814,13 +8719,13 @@ for thisMain_loop in main_loop:
                 dev.write(fav_juice_pump) # send juice squirt
                 core.wait(0.1)
         
+            cum_juice += juice_nr
             feed_pic = gen_stim_path(rew_pic)
-        #        obtained_rew = "Won: " + str(int(amount.encode('hex'), 16)/10) + ' mL of juice'
-            obtained_rew = ''
+            obtained_rew = str(cum_juice) + ' mL'
         
         elif reinforcer == 'secondary' and (computed_resp == 1 or computed_resp == 0):
             cum_amount += amount
-            obtained_rew = "Total: " + str(cum_amount) + ' pounds'
+            obtained_rew =  str(cum_amount) + ' pounds'
             feed_pic = gen_stim_path(rew_pic)
         
         
@@ -8830,7 +8735,7 @@ for thisMain_loop in main_loop:
              computed_resp == 5:
         
                 vol = 0
-        #            obtained_rew = 'Won: 0'
+        #        obtained_rew = 'Won: 0'
                 feed_pic = gen_stim_path('empty')
         
         
@@ -8840,10 +8745,8 @@ for thisMain_loop in main_loop:
         image_22.setImage(feed_pic)
         text_103.setHeight(lh)
         polygon_19.setOpacity(tutorial_opac)
-        text_116.setText(str(num_trials))
-        text_117.setText(str(go_trial))
         # keep track of which components have finished
-        compComponents = [text_86, image_22, text_103, polygon_19, text_116, text_117]
+        compComponents = [text_86, image_22, text_103, polygon_19]
         for thisComponent in compComponents:
             if hasattr(thisComponent, 'status'):
                 thisComponent.status = NOT_STARTED
@@ -8896,30 +8799,6 @@ for thisMain_loop in main_loop:
             if polygon_19.status == STARTED and t >= frameRemains:
                 polygon_19.setAutoDraw(False)
             
-            # *text_116* updates
-            if t >= 0.0 and text_116.status == NOT_STARTED:
-                # keep track of start time/frame for later
-                text_116.tStart = t
-                text_116.frameNStart = frameN  # exact frame index
-                text_116.setAutoDraw(True)
-            frameRemains = 0.0 + 1- win.monitorFramePeriod * 0.75  # most of one frame period left
-            if text_116.status == STARTED and t >= frameRemains:
-                text_116.setAutoDraw(False)
-            
-            # *text_117* updates
-            if t >= 0.0 and text_117.status == NOT_STARTED:
-                # keep track of start time/frame for later
-                text_117.tStart = t
-                text_117.frameNStart = frameN  # exact frame index
-                text_117.setAutoDraw(True)
-            frameRemains = 0.0 + 1- win.monitorFramePeriod * 0.75  # most of one frame period left
-            if text_117.status == STARTED and t >= frameRemains:
-                text_117.setAutoDraw(False)
-            
-            # check for quit (typically the Esc key)
-            if endExpNow or event.getKeys(keyList=["escape"]):
-                core.quit()
-            
             # check if all components have finished
             if not continueRoutine:  # a component has requested a forced-end of Routine
                 break
@@ -8928,6 +8807,10 @@ for thisMain_loop in main_loop:
                 if hasattr(thisComponent, "status") and thisComponent.status != FINISHED:
                     continueRoutine = True
                     break  # at least one component has not yet finished
+            
+            # check for quit (the Esc key)
+            if endExpNow or event.getKeys(keyList=["escape"]):
+                core.quit()
             
             # refresh the screen
             if continueRoutine:  # don't flip if this routine is over or we'll get a blank screen
@@ -8949,33 +8832,39 @@ for thisMain_loop in main_loop:
                 act_pump, act_pump_nr, act_vol = 0, 0, 0
         
         # saving the data every trial 
-        stor_go = [go_trial, reinforcer, reward_size, difficulty, position, trial_type, computed_resp, main_resp.rt, cum_amount, sub_id, act_pump, act_vol, act_pump_nr]
+        stor_go = [go_trial, reinforcer, reward_size, difficulty, position, trial_type, computed_resp, main_resp.rt, cum_amount, cum_juice, sub_id, act_pump, act_vol, act_pump_nr]
         save_go(stor_go, go_f)
         
-        if go_trial == halfway_go - 2:                          # if we are done with the first half of the go
+        if go_trial == halfway_go:                          # if we are done with the first half of the go
             run_rew, run_ev, run_effort, run_go = determine_sequence(type, 'go', 0)
         
             if et_connected:
-                controller.unsubscribe()
+                controller.record_event('finish_first_half ' + str(go_trial))
         
         elif go_trial == num_trials:
             run_rew, run_ev, run_effort, run_go = determine_sequence(type, 'go', 1)
+        
             if et_connected:
+                controller.record_event('finish_go ' + str(go_trial))
                 controller.unsubscribe()
+                controller.close_datafile()
             
         if go_trial == block_length:
             run_pause = 1
             block_length += block_length
+        
             if et_connected:
-                controller.unsubscribe()
+                controller.record_event('finish_block_' + str(go_trial))
+        
+        
+        if et_connected:
+            if computed_resp == 1:
+                controller.record_event('3 ' + str(go_trial))    # trigger for end of rew present for correct response
+            elif computed_resp == 3:
+                controller.record_event('4 ' + str(go_trial))    # trigger for end of rew present for correct omission
         
         
         go_trial += 1
-        
-        
-        
-        
-        
         
         
         
@@ -9028,15 +8917,15 @@ thisExp.addLoop(trials_10)  # add the loop to the experiment
 thisTrial_10 = trials_10.trialList[0]  # so we can initialise stimuli with some values
 # abbreviate parameter names if possible (e.g. rgb = thisTrial_10.rgb)
 if thisTrial_10 != None:
-    for paramName in thisTrial_10:
-        exec('{} = thisTrial_10[paramName]'.format(paramName))
+    for paramName in thisTrial_10.keys():
+        exec(paramName + '= thisTrial_10.' + paramName)
 
 for thisTrial_10 in trials_10:
     currentLoop = trials_10
     # abbreviate parameter names if possible (e.g. rgb = thisTrial_10.rgb)
     if thisTrial_10 != None:
-        for paramName in thisTrial_10:
-            exec('{} = thisTrial_10[paramName]'.format(paramName))
+        for paramName in thisTrial_10.keys():
+            exec(paramName + '= thisTrial_10.' + paramName)
     
     # ------Prepare to start Routine "cog_eff_instr"-------
     t = 0
@@ -9045,8 +8934,87 @@ for thisTrial_10 in trials_10:
     continueRoutine = True
     # update component parameters for each repeat
     background_image.setAutoDraw(False)
+    win.setColor('white')
     
-    elems = [15, 21, 24, 30]
+    
+    if run_last:
+        t_values = sorted(matrix_reason[participant_type][participant_age].values())
+    #    ans_sum = '26'
+    #    fav_juice = 'pineapple'
+    
+    
+    
+        part_t = matrix_reason[participant_type][participant_age][ans_sum]
+    
+        t_modifier = 18                                                 # we arbitrarily pick a higher and lower t score value
+        half_t = int(round(t_modifier/3))
+    
+        easiest = part_t - t_modifier
+        easy = part_t - half_t                                          # the middle ones will be slightly below or above their performance
+        medium = part_t + half_t         
+        high = part_t + t_modifier  
+    
+        # exception handling | 80 is the max t values and 20 is the min t value
+        if high > 80:
+            high = 80
+        
+        if medium > 80:
+            medium = 80
+    
+        if easy > 80:                   # if someone were to score all of them correct
+            easy = 80
+    
+        if easiest > 80:                # if someone were to score all of them correct
+            easiest = 80
+    
+        # not very probable that someone would score so low 
+        if easiest < 20:
+            easiest = 20
+    
+        if easy < 20:
+            easy = 20
+    
+        if medium < 20:
+            medium = 20
+    
+        if high < 20:
+            high = 20
+    
+        # we also want to make sure that none have the same t value
+        # though this doesn't necessarily matter because they will only be exposed to 2 trials. 
+    
+        all_t = [easiest, easy, medium, high]
+    
+        combos = list(itertools.combinations(all_t, 2))
+    
+        tmp_ctr = 0
+    
+        # now we find the t value that corresponds and/or is closest to the newly obtained modifier 
+    
+        easiest = min(enumerate(t_values), key=lambda i: abs(i[1]-easiest))[1]
+        easy = min(enumerate(t_values), key=lambda i: abs(i[1]-easy))[1]
+        medium = min(enumerate(t_values), key=lambda i: abs(i[1]-medium))[1]
+        high = min(enumerate(t_values), key=lambda i: abs(i[1]-high))[1]
+    
+        
+        elems = [easiest, easy, medium, high]
+        
+    
+        for key, value in matrix_reason[participant_type][participant_age].items():
+            for indx, el in enumerate(elems):
+                if value == el:
+                    elems[indx] = key
+    
+        # they are now saved as the number of correct items which will correspond to the 
+        # row they are being pulled for presentation This is only approximate because
+        # obviously someone can have 1 incorrect and two further ones correct. 
+    
+        # we now convert them to index numbers, to all of them we need to add +1 because we are using the generated stim list 
+        # to actually present the pictures. So it goes from 0 to 31, with 0 and 1 being sample items A and B 
+    
+        for indx, el in enumerate(elems):
+            elems[indx] = int(el) + 1
+    
     
     texts_main = ["Great job so far.", \
                   "If you remember, we told you before that you would play out a few picture sequences in the end.", \
@@ -9064,6 +9032,7 @@ for thisTrial_10 in trials_10:
     text_instr = get_current_text(texts_main, cog_eff_instr_trial - 1)
     
     if cog_eff_instr_trial == 1:
+        print(os.getcwd())
         all_go = glob.glob('data/*eff.txt')
         for el in all_go:
             parsed = el.split('.')[0].split('_')[1] # take the id
@@ -9078,7 +9047,10 @@ for thisTrial_10 in trials_10:
     
         for trial in all_trials[1:]:
             parsed = [el.strip() for el in trial.split('\t')]
-            relevant_data = parsed[2] + '_' + parsed[3] + '_' + parsed[4] # reward size, difficulty level, choice
+            try:
+                relevant_data = parsed[2] + '_' + parsed[3] + '_' + parsed[4] # reward size, difficulty level, choice
+            except:
+                print("This is parsed where it failed {}".format(parsed))
             if parsed[1] == 'primary':
                 primary.append('primary_' + relevant_data)
             else:
@@ -9164,10 +9136,6 @@ for thisTrial_10 in trials_10:
             text_110.frameNStart = frameN  # exact frame index
             text_110.setAutoDraw(True)
         
-        # check for quit (typically the Esc key)
-        if endExpNow or event.getKeys(keyList=["escape"]):
-            core.quit()
-        
         # check if all components have finished
         if not continueRoutine:  # a component has requested a forced-end of Routine
             break
@@ -9176,6 +9144,10 @@ for thisTrial_10 in trials_10:
             if hasattr(thisComponent, "status") and thisComponent.status != FINISHED:
                 continueRoutine = True
                 break  # at least one component has not yet finished
+        
+        # check for quit (the Esc key)
+        if endExpNow or event.getKeys(keyList=["escape"]):
+            core.quit()
         
         # refresh the screen
         if continueRoutine:  # don't flip if this routine is over or we'll get a blank screen
@@ -9196,6 +9168,81 @@ for thisTrial_10 in trials_10:
 # completed run_cog_eff_instr repeats of 'trials_10'
 
 
+# ------Prepare to start Routine "calibration"-------
+t = 0
+calibrationClock.reset()  # clock
+frameN = -1
+continueRoutine = True
+# update component parameters for each repeat
+try:
+    controller = tobii_controller(win)
+    et_connected = 1
+except:
+    et_connected = 0 
+
+if et_connected:
+    win.setColor('gray')
+    eyetracker_file = 'data/eyetracker/eyetracker_' + sub_id + '_' + dat + '.tsv'
+    controller.open_datafile(eyetracker_file, embed_events=True)
+    
+    try:
+        controller.show_status()
+    except:
+        print("Failed to show status on begin")
+    
+    
+    try:
+        ret = controller.run_calibration(
+            [(-0.4,0.4), (0.4,0.4) , (0.0,0.0), (-0.4,-0.4), (0.4,-0.4)],
+            )
+    except:
+        print("Couldn't calibrate before the cog eff for some reason.")
+    background_image.setAutoDraw(True)
+
+    try:
+        controller.subscribe()
+        controller.record_event('begin cog eff')
+    except:
+        print("Couldn't start subscribing to data for some reason")
+# keep track of which components have finished
+calibrationComponents = []
+for thisComponent in calibrationComponents:
+    if hasattr(thisComponent, 'status'):
+        thisComponent.status = NOT_STARTED
+
+# -------Start Routine "calibration"-------
+while continueRoutine:
+    # get current time
+    t = calibrationClock.getTime()
+    frameN = frameN + 1  # number of completed frames (so 0 is the first frame)
+    # update/draw components on each frame
+    
+    
+    # check if all components have finished
+    if not continueRoutine:  # a component has requested a forced-end of Routine
+        break
+    continueRoutine = False  # will revert to True if at least one component still running
+    for thisComponent in calibrationComponents:
+        if hasattr(thisComponent, "status") and thisComponent.status != FINISHED:
+            continueRoutine = True
+            break  # at least one component has not yet finished
+    
+    # check for quit (the Esc key)
+    if endExpNow or event.getKeys(keyList=["escape"]):
+        core.quit()
+    
+    # refresh the screen
+    if continueRoutine:  # don't flip if this routine is over or we'll get a blank screen
+        win.flip()
+
+# -------Ending Routine "calibration"-------
+for thisComponent in calibrationComponents:
+    if hasattr(thisComponent, "setAutoDraw"):
+        thisComponent.setAutoDraw(False)
+tmp_trial = 0
+# the Routine "calibration" was not non-slip safe, so reset the non-slip timer
+routineTimer.reset()
+
 # set up handler to look after randomisation of conditions etc
 trials_13 = data.TrialHandler(nReps=run_fin_eff, method='random', 
     extraInfo=expInfo, originPath=-1,
@@ -9205,15 +9252,15 @@ thisExp.addLoop(trials_13)  # add the loop to the experiment
 thisTrial_13 = trials_13.trialList[0]  # so we can initialise stimuli with some values
 # abbreviate parameter names if possible (e.g. rgb = thisTrial_13.rgb)
 if thisTrial_13 != None:
-    for paramName in thisTrial_13:
-        exec('{} = thisTrial_13[paramName]'.format(paramName))
+    for paramName in thisTrial_13.keys():
+        exec(paramName + '= thisTrial_13.' + paramName)
 
 for thisTrial_13 in trials_13:
     currentLoop = trials_13
     # abbreviate parameter names if possible (e.g. rgb = thisTrial_13.rgb)
     if thisTrial_13 != None:
-        for paramName in thisTrial_13:
-            exec('{} = thisTrial_13[paramName]'.format(paramName))
+        for paramName in thisTrial_13.keys():
+            exec(paramName + '= thisTrial_13.' + paramName)
     
     # ------Prepare to start Routine "cog_eff_fin_select"-------
     t = 0
@@ -9222,7 +9269,8 @@ for thisTrial_13 in trials_13:
     continueRoutine = True
     routineTimer.add(1.500000)
     # update component parameters for each repeat
-    
+    background_image.setAutoDraw(False)
+    win.setColor('white')
     # if both picked are 0 
     if not len(difficulty_lev):
         fin_pic = gen_stim_path('empty')
@@ -9248,8 +9296,13 @@ for thisTrial_13 in trials_13:
         
             fin_diff = gen_stim_path(diffs[0])
         
-            if et_connected:
-                controller.subscribe()
+     #   try:
+     #       controller = tobii_controller(win)
+     #   except:
+     #        pass
+        if et_connected:
+                trig_begin = curr[0] + '_6'
+                controller.record_event(trig_begin)    # trigger for begin cog eff fin
         
         else:
             fin_pic = gen_stim_path('empty')
@@ -9270,10 +9323,11 @@ for thisTrial_13 in trials_13:
             fin_rew = curr[1] + '_' + 'pounds'
     
         fin_rew = gen_stim_path(fin_rew)
-        
-        if et_connected:
-            controller.subscribe() 
     
+            
+        if et_connected:
+            trig_begin = str(curr[0]) + '_5'
+            controller.record_event(trig_begin)    # trigger for begin cog eff fin
     image_31.setImage(fin_diff)
     image_32.setImage(fin_rew)
     # keep track of which components have finished
@@ -9320,10 +9374,6 @@ for thisTrial_13 in trials_13:
         if image_32.status == STARTED and t >= frameRemains:
             image_32.setAutoDraw(False)
         
-        # check for quit (typically the Esc key)
-        if endExpNow or event.getKeys(keyList=["escape"]):
-            core.quit()
-        
         # check if all components have finished
         if not continueRoutine:  # a component has requested a forced-end of Routine
             break
@@ -9332,6 +9382,10 @@ for thisTrial_13 in trials_13:
             if hasattr(thisComponent, "status") and thisComponent.status != FINISHED:
                 continueRoutine = True
                 break  # at least one component has not yet finished
+        
+        # check for quit (the Esc key)
+        if endExpNow or event.getKeys(keyList=["escape"]):
+            core.quit()
         
         # refresh the screen
         if continueRoutine:  # don't flip if this routine is over or we'll get a blank screen
@@ -9352,15 +9406,15 @@ for thisTrial_13 in trials_13:
     thisCog_eff_final_data = cog_eff_final_data.trialList[0]  # so we can initialise stimuli with some values
     # abbreviate parameter names if possible (e.g. rgb = thisCog_eff_final_data.rgb)
     if thisCog_eff_final_data != None:
-        for paramName in thisCog_eff_final_data:
-            exec('{} = thisCog_eff_final_data[paramName]'.format(paramName))
+        for paramName in thisCog_eff_final_data.keys():
+            exec(paramName + '= thisCog_eff_final_data.' + paramName)
     
     for thisCog_eff_final_data in cog_eff_final_data:
         currentLoop = cog_eff_final_data
         # abbreviate parameter names if possible (e.g. rgb = thisCog_eff_final_data.rgb)
         if thisCog_eff_final_data != None:
-            for paramName in thisCog_eff_final_data:
-                exec('{} = thisCog_eff_final_data[paramName]'.format(paramName))
+            for paramName in thisCog_eff_final_data.keys():
+                exec(paramName + '= thisCog_eff_final_data.' + paramName)
         
         # ------Prepare to start Routine "cog_eff_fin"-------
         t = 0
@@ -9368,6 +9422,8 @@ for thisTrial_13 in trials_13:
         frameN = -1
         continueRoutine = True
         # update component parameters for each repeat
+        if et_connected:
+            controller.record_event('5')
         image_24.setImage(fin_pic)
         cog_eff_fin_resp = event.BuilderKeyResponse()
         # keep track of which components have finished
@@ -9382,6 +9438,7 @@ for thisTrial_13 in trials_13:
             t = cog_eff_finClock.getTime()
             frameN = frameN + 1  # number of completed frames (so 0 is the first frame)
             # update/draw components on each frame
+            
             
             # *image_24* updates
             if t >= 0.0 and image_24.status == NOT_STARTED:
@@ -9411,10 +9468,6 @@ for thisTrial_13 in trials_13:
                     # a response ends the routine
                     continueRoutine = False
             
-            # check for quit (typically the Esc key)
-            if endExpNow or event.getKeys(keyList=["escape"]):
-                core.quit()
-            
             # check if all components have finished
             if not continueRoutine:  # a component has requested a forced-end of Routine
                 break
@@ -9424,6 +9477,10 @@ for thisTrial_13 in trials_13:
                     continueRoutine = True
                     break  # at least one component has not yet finished
             
+            # check for quit (the Esc key)
+            if endExpNow or event.getKeys(keyList=["escape"]):
+                core.quit()
+            
             # refresh the screen
             if continueRoutine:  # don't flip if this routine is over or we'll get a blank screen
                 win.flip()
@@ -9432,6 +9489,7 @@ for thisTrial_13 in trials_13:
         for thisComponent in cog_eff_finComponents:
             if hasattr(thisComponent, "setAutoDraw"):
                 thisComponent.setAutoDraw(False)
+        
         # check responses
         if cog_eff_fin_resp.keys in ['', [], None]:  # No response was made
             cog_eff_fin_resp.keys=None
@@ -9448,6 +9506,13 @@ for thisTrial_13 in trials_13:
         continueRoutine = True
         routineTimer.add(1.500000)
         # update component parameters for each repeat
+        trig_end = curr[0] + '_7'            # trigger for end of cog eff fin
+        
+        if et_connected:
+            controller.record_event(trig_end)    # trigger for begin cog eff fin
+        
+        
+        
         
         stim_corr_ans = [2, 3, 2, 1, 3, 1, 5, 1, 3, 3, 4, 2, 3, 4, 1, 4, \
                          2, 5, 4, 2, 4, 2, 3, 3, 1, 4, 4, 2, 5, 5, 1, 2]
@@ -9456,12 +9521,30 @@ for thisTrial_13 in trials_13:
         corr_resp =  stim_corr_ans[difficulty_lev[cog_eff_trial - 1]] # this gets the index of the stim corr ans
         
         
-        if int(cog_eff_fin_resp.keys) == stim_corr_ans[corr_resp]:
+        if int(cog_eff_fin_resp.keys) == int(corr_resp):
             feed = 'Correct!'
+            print("Participant answered correctly for reward size: {}".format(str(fin_rew)))
         
         else:
             feed = 'Incorrect!'
             fin_rew = gen_stim_path('empty')
+            if random.random() < chanc:
+                print("Participant answered incorrectly for reward size: {} but gets the reward due to the lottery".format(str(fin_rew)))
+            else:
+                print("Participant answered incorrectly for reward size: {} and does not get the reward due to the lottery".format(str(fin_rew)))
+        
+        
+        complete = set_filename(part_char, str(cog_eff_trial) + 'cog_eff_trial')
+        cog_eff_q = open(complete, 'w')
+            
+        struct_1 = "reward_size\tdifficulty\tanswer\tactual_item\tsub_id\n"  #subid
+        cog_eff_q.write(struct_1)
+        struct_2 = "{}\t{}\{}\t{}\t{}\n"
+        tmp_list = [fin_rew, fin_diff, feed, difficulty_lev[cog_eff_trial - 1], sub_id] 
+        cog_eff_q .write(struct_2.format(tmp_list[0], tmp_list[1], tmp_list[2], tmp_list[3],
+                                             tmp_list[4]))
+        cog_eff_q.close()
+        print("Successfully saved the cog eff dataset.")
         
         text_98.setText(feed)
         # keep track of which components have finished
@@ -9488,10 +9571,6 @@ for thisTrial_13 in trials_13:
             if text_98.status == STARTED and t >= frameRemains:
                 text_98.setAutoDraw(False)
             
-            # check for quit (typically the Esc key)
-            if endExpNow or event.getKeys(keyList=["escape"]):
-                core.quit()
-            
             # check if all components have finished
             if not continueRoutine:  # a component has requested a forced-end of Routine
                 break
@@ -9500,6 +9579,10 @@ for thisTrial_13 in trials_13:
                 if hasattr(thisComponent, "status") and thisComponent.status != FINISHED:
                     continueRoutine = True
                     break  # at least one component has not yet finished
+            
+            # check for quit (the Esc key)
+            if endExpNow or event.getKeys(keyList=["escape"]):
+                core.quit()
             
             # refresh the screen
             if continueRoutine:  # don't flip if this routine is over or we'll get a blank screen
@@ -9536,15 +9619,15 @@ for thisTrial_13 in trials_13:
     thisNasa_trial = nasa_trials.trialList[0]  # so we can initialise stimuli with some values
     # abbreviate parameter names if possible (e.g. rgb = thisNasa_trial.rgb)
     if thisNasa_trial != None:
-        for paramName in thisNasa_trial:
-            exec('{} = thisNasa_trial[paramName]'.format(paramName))
+        for paramName in thisNasa_trial.keys():
+            exec(paramName + '= thisNasa_trial.' + paramName)
     
     for thisNasa_trial in nasa_trials:
         currentLoop = nasa_trials
         # abbreviate parameter names if possible (e.g. rgb = thisNasa_trial.rgb)
         if thisNasa_trial != None:
-            for paramName in thisNasa_trial:
-                exec('{} = thisNasa_trial[paramName]'.format(paramName))
+            for paramName in thisNasa_trial.keys():
+                exec(paramName + '= thisNasa_trial.' + paramName)
         
         # ------Prepare to start Routine "nasa_tlx"-------
         t = 0
@@ -9552,12 +9635,8 @@ for thisTrial_13 in trials_13:
         frameN = -1
         continueRoutine = True
         # update component parameters for each repeat
-        if et_connected:
-            controller.unsubscribe()
-            controller.close_datafile()
-        
         nasa_question = current_question
-        
+        win.mouseVisible = True
         nasa_tlx_text.setText(nasa_question)
         rating_3.reset()
         # keep track of which components have finished
@@ -9588,10 +9667,6 @@ for thisTrial_13 in trials_13:
                 rating_3.setAutoDraw(True)
             continueRoutine &= rating_3.noResponse  # a response ends the trial
             
-            # check for quit (typically the Esc key)
-            if endExpNow or event.getKeys(keyList=["escape"]):
-                core.quit()
-            
             # check if all components have finished
             if not continueRoutine:  # a component has requested a forced-end of Routine
                 break
@@ -9600,6 +9675,10 @@ for thisTrial_13 in trials_13:
                 if hasattr(thisComponent, "status") and thisComponent.status != FINISHED:
                     continueRoutine = True
                     break  # at least one component has not yet finished
+            
+            # check for quit (the Esc key)
+            if endExpNow or event.getKeys(keyList=["escape"]):
+                core.quit()
             
             # refresh the screen
             if continueRoutine:  # don't flip if this routine is over or we'll get a blank screen
@@ -9611,13 +9690,16 @@ for thisTrial_13 in trials_13:
                 thisComponent.setAutoDraw(False)
         stor_nasa_q.append([sav_mapping, rating_3.getRating()])
         
-        row_len = 7
+        #if cog_eff_trial == 3:
+        #    row_len = 6
+        #else:
+        row_len = 6
         
         tmp_trial += 1
         
         if tmp_trial == row_len: # end of questions about nasa
         
-            complete = set_filename(part_char, 'nasa_tlx(nasa_tlx.csv)')
+            complete = set_filename(part_char, str(curr[0]) + str(cog_eff_trial) + '_nasa_tlx(nasa_tlx.csv)')
             nasa_q = open(complete, 'w')
             
             stor_nasa_q = sorted(stor_nasa_q, key=lambda x: x[0])
@@ -9648,9 +9730,8 @@ for thisTrial_13 in trials_13:
             struct_1 = ''
             struct_2 = ''
             tmp_list = []
+            stor_nasa_q = []
             tmp_trial = 0
-        
-            print("This is the tmp trial after nasa tlx {}".format(tmp_trial))
         
         # store data for nasa_trials (TrialHandler)
         nasa_trials.addData('rating_3.response', rating_3.getRating())
@@ -9698,6 +9779,9 @@ continueRoutine = True
 # update component parameters for each repeat
 theseKeys="" 
 shift_flag = False
+if et_connected:
+    controller.unsubscribe()
+    controller.close_datafile()
 continue_key = event.BuilderKeyResponse()
 juice_valuation = event.BuilderKeyResponse()
 # keep track of which components have finished
@@ -9801,10 +9885,6 @@ while continueRoutine:
             juice_valuation.keys.extend(theseKeys)  # storing all keys
             juice_valuation.rt.append(juice_valuation.clock.getTime())
     
-    # check for quit (typically the Esc key)
-    if endExpNow or event.getKeys(keyList=["escape"]):
-        core.quit()
-    
     # check if all components have finished
     if not continueRoutine:  # a component has requested a forced-end of Routine
         break
@@ -9813,6 +9893,10 @@ while continueRoutine:
         if hasattr(thisComponent, "status") and thisComponent.status != FINISHED:
             continueRoutine = True
             break  # at least one component has not yet finished
+    
+    # check for quit (the Esc key)
+    if endExpNow or event.getKeys(keyList=["escape"]):
+        core.quit()
     
     # refresh the screen
     if continueRoutine:  # don't flip if this routine is over or we'll get a blank screen
@@ -9830,7 +9914,7 @@ inputText = inputText + "\t" + part_char[1]
 juice_eval_mini.write(inputText)
 juice_eval_mini.close()
 print("Successfully saved the juice evaluation.")
-print("This is the tmp trial after juice eval {}".format(tmp_trial))
+tmp_trial = 0
 # check responses
 if continue_key.keys in ['', [], None]:  # No response was made
     continue_key.keys=None
@@ -9857,15 +9941,15 @@ thisExp.addLoop(final_pic_eval_trials)  # add the loop to the experiment
 thisFinal_pic_eval_trial = final_pic_eval_trials.trialList[0]  # so we can initialise stimuli with some values
 # abbreviate parameter names if possible (e.g. rgb = thisFinal_pic_eval_trial.rgb)
 if thisFinal_pic_eval_trial != None:
-    for paramName in thisFinal_pic_eval_trial:
-        exec('{} = thisFinal_pic_eval_trial[paramName]'.format(paramName))
+    for paramName in thisFinal_pic_eval_trial.keys():
+        exec(paramName + '= thisFinal_pic_eval_trial.' + paramName)
 
 for thisFinal_pic_eval_trial in final_pic_eval_trials:
     currentLoop = final_pic_eval_trials
     # abbreviate parameter names if possible (e.g. rgb = thisFinal_pic_eval_trial.rgb)
     if thisFinal_pic_eval_trial != None:
-        for paramName in thisFinal_pic_eval_trial:
-            exec('{} = thisFinal_pic_eval_trial[paramName]'.format(paramName))
+        for paramName in thisFinal_pic_eval_trial.keys():
+            exec(paramName + '= thisFinal_pic_eval_trial.' + paramName)
     
     # ------Prepare to start Routine "ev_pic"-------
     t = 0
@@ -9913,10 +9997,6 @@ for thisFinal_pic_eval_trial in final_pic_eval_trials:
             text_49.frameNStart = frameN  # exact frame index
             text_49.setAutoDraw(True)
         
-        # check for quit (typically the Esc key)
-        if endExpNow or event.getKeys(keyList=["escape"]):
-            core.quit()
-        
         # check if all components have finished
         if not continueRoutine:  # a component has requested a forced-end of Routine
             break
@@ -9925,6 +10005,10 @@ for thisFinal_pic_eval_trial in final_pic_eval_trials:
             if hasattr(thisComponent, "status") and thisComponent.status != FINISHED:
                 continueRoutine = True
                 break  # at least one component has not yet finished
+        
+        # check for quit (the Esc key)
+        if endExpNow or event.getKeys(keyList=["escape"]):
+            core.quit()
         
         # refresh the screen
         if continueRoutine:  # don't flip if this routine is over or we'll get a blank screen
@@ -9936,7 +10020,7 @@ for thisFinal_pic_eval_trial in final_pic_eval_trials:
             thisComponent.setAutoDraw(False)
     stor_pic_q.append([sav_mapping, rating_2.getRating()])
     tmp_trial += 1
-    row_len = 7
+    row_len = 4
     
     if tmp_trial == row_len: # end of questions about pictures
     
@@ -9961,7 +10045,7 @@ for thisFinal_pic_eval_trial in final_pic_eval_trials:
         tmp_list.append(sub_id)
     
         pic_q_data.write(struct_2.format(tmp_list[0], tmp_list[1], tmp_list[2], tmp_list[3],
-                                         tmp_list[4], tmp_list[5], tmp_list[6]))
+                                         tmp_list[4]))
         pic_q_data.close()
         print("Successfully saved the picture evaluation dataset.")
     
@@ -9969,7 +10053,7 @@ for thisFinal_pic_eval_trial in final_pic_eval_trials:
         struct_2 = ''
         tmp_list = []
         tmp_trial = 0
-        print("this is tmp trial after ev pic {}".format(tmp_trial))
+    #    print("this is tmp trial after ev pic {}".format(tmp_trial))
     
     # store data for final_pic_eval_trials (TrialHandler)
     final_pic_eval_trials.addData('rating_2.response', rating_2.getRating())
@@ -10001,15 +10085,15 @@ thisExp.addLoop(nfc_trials)  # add the loop to the experiment
 thisNfc_trial = nfc_trials.trialList[0]  # so we can initialise stimuli with some values
 # abbreviate parameter names if possible (e.g. rgb = thisNfc_trial.rgb)
 if thisNfc_trial != None:
-    for paramName in thisNfc_trial:
-        exec('{} = thisNfc_trial[paramName]'.format(paramName))
+    for paramName in thisNfc_trial.keys():
+        exec(paramName + '= thisNfc_trial.' + paramName)
 
 for thisNfc_trial in nfc_trials:
     currentLoop = nfc_trials
     # abbreviate parameter names if possible (e.g. rgb = thisNfc_trial.rgb)
     if thisNfc_trial != None:
-        for paramName in thisNfc_trial:
-            exec('{} = thisNfc_trial[paramName]'.format(paramName))
+        for paramName in thisNfc_trial.keys():
+            exec(paramName + '= thisNfc_trial.' + paramName)
     
     # ------Prepare to start Routine "nfc_scale"-------
     t = 0
@@ -10050,10 +10134,6 @@ for thisNfc_trial in nfc_trials:
             rating_4.setAutoDraw(True)
         continueRoutine &= rating_4.noResponse  # a response ends the trial
         
-        # check for quit (typically the Esc key)
-        if endExpNow or event.getKeys(keyList=["escape"]):
-            core.quit()
-        
         # check if all components have finished
         if not continueRoutine:  # a component has requested a forced-end of Routine
             break
@@ -10062,6 +10142,10 @@ for thisNfc_trial in nfc_trials:
             if hasattr(thisComponent, "status") and thisComponent.status != FINISHED:
                 continueRoutine = True
                 break  # at least one component has not yet finished
+        
+        # check for quit (the Esc key)
+        if endExpNow or event.getKeys(keyList=["escape"]):
+            core.quit()
         
         # refresh the screen
         if continueRoutine:  # don't flip if this routine is over or we'll get a blank screen
@@ -10092,7 +10176,6 @@ for thisNfc_trial in nfc_trials:
         
         for i in range(0, len(stor_nfc_q)):
             struct_2 += "{}\t"
-        print(len(stor_nfc_q))
         struct_2 += "{}\n"
     
         tmp_list = [el2 for el1, el2 in stor_nfc_q] 
@@ -10140,6 +10223,7 @@ frameN = -1
 continueRoutine = True
 routineTimer.add(1.000000)
 # update component parameters for each repeat
+
 # keep track of which components have finished
 final_screenComponents = [text_48]
 for thisComponent in final_screenComponents:
@@ -10163,9 +10247,6 @@ while continueRoutine and routineTimer.getTime() > 0:
     if text_48.status == STARTED and t >= frameRemains:
         text_48.setAutoDraw(False)
     
-    # check for quit (typically the Esc key)
-    if endExpNow or event.getKeys(keyList=["escape"]):
-        core.quit()
     
     # check if all components have finished
     if not continueRoutine:  # a component has requested a forced-end of Routine
@@ -10176,6 +10257,10 @@ while continueRoutine and routineTimer.getTime() > 0:
             continueRoutine = True
             break  # at least one component has not yet finished
     
+    # check for quit (the Esc key)
+    if endExpNow or event.getKeys(keyList=["escape"]):
+        core.quit()
+    
     # refresh the screen
     if continueRoutine:  # don't flip if this routine is over or we'll get a blank screen
         win.flip()
@@ -10184,6 +10269,9 @@ while continueRoutine and routineTimer.getTime() > 0:
 for thisComponent in final_screenComponents:
     if hasattr(thisComponent, "setAutoDraw"):
         thisComponent.setAutoDraw(False)
+webbrowser.open('https://goo.gl/forms/EaxCPlk5kK5KWKxC2')
+
+
 
 
 

@@ -1,7 +1,7 @@
-current_question
-How mentally demanding was the task?
-How physically demanding was the task?
-How hurried or rushed was the pace of the task?
-How successful were you in accomplishing what you were asked to do?
-How hard did you have to work to accomplish your level of performance?
-"How insecure, discouraged, irritated, stressed, and annoyed were you?"
+current_question,sav_mapping
+How mentally demanding was the task?,1
+How physically demanding was the task?,2
+How hurried or rushed was the pace of the task?,3
+How successful were you in accomplishing what you were asked to do?,4
+How hard did you have to work to accomplish your level of performance?,5
+"How insecure, discouraged, irritated, stressed, and annoyed were you?",6
